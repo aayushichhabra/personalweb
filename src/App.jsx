@@ -194,6 +194,7 @@ const G = `
     .hide-m  { display: none !important; }
     .hero-name { font-size: clamp(2.5rem,12vw,5rem) !important; }
     .nav-links { display: none !important; }
+    .show-m { display: block !important; }
     .tl-section-grid { grid-template-columns: 1fr !important; }
     .tl-center-line { left: 20px !important; }
     .tl-item { padding-left: 50px !important; padding-right: 0 !important; }
@@ -284,7 +285,6 @@ const G = `
 
   .tag-row { display:flex; flex-wrap:wrap; gap:0.4rem; }
 
-  /* Rose petal floating particles */
   @keyframes petalFloat {
     0% { transform: translateY(0) rotate(0deg) scale(1); opacity: 0; }
     10% { opacity: 0.6; }
@@ -325,7 +325,7 @@ function SectionProgress() {
   useEffect(() => {
     const obs = new IntersectionObserver(entries => {
       entries.forEach(e => { if (e.isIntersecting) setActive(e.target.id); });
-    }, { threshold: 0.4 });
+    }, { threshold: 0.2 });
     SECS.forEach(id => { const el = document.getElementById(id); if (el) obs.observe(el); });
     return () => obs.disconnect();
   }, []);
@@ -373,6 +373,7 @@ function Nav() {
         </div>
         <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
           <a href="mailto:aayushichhabra1010@gmail.com" className="btn-primary" style={{ padding: "0.55rem 1.2rem", fontSize: "0.72rem" }}>Hire Me</a>
+  
           <button
             onClick={() => setMenuOpen(o => !o)}
             style={{ display: "none", background: "none", border: "none", cursor: "pointer", color: "var(--ink)", padding: "0.3rem" }}
@@ -397,7 +398,7 @@ function Nav() {
 /* ─── HERO ─── */
 function Hero() {
   const [typed, setTyped] = useState("");
-  const words = ["Cybersecurity & AI Intern", "ML Engineer", "Full Stack Developer", "RAG Systems Builder", "Deepfake Detection Researcher"];
+  const words = ["Cybersecurity & AI Intern", "ML Engineer", "Android Developer", "Productivity AI Builder", "Deepfake Detection Researcher", "Full Stack Developer"];
   useEffect(() => {
     let wi = 0, idx = 0, dir = 1;
     const iv = setInterval(() => {
@@ -418,11 +419,9 @@ function Hero() {
       position: "relative",
       overflow: "hidden",
     }}>
-      {/* BG radial glows */}
       <div style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
         <div style={{ position: "absolute", top: "-20%", left: "60%", width: 600, height: 600, background: "radial-gradient(circle, rgba(244,63,94,0.07) 0%, transparent 70%)", borderRadius: "50%" }} />
         <div style={{ position: "absolute", bottom: "10%", left: "-10%", width: 500, height: 500, background: "radial-gradient(circle, rgba(192,132,252,0.04) 0%, transparent 70%)", borderRadius: "50%" }} />
-        {/* Grid lines */}
         <div style={{ position: "absolute", inset: 0, backgroundImage: "linear-gradient(rgba(244,63,94,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(244,63,94,0.02) 1px,transparent 1px)", backgroundSize: "60px 60px" }} />
       </div>
 
@@ -453,9 +452,9 @@ function Hero() {
             </div>
 
             <p className="rv d3" style={{ fontSize: "0.95rem", color: "var(--ink2)", lineHeight: 1.8, maxWidth: 540, marginBottom: "2.5rem" }}>
-              Third-year B.Tech CSE student at Manipal University Jaipur with a <span style={{ color: "var(--rose2)" }}>9.88 CGPA</span>. 
-              Industry experience at <span style={{ color: "var(--rose2)" }}>Ericsson</span> in Cybersecurity & AI. 
-              Finalist at <span style={{ color: "var(--rose2)" }}>Deloitte Capstone Ideathon</span> (200+ teams). 
+              Third-year B.Tech CSE student at Manipal University Jaipur with a <span style={{ color: "var(--rose2)" }}>9.88 CGPA</span>.
+              Industry experience at <span style={{ color: "var(--rose2)" }}>Ericsson</span> in Cybersecurity & AI.
+              Finalist at <span style={{ color: "var(--rose2)" }}>Deloitte Capstone Ideathon</span> (200+ teams).
               Dean's Excellence Award recipient — 5 consecutive semesters.
             </p>
 
@@ -468,10 +467,8 @@ function Hero() {
                 GitHub ↗️
               </a>
             </div>
-
-            {/* Stats row */}
             <div className="rv d5" style={{ display: "flex", gap: "2.5rem", marginTop: "3.5rem", flexWrap: "wrap" }}>
-              {[["9.88", "CGPA"], ["5×", "Dean's Award"], ["3+", "Internships"], ["200+", "Teams Beaten"]].map(([n, l]) => (
+              {[["9.88", "CGPA"], ["5×", "Dean's Award"], ["6+", "Projects Built"], ["200+", "Teams Beaten"]].map(([n, l]) => (
                 <div key={l}>
                   <div className="stat-number" style={{ fontSize: "1.8rem" }}>{n}</div>
                   <div className="mono" style={{ fontSize: "0.62rem", letterSpacing: "0.15em", color: "var(--ink2)", marginTop: "0.2rem" }}>{l}</div>
@@ -483,15 +480,13 @@ function Hero() {
           {/* RIGHT — decorative card */}
           <div className="rv d3 hide-m" style={{ width: 340 }}>
             <div className="glass" style={{ borderRadius: "4px", padding: "2rem", position: "relative", overflow: "hidden" }}>
-              {/* Decorative top border */}
               <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: "linear-gradient(90deg, var(--rose), var(--mauve), var(--rose))" }} />
-
               <div className="serif" style={{ fontSize: "0.75rem", fontStyle: "italic", color: "var(--rose)", marginBottom: "1.2rem", letterSpacing: "0.05em" }}>// Currently Working On</div>
 
               {[
                 { title: "ResQNet", desc: "Cross-platform crisis mgmt. w/ BLE & offline-first tech", tech: "React Native · Supabase", col: "var(--mauve)" },
-                { title: "DeepFake Detection", desc: "EfficientNetB0 + Grad-CAM explainability pipeline", tech: "PyTorch · OpenCV", col: "var(--rose)" },
-                { title: "Unified SecOps Platform", desc: "RAG-powered incident guidance + FAISS vector search", tech: "LangChain · Gemini · AWS", col: "var(--blush)" },
+                { title: "StyleVault", desc: "AI men's fashion app — wardrobe mgmt. & outfit suggestions", tech: "Kotlin · Firebase · Gemini", col: "var(--sky)" },
+                { title: "CVE Agent", desc: "Agentic CVE triage + dependency scanner with LangGraph", tech: "LangGraph · NIST NVD · Gemini", col: "var(--blush)" },
               ].map(({ title, desc, tech, col }) => (
                 <div key={title} style={{ marginBottom: "1.3rem", paddingBottom: "1.3rem", borderBottom: "1px solid var(--line)" }}>
                   <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.3rem" }}>
@@ -511,7 +506,6 @@ function Hero() {
         </div>
       </div>
 
-      {/* Bottom gradient */}
       <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 120, background: "linear-gradient(to bottom, transparent, var(--bg))", pointerEvents: "none" }} />
     </section>
   );
@@ -519,7 +513,7 @@ function Hero() {
 
 /* ─── TICKER MARQUEE ─── */
 function Ticker() {
-  const items = ["Python · C · Java · JavaScript","Machine Learning","Cybersecurity","RAG Systems","React Native","LangChain","FAISS Vector Databases","PyTorch · TensorFlow","Anomaly Detection","Deepfake Detection","Mobile Development","Streamlit · Plotly","9.88 CGPA","Deloitte Finalist","Ericsson R&D Intern"];
+  const items = ["Python · C · Java · JavaScript","Machine Learning","Cybersecurity","RAG Systems","React Native","LangChain","LangGraph Agents","FAISS Vector Databases","PyTorch · TensorFlow","Anomaly Detection","Deepfake Detection","Kotlin · Android","Whisper STT","Google OAuth2","Streamlit · Plotly","9.88 CGPA","Deloitte Finalist","Ericsson R&D Intern"];
   const all = [...items, ...items];
   return (
     <div style={{ borderTop: "1px solid var(--line)", borderBottom: "1px solid var(--line)", overflow: "hidden", padding: "0.9rem 0", background: "rgba(244,63,94,0.01)" }}>
@@ -536,7 +530,6 @@ function Ticker() {
 
 /* ─── ABOUT ─── */
 function About() {
-  useReveal();
   return (
     <section id="about" className="sec-pad" style={{ background: "var(--bg2)", position: "relative", overflow: "hidden" }}>
       <div style={{ position: "absolute", top: "10%", right: "-5%", width: 400, height: 400, background: "radial-gradient(circle, rgba(244,63,94,0.03) 0%, transparent 70%)", borderRadius: "50%", pointerEvents: "none" }} />
@@ -549,14 +542,16 @@ function About() {
               Building at the intersection of<br /><span className="rose-grad">AI & Security</span>
             </h2>
             <p className="rv d2" style={{ fontSize: "0.9rem", color: "var(--ink2)", lineHeight: 1.9, marginBottom: "1.5rem" }}>
-              I'm Aayushi — a Computer Science student at Manipal University Jaipur, 
-              maintaining a <strong style={{ color: "var(--rose2)" }}>9.88 CGPA</strong> across 5 semesters. 
+              I'm Aayushi — a Computer Science student at Manipal University Jaipur,
+              maintaining a <strong style={{ color: "var(--rose2)" }}>9.88 CGPA</strong> across 5 semesters.
               My work spans AI systems, cybersecurity, and full-stack mobile development.
             </p>
             <p className="rv d3" style={{ fontSize: "0.9rem", color: "var(--ink2)", lineHeight: 1.9, marginBottom: "2rem" }}>
-              At Ericsson, I worked on CVE triage, anomaly detection models, and automated 
-              incident response pipelines in a production SecOps environment. I build end-to-end 
-              solutions that are technically rigorous and practically impactful.
+              At Ericsson, I worked on CVE triage, anomaly detection models, and automated
+              incident response pipelines in a production SecOps environment. From agentic CVE
+              triage tools built with LangGraph, to AI productivity assistants with Gmail integration
+              and Whisper transcription — I build end-to-end solutions that are technically rigorous
+              and practically impactful.
             </p>
             <div className="rv d4" style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
               {[
@@ -620,85 +615,21 @@ function About() {
 
 /* ─── TIMELINE ─── */
 const TIMELINE_DATA = [
-  {
-    year: "2023",
-    title: "Started B.Tech at MUJ",
-    desc: "Began Computer Science & Engineering at Manipal University Jaipur. Set the academic foundation with a strong first semester.",
-    icon: "🎓",
-    col: "var(--rose)",
-    side: "left",
-  },
-  {
-    year: "2023",
-    title: "Dean's Excellence Award — Sem 1",
-    desc: "Achieved 9.88 CGPA in the very first semester, earning the first Dean's Excellence Award.",
-    icon: "🏆",
-    col: "var(--blush)",
-    side: "right",
-  },
-  {
-    year: "2024",
-    title: "Oracle & NPTEL Certifications",
-    desc: "Completed certifications in Database Foundations, SQL Programming, DSA with Python, and Design & Analysis of Algorithms.",
-    icon: "📜",
-    col: "var(--mauve)",
-    side: "left",
-  },
-  {
-    year: "2024",
-    title: "5× Dean's Award Streak",
-    desc: "Maintained 9.88 CGPA for 5 consecutive semesters — a testament to unwavering academic dedication.",
-    icon: "⭐",
-    col: "var(--rose)",
-    side: "right",
-  },
-  {
-    year: "2025",
-    title: "Prodigy InfoTech — Android Intern",
-    desc: "Built mobile app features using Android Studio and SQLite. First hands-on industry engineering experience.",
-    icon: "📱",
-    col: "var(--coral)",
-    side: "left",
-  },
-  {
-    year: "2025",
-    title: "Cognifyz Technologies — UI/UX Intern",
-    desc: "Contributed to dashboard design improvements in Figma, enhancing usability across product interfaces.",
-    icon: "🎨",
-    col: "var(--sky)",
-    side: "right",
-  },
-  {
-    year: "2025",
-    title: "Deloitte Capstone Ideathon — Top 10",
-    desc: "Competed against 200+ teams and secured a Top 10 finish for innovative solution design and problem-solving.",
-    icon: "🎯",
-    col: "var(--blush)",
-    side: "left",
-  },
-  {
-    year: "2025",
-    title: "Ericsson R&D — Cybersecurity & AI Intern",
-    desc: "Worked on CVE triage, anomaly detection models, and automated incident response pipelines in a production SecOps environment.",
-    icon: "🔐",
-    col: "var(--rose)",
-    side: "right",
-  },
-  {
-    year: "2025",
-    title: "Building ResQNet & DeepFake Detection",
-    desc: "Developing a cross-platform crisis management app and an AI-powered deepfake detection system with Grad-CAM explainability.",
-    icon: "🚀",
-    col: "var(--mauve)",
-    side: "left",
-  },
+  { year: "2023", title: "Started B.Tech at MUJ", desc: "Began Computer Science & Engineering at Manipal University Jaipur. Set the academic foundation with a strong first semester.", icon: "🎓", col: "var(--rose)", side: "left" },
+  { year: "2023", title: "Dean's Excellence Award — Sem 1", desc: "Achieved 9.88 CGPA in the very first semester, earning the first Dean's Excellence Award.", icon: "🏆", col: "var(--blush)", side: "right" },
+  { year: "2024", title: "Oracle & NPTEL Certifications", desc: "Completed certifications in Database Foundations, SQL Programming, DSA with Python, and Design & Analysis of Algorithms.", icon: "📜", col: "var(--mauve)", side: "left" },
+  { year: "2024", title: "5× Dean's Award Streak", desc: "Maintained 9.88 CGPA for 5 consecutive semesters — a testament to unwavering academic dedication.", icon: "⭐", col: "var(--rose)", side: "right" },
+  { year: "2025", title: "Prodigy InfoTech — Android Intern", desc: "Built mobile app features using Android Studio and SQLite. First hands-on industry engineering experience.", icon: "📱", col: "var(--coral)", side: "left" },
+  { year: "2025", title: "Cognifyz Technologies — UI/UX Intern", desc: "Contributed to dashboard design improvements in Figma, enhancing usability across product interfaces.", icon: "🎨", col: "var(--sky)", side: "right" },
+  { year: "2025", title: "Ericsson R&D — Cybersecurity & AI Intern", desc: "Worked on CVE triage, anomaly detection models, and automated incident response pipelines in a production SecOps environment.", icon: "🔐", col: "var(--rose)", side: "right" },
+  { year: "2025", title: "Deloitte Capstone Ideathon — Top 10", desc: "Competed against 200+ teams and secured a Top 10 finish for innovative solution design and problem-solving.", icon: "🎯", col: "var(--blush)", side: "left" },
+  { year: "2025", title: "Building ResQNet & DeepFake Detection", desc: "Developing a cross-platform crisis management app and an AI-powered deepfake detection system with Grad-CAM explainability.", icon: "🚀", col: "var(--mauve)", side: "left" },
 ];
 
+
 function Timeline() {
-  useReveal();
   return (
     <section id="timeline" className="sec-pad" style={{ background: "var(--bg)", position: "relative", overflow: "hidden" }}>
-      {/* BG decoration */}
       <div style={{ position: "absolute", top: "20%", left: "50%", transform: "translateX(-50%)", width: 600, height: 600, background: "radial-gradient(circle, rgba(244,63,94,0.03) 0%, transparent 70%)", borderRadius: "50%", pointerEvents: "none" }} />
 
       <div style={{ maxWidth: 900, margin: "0 auto", position: "relative" }}>
@@ -707,25 +638,14 @@ function Timeline() {
           My <span className="rose-grad">Timeline</span>
         </h2>
 
-        {/* Timeline container */}
         <div style={{ position: "relative" }}>
-          {/* Center vertical line */}
           <div className="tl-center-line hide-m" style={{
-            position: "absolute",
-            left: "50%",
-            top: 0,
-            bottom: 0,
-            width: 2,
+            position: "absolute", left: "50%", top: 0, bottom: 0, width: 2,
             background: "linear-gradient(180deg, var(--rose), var(--mauve), transparent)",
             transform: "translateX(-50%)",
           }} />
-          {/* Mobile line */}
           <div className="tl-center-line" style={{
-            position: "absolute",
-            left: 20,
-            top: 0,
-            bottom: 0,
-            width: 2,
+            position: "absolute", left: 20, top: 0, bottom: 0, width: 2,
             background: "linear-gradient(180deg, var(--rose), var(--mauve), transparent)",
             display: "none",
           }} />
@@ -745,32 +665,17 @@ function Timeline() {
                   paddingLeft: isLeft ? "0" : "calc(50% + 30px)",
                 }}
               >
-                {/* Dot on center line */}
                 <div className="tl-dot" style={{
-                  position: "absolute",
-                  left: "50%",
-                  top: 18,
-                  width: 14,
-                  height: 14,
-                  borderRadius: "50%",
-                  background: item.col,
+                  position: "absolute", left: "50%", top: 18, width: 14, height: 14,
+                  borderRadius: "50%", background: item.col,
                   boxShadow: `0 0 12px ${item.col}, 0 0 24px ${item.col}44`,
-                  border: "3px solid var(--bg)",
-                  transform: "translateX(-50%)",
-                  zIndex: 2,
+                  border: "3px solid var(--bg)", transform: "translateX(-50%)", zIndex: 2,
                 }} />
 
-                {/* Card */}
                 <div style={{
-                  background: "var(--card)",
-                  border: "1px solid var(--card-b)",
-                  borderRadius: "4px",
-                  padding: "1.5rem 1.8rem",
-                  backdropFilter: "blur(8px)",
-                  width: "100%",
-                  transition: "all 0.3s",
-                  position: "relative",
-                  overflow: "hidden",
+                  background: "var(--card)", border: "1px solid var(--card-b)", borderRadius: "4px",
+                  padding: "1.5rem 1.8rem", backdropFilter: "blur(8px)", width: "100%",
+                  transition: "all 0.3s", position: "relative", overflow: "hidden",
                 }}
                   onMouseEnter={e => {
                     e.currentTarget.style.borderColor = `${item.col}40`;
@@ -783,9 +688,7 @@ function Timeline() {
                     e.currentTarget.style.boxShadow = "none";
                   }}
                 >
-                  {/* Top accent line */}
                   <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: `linear-gradient(90deg, ${item.col}, transparent)` }} />
-
                   <div style={{ display: "flex", alignItems: "center", gap: "0.8rem", marginBottom: "0.6rem" }}>
                     <span style={{ fontSize: "1.5rem" }}>{item.icon}</span>
                     <div>
@@ -857,7 +760,6 @@ function Experience() {
           <div className="tl-line" />
           {EXP.map(({ role, company, loc, period, col, bullets, tags }, i) => (
             <div key={company} className={`rv d${i + 1}`} style={{ marginBottom: "3rem", position: "relative" }}>
-              {/* Dot */}
               <div style={{ position: "absolute", left: -27, top: 6, width: 12, height: 12, borderRadius: "50%", background: col, boxShadow: `0 0 10px ${col}`, border: "2px solid var(--bg2)" }} />
               <div className="card" style={{ borderRadius: "4px", padding: "1.8rem" }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "0.5rem", marginBottom: "1rem" }}>
@@ -917,6 +819,51 @@ const PROJECTS = [
     highlights: ["Robust binary classification: real vs. AI-generated images", "Grad-CAM explainability heatmaps for security auditors", "Transfer learning with EfficientNetB0 backbone", "Transparent model decision-making pipeline"],
     link: "https://github.com/aayushichhabra/DeepFakeImageDetection",
     col: "var(--blush)",
+  },
+  {
+    num: "04",
+    name: "Promptly AI",
+    tagline: "AI-powered productivity assistant that automates email triage, reply drafting, and meeting intelligence",
+    category: "AI · Full Stack",
+    tech: ["Python", "Streamlit", "Gemini 2.5 Flash", "Whisper", "Gmail API", "Google OAuth2", "LangChain"],
+    highlights: [
+      "Gmail OAuth integration: auto-scans inbox to extract reminders and deadlines",
+      "Batch email processing via Gemini — generates context-aware, ready-to-send reply drafts",
+      "Whisper-based audio transcription → structured Minutes of Meeting with action items",
+      "Unified dashboard aggregating reminders and meeting summaries across sessions",
+    ],
+    link: "https://github.com/aayushichhabra",
+    col: "var(--sky)",
+  },
+  {
+    num: "05",
+    name: "CVE Agent",
+    tagline: "Agentic AI tool for real-time CVE triage, dependency vulnerability scanning, and automated fix generation",
+    category: "AI/ML · Cybersecurity",
+    tech: ["Python", "Streamlit", "Gemini API", "LangGraph", "NIST NVD API", "OSV.dev", "BeautifulSoup4"],
+    highlights: [
+      "LangGraph-orchestrated agentic pipeline: fetches, analyzes, and summarizes CVEs from NIST NVD",
+      "Dependency scanner: upload requirements.txt and instantly surface known CVEs with CVSS scores",
+      "AI-generated structured fix recommendations with downloadable patched dependency files",
+      "Multi-format support: PyPI, Go, Alpine, and Debian package ecosystems",
+    ],
+    link: "https://github.com/aayushichhabra",
+    col: "var(--coral)",
+  },
+  {
+    num: "06",
+    name: "StyleVault",
+    tagline: "AI-powered men's fashion companion app for wardrobe management, outfit suggestions & body-fit analysis",
+    category: "Android · AI",
+    tech: ["Kotlin", "Android Studio", "Firebase", "Gemini API", "Camera API", "Figma"],
+    highlights: [
+      "AI-driven outfit recommendations personalized to wardrobe, weather, and occasion",
+      "Digital closet management: upload, categorize, and plan outfits from your wardrobe",
+      "Body measurement activity for fit-based AI styling suggestions",
+      "Fills a clear market gap — built after competitive analysis of 10+ existing apps",
+    ],
+    link: "https://github.com/aayushichhabra",
+    col: "var(--mauve)",
   },
 ];
 
@@ -989,11 +936,11 @@ function Projects() {
 /* ─── SKILLS ─── */
 const SKILL_GROUPS = [
   { label: "Programming & Dev", items: ["Python", "C", "Java", "JavaScript", "OOP", "DSA", "Git"], col: "var(--rose)" },
-  { label: "AI & Machine Learning", items: ["Supervised & Unsupervised ML", "Transfer Learning", "RAG", "Computer Vision", "LangChain", "PyTorch", "TF Lite", "OpenCV", "Scikit-learn", "Pandas"], col: "var(--mauve)" },
+  { label: "AI & Machine Learning", items: ["Supervised & Unsupervised ML", "Transfer Learning", "RAG", "Computer Vision", "LangChain", "LangGraph", "Whisper STT", "PyTorch", "TF Lite", "OpenCV", "Scikit-learn", "Pandas"], col: "var(--mauve)" },
   { label: "Cybersecurity", items: ["CVE Analysis", "Vulnerability Assessment", "Incident Response", "Threat Detection", "Anomaly Detection", "FAISS Vector DBs"], col: "var(--blush)" },
-  { label: "Mobile & Web Dev", items: ["Android Studio", "React Native", "Expo", "HTML", "CSS", "JavaScript", "Streamlit", "Figma"], col: "var(--sky)" },
+  { label: "Mobile & Web Dev", items: ["Android Studio", "Kotlin", "React Native", "Expo", "HTML", "CSS", "JavaScript", "Streamlit", "Figma"], col: "var(--sky)" },
   { label: "Databases & Cloud", items: ["SQL", "Firebase", "Supabase", "MongoDB", "FAISS / Vector DBs"], col: "var(--coral)" },
-  { label: "Tools & Platforms", items: ["Gradio", "Plotly", "Google Gemini API", "Hugging Face", "VS Code", "GitHub", "Postman"], col: "var(--mint)" },
+  { label: "Tools & Platforms", items: ["Gradio", "Plotly", "Google Gemini API", "Google OAuth2", "Hugging Face", "VS Code", "GitHub", "Postman"], col: "var(--mint)" },
 ];
 
 const SKILL_BARS = [
@@ -1145,11 +1092,10 @@ function Contact() {
           Let's <span className="rose-grad">Connect</span>
         </h2>
         <p className="rv d2" style={{ fontSize: "0.9rem", color: "var(--ink2)", lineHeight: 1.85, marginBottom: "3rem" }}>
-          Open to internship opportunities, research collaborations, and interesting projects 
+          Open to internship opportunities, research collaborations, and interesting projects
           in AI, cybersecurity, and full-stack development. Currently based in Gurugram, Haryana.
         </p>
 
-        {/* Email copy row */}
         <div className="rv d3" style={{ display: "flex", alignItems: "center", gap: "1rem", justifyContent: "center", marginBottom: "2.5rem", flexWrap: "wrap" }}>
           <span className="mono" style={{ fontSize: "0.9rem", color: "var(--rose2)", letterSpacing: "0.04em" }}>{email}</span>
           <button onClick={copy} style={{ background: copied ? "rgba(52,211,153,0.08)" : "rgba(244,63,94,0.08)", border: `1px solid ${copied ? "rgba(52,211,153,0.25)" : "rgba(244,63,94,0.25)"}`, borderRadius: "2px", padding: "0.4rem 0.9rem", cursor: "pointer", color: copied ? "var(--mint)" : "var(--rose2)", fontSize: "0.7rem", fontFamily: "DM Mono, monospace", transition: "all 0.2s" }}>
@@ -1157,7 +1103,6 @@ function Contact() {
           </button>
         </div>
 
-        {/* Links */}
         <div className="rv d4" style={{ display: "flex", justifyContent: "center", gap: "1.5rem", flexWrap: "wrap", marginBottom: "3rem" }}>
           {[
             { label: "LinkedIn", url: "https://www.linkedin.com/in/aayushi-chhabra-54281a34a/" },
@@ -1181,13 +1126,14 @@ function Contact() {
 /* ─── FOOTER ─── */
 function Footer() {
   return (
+    
     <footer style={{ borderTop: "1px solid var(--line)", padding: "2rem 4rem", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "1rem" }}>
       <div>
         <span className="serif" style={{ fontStyle: "italic", color: "var(--rose)", fontSize: "0.9rem" }}>Aayushi Chhabra</span>
         <span className="mono" style={{ fontSize: "0.65rem", color: "var(--ink2)", marginLeft: "0.8rem" }}>B.Tech CSE · MUJ · 2027</span>
       </div>
       <div className="mono" style={{ fontSize: "0.65rem", color: "var(--ink2)", letterSpacing: "0.08em" }}>
-        +91-9873740076 · Gurugram, Haryana
+        Gurugram, Haryana · aayushichhabra1010@gmail.com
       </div>
     </footer>
   );
