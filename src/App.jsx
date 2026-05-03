@@ -35,9 +35,9 @@ const G = `
     -webkit-font-smoothing: antialiased;
   }
 
-  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar { width: 5px; }
   ::-webkit-scrollbar-track { background: var(--bg); }
-  ::-webkit-scrollbar-thumb { background: var(--rose); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb { background: linear-gradient(var(--rose), var(--mauve)); border-radius: 3px; }
 
   .serif  { font-family: 'Playfair Display', Georgia, serif; }
   .mono   { font-family: 'DM Mono', monospace; }
@@ -57,6 +57,8 @@ const G = `
   @keyframes ringFill { from{stroke-dashoffset:314} to{stroke-dashoffset:var(--target)} }
   @keyframes barFill  { from{width:0} to{width:var(--w)} }
   @keyframes float    { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+  @keyframes avatarRing { 0%{transform:rotate(0deg)} 100%{transform:rotate(360deg)} }
+  @keyframes meshMove { 0%{transform:translate(0,0) scale(1)} 50%{transform:translate(30px,-20px) scale(1.05)} 100%{transform:translate(0,0) scale(1)} }
 
   .rv { opacity:0; transform:translateY(24px); transition:opacity 0.7s ease, transform 0.7s ease; }
   .rv.on { opacity:1; transform:translateY(0); }
@@ -76,30 +78,30 @@ const G = `
   .chip-r {
     display: inline-block;
     font-family: 'DM Mono', monospace;
-    font-size: 0.72rem;
-    padding: 0.25rem 0.7rem;
-    border-radius: 2px;
-    background: rgba(244,63,94,0.08);
+    font-size: 0.7rem;
+    padding: 0.22rem 0.65rem;
+    border-radius: 20px;
+    background: rgba(244,63,94,0.07);
     color: var(--rose2);
-    border: 1px solid rgba(244,63,94,0.2);
+    border: 1px solid rgba(244,63,94,0.18);
     letter-spacing: 0.02em;
     transition: all 0.2s;
   }
-  .chip-r:hover { background:rgba(244,63,94,0.15); border-color:var(--rose); }
+  .chip-r:hover { background:rgba(244,63,94,0.15); border-color:var(--rose); color:var(--rose); }
 
   .chip-m {
     display: inline-block;
     font-family: 'DM Mono', monospace;
-    font-size: 0.72rem;
-    padding: 0.25rem 0.7rem;
-    border-radius: 2px;
+    font-size: 0.7rem;
+    padding: 0.22rem 0.65rem;
+    border-radius: 20px;
     background: rgba(192,132,252,0.06);
     color: var(--mauve2);
     border: 1px solid rgba(192,132,252,0.18);
     letter-spacing: 0.02em;
     transition: all 0.2s;
   }
-  .chip-m:hover { background:rgba(192,132,252,0.14); border-color:var(--mauve); }
+  .chip-m:hover { background:rgba(192,132,252,0.14); border-color:var(--mauve); color:var(--mauve); }
 
   .card {
     background: var(--card);
@@ -146,11 +148,11 @@ const G = `
     border: none;
     cursor: pointer;
     text-decoration: none;
-    border-radius: 2px;
+    border-radius: 3px;
     transition: filter 0.2s, transform 0.2s, box-shadow 0.2s;
     box-shadow: 0 4px 20px rgba(244,63,94,0.3);
   }
-  .btn-primary:hover { filter:brightness(1.15); transform:translateY(-2px); box-shadow:0 8px 30px rgba(244,63,94,0.4); }
+  .btn-primary:hover { filter:brightness(1.15); transform:translateY(-2px); box-shadow:0 8px 30px rgba(244,63,94,0.45); }
 
   .btn-ghost {
     display: inline-flex; align-items: center; gap: 0.5rem;
@@ -164,7 +166,7 @@ const G = `
     border: 1px solid rgba(244,63,94,0.35);
     cursor: pointer;
     text-decoration: none;
-    border-radius: 2px;
+    border-radius: 3px;
     transition: all 0.2s;
   }
   .btn-ghost:hover { background:rgba(244,63,94,0.06); border-color:var(--rose); color:var(--rose); }
@@ -204,7 +206,7 @@ const G = `
 
   .divider {
     height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(244,63,94,0.2), transparent);
+    background: linear-gradient(90deg, transparent, rgba(244,63,94,0.15), transparent);
     margin: 0;
   }
 
@@ -216,15 +218,15 @@ const G = `
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
     pointer-events: none;
     z-index: 9999;
-    opacity: 0.25;
+    opacity: 0.2;
   }
 
   .scroll-bar {
     position: fixed; top: 0; left: 0; height: 2px;
-    background: linear-gradient(90deg, var(--rose), var(--mauve));
+    background: linear-gradient(90deg, var(--rose), var(--mauve), var(--sky));
     z-index: 9998;
     transition: width 0.05s linear;
-    box-shadow: 0 0 8px var(--rose);
+    box-shadow: 0 0 10px var(--rose);
   }
 
   /* Timeline line */
@@ -250,18 +252,28 @@ const G = `
   }
 
   .progress-sidebar {
-    position: fixed; right: 2rem; top: 50%; transform: translateY(-50%);
-    display: flex; flex-direction: column; gap: 0.5rem;
+    position: fixed; right: 1.5rem; top: 50%; transform: translateY(-50%);
+    display: flex; flex-direction: column; gap: 0.6rem;
     z-index: 800;
   }
   .prog-dot {
-    width: 6px; height: 6px;
+    width: 5px; height: 5px;
     border-radius: 50%;
     background: rgba(244,63,94,0.2);
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all 0.3s;
+    position: relative;
   }
-  .prog-dot.active { background: var(--rose); box-shadow: 0 0 8px var(--rose); }
+  .prog-dot::after {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: 50%;
+    border: 1px solid transparent;
+    transition: all 0.3s;
+  }
+  .prog-dot.active { background: var(--rose); box-shadow: 0 0 10px var(--rose); width: 6px; height: 6px; }
+  .prog-dot.active::after { border-color: rgba(244,63,94,0.3); }
 
   .mob-menu {
     display: none;
@@ -290,6 +302,102 @@ const G = `
     10% { opacity: 0.6; }
     90% { opacity: 0.6; }
     100% { transform: translateY(-100vh) rotate(720deg) scale(0.3); opacity: 0; }
+  }
+
+  /* Avatar ring animation */
+  .avatar-wrapper {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    margin: 0 auto 2rem;
+  }
+  .avatar-ring {
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    background: conic-gradient(from 0deg, var(--rose), var(--mauve), var(--sky), var(--rose));
+    animation: avatarRing 4s linear infinite;
+    padding: 3px;
+  }
+  .avatar-inner {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 3px solid var(--bg);
+    background: var(--bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .avatar-inner::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 30% 30%, rgba(244,63,94,0.15), transparent 60%);
+  }
+
+  /* Featured project card */
+  .project-featured {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    align-items: center;
+  }
+  @media(max-width:768px) {
+    .project-featured { grid-template-columns: 1fr !important; }
+  }
+
+  /* Social link hover */
+  .social-link {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.7rem 1.2rem;
+    border: 1px solid var(--card-b);
+    border-radius: 3px;
+    text-decoration: none;
+    color: var(--ink2);
+    font-size: 0.78rem;
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.06em;
+    transition: all 0.25s;
+    background: var(--card);
+  }
+  .social-link:hover {
+    border-color: var(--rose);
+    color: var(--rose2);
+    background: rgba(244,63,94,0.05);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(244,63,94,0.12);
+  }
+
+  /* Skill domain card hover */
+  .skill-domain-card {
+    transition: all 0.3s;
+    cursor: default;
+  }
+  .skill-domain-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 40px rgba(0,0,0,0.4);
+  }
+
+  /* Glow badge */
+  .glow-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.3rem 0.9rem;
+    background: rgba(52,211,153,0.08);
+    border: 1px solid rgba(52,211,153,0.25);
+    border-radius: 20px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    color: #34d399;
   }
 `;
 
@@ -357,14 +465,14 @@ function Nav() {
         position: "fixed", top: 0, left: 0, right: 0, zIndex: 600,
         padding: "1.2rem 4rem",
         background: scrolled ? "rgba(0,0,0,0.92)" : "transparent",
-        backdropFilter: scrolled ? "blur(20px)" : "none",
-        borderBottom: scrolled ? "1px solid rgba(244,63,94,0.08)" : "none",
+        backdropFilter: scrolled ? "blur(24px)" : "none",
+        borderBottom: scrolled ? "1px solid rgba(244,63,94,0.07)" : "none",
         display: "flex", alignItems: "center", justifyContent: "space-between",
         transition: "all 0.4s ease",
       }}>
-        <a href="#hero" style={{ textDecoration: "none" }}>
+        <a href="#hero" style={{ textDecoration: "none", display: "flex", alignItems: "center", gap: "0.5rem" }}>
           <span className="serif" style={{ fontSize: "1.1rem", fontStyle: "italic", color: "var(--rose2)", fontWeight: 700 }}>AC</span>
-          <span className="mono" style={{ fontSize: "0.65rem", color: "var(--ink2)", marginLeft: "0.5rem", letterSpacing: "0.15em" }}>PORTFOLIO</span>
+          <span className="mono" style={{ fontSize: "0.65rem", color: "var(--ink2)", letterSpacing: "0.15em" }}>PORTFOLIO</span>
         </a>
         <div className="nav-links" style={{ display: "flex", gap: "2.5rem" }}>
           {links.map(([id, label]) => (
@@ -373,7 +481,6 @@ function Nav() {
         </div>
         <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
           <a href="mailto:aayushichhabra1010@gmail.com" className="btn-primary" style={{ padding: "0.55rem 1.2rem", fontSize: "0.72rem" }}>Hire Me</a>
-  
           <button
             onClick={() => setMenuOpen(o => !o)}
             style={{ display: "none", background: "none", border: "none", cursor: "pointer", color: "var(--ink)", padding: "0.3rem" }}
@@ -419,9 +526,11 @@ function Hero() {
       position: "relative",
       overflow: "hidden",
     }}>
+      {/* Background elements */}
       <div style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
-        <div style={{ position: "absolute", top: "-20%", left: "60%", width: 600, height: 600, background: "radial-gradient(circle, rgba(244,63,94,0.07) 0%, transparent 70%)", borderRadius: "50%" }} />
-        <div style={{ position: "absolute", bottom: "10%", left: "-10%", width: 500, height: 500, background: "radial-gradient(circle, rgba(192,132,252,0.04) 0%, transparent 70%)", borderRadius: "50%" }} />
+        <div style={{ position: "absolute", top: "-20%", left: "60%", width: 700, height: 700, background: "radial-gradient(circle, rgba(244,63,94,0.08) 0%, transparent 65%)", borderRadius: "50%", animation: "meshMove 12s ease-in-out infinite" }} />
+        <div style={{ position: "absolute", bottom: "10%", left: "-10%", width: 600, height: 600, background: "radial-gradient(circle, rgba(192,132,252,0.05) 0%, transparent 65%)", borderRadius: "50%", animation: "meshMove 16s ease-in-out infinite reverse" }} />
+        <div style={{ position: "absolute", top: "40%", left: "40%", width: 400, height: 400, background: "radial-gradient(circle, rgba(56,189,248,0.03) 0%, transparent 65%)", borderRadius: "50%" }} />
         <div style={{ position: "absolute", inset: 0, backgroundImage: "linear-gradient(rgba(244,63,94,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(244,63,94,0.02) 1px,transparent 1px)", backgroundSize: "60px 60px" }} />
       </div>
 
@@ -433,9 +542,9 @@ function Hero() {
               <div className="mono" style={{ fontSize: "0.7rem", letterSpacing: "0.2em", color: "var(--rose)", textTransform: "uppercase" }}>
                 3rd Year CSE · MUJ · 2023–2027
               </div>
-              <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", padding: "0.3rem 0.8rem", background: "rgba(52,211,153,0.08)", border: "1px solid rgba(52,211,153,0.2)", borderRadius: "2px" }}>
-                <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#34d399", boxShadow: "0 0 8px #34d399", animation: "pulse 2s ease infinite" }} />
-                <span className="mono" style={{ fontSize: "0.65rem", letterSpacing: "0.1em", color: "#34d399" }}>OPEN TO WORK</span>
+              <div className="glow-badge">
+                <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#34d399", boxShadow: "0 0 8px #34d399", animation: "pulse 2s ease infinite", display: "inline-block", flexShrink: 0 }} />
+                OPEN TO WORK
               </div>
             </div>
 
@@ -448,13 +557,13 @@ function Hero() {
 
             <div className="rv d2" style={{ height: 36, marginBottom: "1.5rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
               <span className="mono" style={{ fontSize: "0.95rem", color: "var(--rose2)" }}>{typed}</span>
-              <span style={{ width: 2, height: 20, background: "var(--rose)", animation: "blink 1s step-end infinite" }} />
+              <span style={{ width: 2, height: 20, background: "var(--rose)", animation: "blink 1s step-end infinite", display: "inline-block" }} />
             </div>
 
-            <p className="rv d3" style={{ fontSize: "0.95rem", color: "var(--ink2)", lineHeight: 1.8, maxWidth: 540, marginBottom: "2.5rem" }}>
-              Third-year B.Tech CSE student at Manipal University Jaipur with a <span style={{ color: "var(--rose2)" }}>9.88 CGPA</span>.
-              Industry experience at <span style={{ color: "var(--rose2)" }}>Ericsson</span> in Cybersecurity & AI.
-              Finalist at <span style={{ color: "var(--rose2)" }}>Deloitte Capstone Ideathon</span> (200+ teams).
+            <p className="rv d3" style={{ fontSize: "0.95rem", color: "var(--ink2)", lineHeight: 1.85, maxWidth: 540, marginBottom: "2.5rem" }}>
+              Third-year B.Tech CSE student at Manipal University Jaipur with a <span style={{ color: "var(--rose2)", fontWeight: 600 }}>9.88 CGPA</span>.
+              Industry experience at <span style={{ color: "var(--rose2)", fontWeight: 600 }}>Ericsson</span> in Cybersecurity & AI.
+              Finalist at <span style={{ color: "var(--rose2)", fontWeight: 600 }}>Deloitte Capstone Ideathon</span> (200+ teams).
               Dean's Excellence Award recipient — 5 consecutive semesters.
             </p>
 
@@ -464,12 +573,14 @@ function Hero() {
                 Get In Touch
               </a>
               <a href="https://github.com/aayushichhabra" target="_blank" rel="noreferrer" className="btn-ghost">
-                GitHub ↗️
+                <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+                GitHub ↗
               </a>
             </div>
+
             <div className="rv d5" style={{ display: "flex", gap: "2.5rem", marginTop: "3.5rem", flexWrap: "wrap" }}>
               {[["9.88", "CGPA"], ["5×", "Dean's Award"], ["6+", "Projects Built"], ["200+", "Teams Beaten"]].map(([n, l]) => (
-                <div key={l}>
+                <div key={l} style={{ position: "relative" }}>
                   <div className="stat-number" style={{ fontSize: "1.8rem" }}>{n}</div>
                   <div className="mono" style={{ fontSize: "0.62rem", letterSpacing: "0.15em", color: "var(--ink2)", marginTop: "0.2rem" }}>{l}</div>
                 </div>
@@ -479,8 +590,9 @@ function Hero() {
 
           {/* RIGHT — decorative card */}
           <div className="rv d3 hide-m" style={{ width: 340 }}>
-            <div className="glass" style={{ borderRadius: "4px", padding: "2rem", position: "relative", overflow: "hidden" }}>
-              <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: "linear-gradient(90deg, var(--rose), var(--mauve), var(--rose))" }} />
+            <div className="glass" style={{ borderRadius: "8px", padding: "2rem", position: "relative", overflow: "hidden" }}>
+              <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: "linear-gradient(90deg, var(--rose), var(--mauve), var(--sky))" }} />
+              <div style={{ position: "absolute", bottom: 0, right: 0, width: 120, height: 120, background: "radial-gradient(circle, rgba(192,132,252,0.08) 0%, transparent 70%)", borderRadius: "50%", pointerEvents: "none" }} />
               <div className="serif" style={{ fontSize: "0.75rem", fontStyle: "italic", color: "var(--rose)", marginBottom: "1.2rem", letterSpacing: "0.05em" }}>// Currently Working On</div>
 
               {[
@@ -490,7 +602,7 @@ function Hero() {
               ].map(({ title, desc, tech, col }) => (
                 <div key={title} style={{ marginBottom: "1.3rem", paddingBottom: "1.3rem", borderBottom: "1px solid var(--line)" }}>
                   <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.3rem" }}>
-                    <div style={{ width: 6, height: 6, borderRadius: "50%", background: col, boxShadow: `0 0 6px ${col}` }} />
+                    <div style={{ width: 6, height: 6, borderRadius: "50%", background: col, boxShadow: `0 0 8px ${col}` }} />
                     <span style={{ fontWeight: 600, fontSize: "0.9rem" }}>{title}</span>
                   </div>
                   <p style={{ fontSize: "0.78rem", color: "var(--ink2)", lineHeight: 1.6, marginBottom: "0.4rem" }}>{desc}</p>
@@ -506,7 +618,7 @@ function Hero() {
         </div>
       </div>
 
-      <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 120, background: "linear-gradient(to bottom, transparent, var(--bg))", pointerEvents: "none" }} />
+      <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 140, background: "linear-gradient(to bottom, transparent, var(--bg))", pointerEvents: "none" }} />
     </section>
   );
 }
@@ -532,7 +644,10 @@ function Ticker() {
 function About() {
   return (
     <section id="about" className="sec-pad" style={{ background: "var(--bg2)", position: "relative", overflow: "hidden" }}>
-      <div style={{ position: "absolute", top: "10%", right: "-5%", width: 400, height: 400, background: "radial-gradient(circle, rgba(244,63,94,0.03) 0%, transparent 70%)", borderRadius: "50%", pointerEvents: "none" }} />
+      {/* Decorative blobs */}
+      <div style={{ position: "absolute", top: "10%", right: "-5%", width: 400, height: 400, background: "radial-gradient(circle, rgba(244,63,94,0.04) 0%, transparent 70%)", borderRadius: "50%", pointerEvents: "none" }} />
+      <div style={{ position: "absolute", bottom: "5%", left: "-8%", width: 300, height: 300, background: "radial-gradient(circle, rgba(192,132,252,0.04) 0%, transparent 70%)", borderRadius: "50%", pointerEvents: "none" }} />
+
       <div style={{ maxWidth: 1100, margin: "0 auto", position: "relative" }}>
         <div className="rv section-label">About</div>
 
@@ -553,22 +668,17 @@ function About() {
               and Whisper transcription — I build end-to-end solutions that are technically rigorous
               and practically impactful.
             </p>
-            <div className="rv d4" style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
+
+            {/* Social links row */}
+            <div className="rv d4" style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
               {[
-                ["aayushichhabra1010@gmail.com", "Email"],
-                ["linkedin.com/in/aayushi-chhabra-54281a34a", "LinkedIn"],
-                ["github.com/aayushichhabra", "GitHub"],
-                ["leetcode.com/u/aayushichhabra", "LeetCode"],
-              ].map(([url, label]) => (
-                <a key={label} href={label === "Email" ? `mailto:${url}` : `https://${url}`}
-                  target={label !== "Email" ? "_blank" : undefined}
-                  rel="noreferrer"
-                  style={{ display: "flex", alignItems: "center", gap: "0.4rem", textDecoration: "none", color: "var(--ink2)", fontSize: "0.78rem", transition: "color 0.2s" }}
-                  onMouseEnter={e => e.currentTarget.style.color = "var(--rose2)"}
-                  onMouseLeave={e => e.currentTarget.style.color = "var(--ink2)"}
-                >
-                  <span style={{ color: "var(--rose)", fontSize: "0.7rem" }}>→</span>
-                  <span className="mono" style={{ fontSize: "0.68rem" }}>{label}</span>
+                { label: "Email", href: "mailto:aayushichhabra1010@gmail.com", icon: <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg> },
+                { label: "LinkedIn", href: "https://linkedin.com/in/aayushi-chhabra-54281a34a", icon: <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg> },
+                { label: "GitHub", href: "https://github.com/aayushichhabra", icon: <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg> },
+                { label: "LeetCode", href: "https://leetcode.com/u/aayushichhabra", icon: <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M13.483 0a1.374 1.374 0 0 0-.961.438L7.116 6.226l-3.854 4.126a5.266 5.266 0 0 0-1.209 2.104 5.35 5.35 0 0 0-.125.513 5.527 5.527 0 0 0 .062 2.362 5.83 5.83 0 0 0 .349 1.017 5.938 5.938 0 0 0 1.271 1.818l4.277 4.193.039.038c2.248 2.165 5.852 2.133 8.063-.074l2.396-2.392c.54-.54.54-1.414.003-1.955a1.378 1.378 0 0 0-1.951-.003l-2.396 2.392a3.021 3.021 0 0 1-4.205.038l-.02-.019-4.276-4.193c-.652-.64-.972-1.469-.948-2.263a2.68 2.68 0 0 1 .066-.523 2.545 2.545 0 0 1 .619-1.164L9.13 8.114c1.058-1.134 3.204-1.27 4.43-.278l3.501 2.831c.593.48 1.461.387 1.94-.207a1.384 1.384 0 0 0-.207-1.943l-3.5-2.831c-.8-.647-1.766-1.045-2.774-1.202l2.015-2.158A1.384 1.384 0 0 0 13.483 0zm-2.866 12.815a1.38 1.38 0 0 0-1.38 1.382 1.38 1.38 0 0 0 1.38 1.382H20.79a1.38 1.38 0 0 0 1.38-1.382 1.38 1.38 0 0 0-1.38-1.382z"/></svg> },
+              ].map(({ label, href, icon }) => (
+                <a key={label} href={href} target={label !== "Email" ? "_blank" : undefined} rel="noreferrer" className="social-link">
+                  {icon}{label}
                 </a>
               ))}
             </div>
@@ -576,7 +686,7 @@ function About() {
 
           {/* Right: Education + certifications */}
           <div>
-            <div className="rv d1 glass" style={{ borderRadius: "4px", padding: "1.8rem", marginBottom: "1.5rem" }}>
+            <div className="rv d1 glass" style={{ borderRadius: "6px", padding: "1.8rem", marginBottom: "1.5rem" }}>
               <div className="mono" style={{ fontSize: "0.65rem", letterSpacing: "0.15em", color: "var(--rose)", marginBottom: "1.2rem" }}>// EDUCATION</div>
               {[
                 { school: "Manipal University Jaipur", degree: "B.Tech — Computer Science & Engineering", detail: "CGPA: 9.88  ·  2023–2027", loc: "Jaipur, Rajasthan", highlight: true },
@@ -590,7 +700,7 @@ function About() {
               ))}
             </div>
 
-            <div className="rv d2 glass" style={{ borderRadius: "4px", padding: "1.8rem" }}>
+            <div className="rv d2 glass" style={{ borderRadius: "6px", padding: "1.8rem" }}>
               <div className="mono" style={{ fontSize: "0.65rem", letterSpacing: "0.15em", color: "var(--rose)", marginBottom: "1.2rem" }}>// CERTIFICATIONS</div>
               {[
                 { org: "NPTEL", items: ["Programming, DSA using Python", "Design & Analysis of Algorithms"] },
@@ -639,11 +749,13 @@ function Timeline() {
         </h2>
 
         <div style={{ position: "relative" }}>
+          {/* Center line desktop */}
           <div className="tl-center-line hide-m" style={{
             position: "absolute", left: "50%", top: 0, bottom: 0, width: 2,
             background: "linear-gradient(180deg, var(--rose), var(--mauve), transparent)",
             transform: "translateX(-50%)",
           }} />
+          {/* Center line mobile */}
           <div className="tl-center-line" style={{
             position: "absolute", left: 20, top: 0, bottom: 0, width: 2,
             background: "linear-gradient(180deg, var(--rose), var(--mauve), transparent)",
@@ -665,22 +777,23 @@ function Timeline() {
                   paddingLeft: isLeft ? "0" : "calc(50% + 30px)",
                 }}
               >
+                {/* Connector dot */}
                 <div className="tl-dot" style={{
-                  position: "absolute", left: "50%", top: 18, width: 14, height: 14,
+                  position: "absolute", left: "50%", top: 20, width: 14, height: 14,
                   borderRadius: "50%", background: item.col,
-                  boxShadow: `0 0 12px ${item.col}, 0 0 24px ${item.col}44`,
+                  boxShadow: `0 0 12px ${item.col}, 0 0 28px ${item.col}44`,
                   border: "3px solid var(--bg)", transform: "translateX(-50%)", zIndex: 2,
                 }} />
 
                 <div style={{
-                  background: "var(--card)", border: "1px solid var(--card-b)", borderRadius: "4px",
-                  padding: "1.5rem 1.8rem", backdropFilter: "blur(8px)", width: "100%",
+                  background: "var(--card)", border: "1px solid var(--card-b)", borderRadius: "6px",
+                  padding: "1.4rem 1.6rem", backdropFilter: "blur(8px)", width: "100%",
                   transition: "all 0.3s", position: "relative", overflow: "hidden",
                 }}
                   onMouseEnter={e => {
-                    e.currentTarget.style.borderColor = `${item.col}40`;
+                    e.currentTarget.style.borderColor = `${item.col}50`;
                     e.currentTarget.style.transform = "translateY(-3px)";
-                    e.currentTarget.style.boxShadow = `0 12px 40px rgba(0,0,0,0.4), 0 0 20px ${item.col}12`;
+                    e.currentTarget.style.boxShadow = `0 12px 40px rgba(0,0,0,0.4), 0 0 20px ${item.col}15`;
                   }}
                   onMouseLeave={e => {
                     e.currentTarget.style.borderColor = "var(--card-b)";
@@ -689,14 +802,14 @@ function Timeline() {
                   }}
                 >
                   <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: `linear-gradient(90deg, ${item.col}, transparent)` }} />
-                  <div style={{ display: "flex", alignItems: "center", gap: "0.8rem", marginBottom: "0.6rem" }}>
-                    <span style={{ fontSize: "1.5rem" }}>{item.icon}</span>
+                  <div style={{ display: "flex", alignItems: "center", gap: "0.8rem", marginBottom: "0.5rem" }}>
+                    <span style={{ fontSize: "1.4rem" }}>{item.icon}</span>
                     <div>
-                      <span className="mono" style={{ fontSize: "0.62rem", letterSpacing: "0.15em", color: item.col, textTransform: "uppercase" }}>{item.year}</span>
-                      <h3 style={{ fontWeight: 700, fontSize: "0.95rem", lineHeight: 1.3 }}>{item.title}</h3>
+                      <span className="mono" style={{ fontSize: "0.62rem", letterSpacing: "0.15em", color: item.col, textTransform: "uppercase", display: "block", marginBottom: "0.1rem" }}>{item.year}</span>
+                      <h3 style={{ fontWeight: 700, fontSize: "0.9rem", lineHeight: 1.3 }}>{item.title}</h3>
                     </div>
                   </div>
-                  <p style={{ fontSize: "0.82rem", color: "var(--ink2)", lineHeight: 1.75, marginLeft: "2.8rem" }}>{item.desc}</p>
+                  <p style={{ fontSize: "0.8rem", color: "var(--ink2)", lineHeight: 1.75, marginLeft: "2.7rem" }}>{item.desc}</p>
                 </div>
               </div>
             );
@@ -759,15 +872,15 @@ function Experience() {
         <div style={{ position: "relative", paddingLeft: "2.5rem" }}>
           <div className="tl-line" />
           {EXP.map(({ role, company, loc, period, col, bullets, tags }, i) => (
-            <div key={company} className={`rv d${i + 1}`} style={{ marginBottom: "3rem", position: "relative" }}>
+            <div key={company} className={`rv d${i + 1}`} style={{ marginBottom: "2.5rem", position: "relative" }}>
               <div style={{ position: "absolute", left: -27, top: 6, width: 12, height: 12, borderRadius: "50%", background: col, boxShadow: `0 0 10px ${col}`, border: "2px solid var(--bg2)" }} />
-              <div className="card" style={{ borderRadius: "4px", padding: "1.8rem" }}>
+              <div className="card" style={{ borderRadius: "6px", padding: "1.8rem" }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "0.5rem", marginBottom: "1rem" }}>
                   <div>
                     <div style={{ fontWeight: 700, fontSize: "1rem", marginBottom: "0.25rem" }}>{role}</div>
                     <div style={{ color: col, fontSize: "0.85rem", fontWeight: 600 }}>{company} · {loc}</div>
                   </div>
-                  <span className="mono" style={{ fontSize: "0.65rem", letterSpacing: "0.08em", color: "var(--ink2)", padding: "0.3rem 0.7rem", background: "rgba(255,255,255,0.04)", border: "1px solid var(--line)", borderRadius: "2px" }}>{period}</span>
+                  <span className="mono" style={{ fontSize: "0.65rem", letterSpacing: "0.08em", color: "var(--ink2)", padding: "0.3rem 0.8rem", background: "rgba(255,255,255,0.04)", border: "1px solid var(--line)", borderRadius: "20px" }}>{period}</span>
                 </div>
                 <ul style={{ listStyle: "none", marginBottom: "1rem", display: "flex", flexDirection: "column", gap: "0.45rem" }}>
                   {bullets.map((b, j) => (
@@ -799,6 +912,7 @@ const PROJECTS = [
     highlights: ["RAG-powered incident guidance with semantic threat search", "FAISS + Gemini embeddings for rapid containment recommendations", "Interactive network attack analytics & anomaly detection", "Comprehensive SecOps situational awareness dashboard"],
     link: "https://intelligent-secops-rag-dashboard.streamlit.app",
     col: "var(--rose)",
+    featured: true,
   },
   {
     num: "02",
@@ -869,14 +983,66 @@ const PROJECTS = [
 
 function ProjectCard({ p, i }) {
   const [hov, setHov] = useState(false);
+  if (p.featured) {
+    return (
+      <div className={`rv d1 project-featured`}
+        onMouseEnter={() => setHov(true)}
+        onMouseLeave={() => setHov(false)}
+        style={{
+          background: hov ? "rgba(244,63,94,0.04)" : "var(--card)",
+          border: `1px solid ${hov ? p.col : "var(--card-b)"}`,
+          borderRadius: "8px",
+          padding: "2.5rem",
+          transition: "all 0.3s",
+          boxShadow: hov ? `0 24px 80px rgba(0,0,0,0.5), 0 0 40px ${p.col}15` : "none",
+          position: "relative",
+          overflow: "hidden",
+        }}
+      >
+        <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: `linear-gradient(90deg, ${p.col}, var(--mauve), transparent)` }} />
+        <div style={{ position: "absolute", top: "-30%", right: "-10%", width: 300, height: 300, background: `radial-gradient(circle, ${p.col}08 0%, transparent 70%)`, borderRadius: "50%", pointerEvents: "none" }} />
+
+        {/* Left side */}
+        <div style={{ position: "relative" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "1rem", marginBottom: "1.2rem", flexWrap: "wrap" }}>
+            <div className="mono" style={{ fontSize: "0.65rem", color: p.col, letterSpacing: "0.1em" }}>#{p.num} · FEATURED</div>
+            <span style={{ fontSize: "0.72rem", padding: "0.2rem 0.8rem", background: `${p.col}12`, color: p.col, border: `1px solid ${p.col}30`, borderRadius: "20px", fontFamily: "DM Mono, monospace", letterSpacing: "0.05em" }}>{p.category}</span>
+          </div>
+          <h3 className="serif" style={{ fontSize: "1.6rem", fontWeight: 700, marginBottom: "0.6rem", color: "var(--ink)", lineHeight: 1.2 }}>{p.name}</h3>
+          <p style={{ fontSize: "0.9rem", color: "var(--ink2)", lineHeight: 1.75, marginBottom: "1.5rem" }}>{p.tagline}</p>
+          <div className="tag-row" style={{ marginBottom: "1.5rem" }}>
+            {p.tech.map(t => <span key={t} className="chip-r" style={{ borderColor: `${p.col}25`, color: p.col }}>{t}</span>)}
+          </div>
+          {p.link && (
+            <a href={p.link} target="_blank" rel="noreferrer" className="btn-primary" style={{ fontSize: "0.72rem", padding: "0.6rem 1.5rem" }}>
+              View Live ↗
+            </a>
+          )}
+        </div>
+
+        {/* Right side — highlights */}
+        <div style={{ background: "rgba(255,255,255,0.02)", border: "1px solid var(--card-b)", borderRadius: "6px", padding: "1.5rem" }}>
+          <div className="mono" style={{ fontSize: "0.62rem", letterSpacing: "0.15em", color: "var(--ink2)", marginBottom: "1rem" }}>// KEY FEATURES</div>
+          <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: "0.8rem" }}>
+            {p.highlights.map((h, j) => (
+              <li key={j} style={{ fontSize: "0.82rem", color: "var(--ink2)", lineHeight: 1.65, display: "flex", gap: "0.6rem", alignItems: "flex-start" }}>
+                <span style={{ color: p.col, flexShrink: 0, fontSize: "0.7rem", marginTop: "0.2rem" }}>◆</span>{h}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className={`rv d${i + 1}`}
+    <div className={`rv d${(i % 3) + 1}`}
       onMouseEnter={() => setHov(true)}
       onMouseLeave={() => setHov(false)}
       style={{
         background: hov ? "rgba(244,63,94,0.04)" : "var(--card)",
         border: `1px solid ${hov ? p.col : "var(--card-b)"}`,
-        borderRadius: "4px",
+        borderRadius: "6px",
         padding: "2rem",
         transition: "all 0.3s",
         transform: hov ? "translateY(-6px)" : "none",
@@ -884,18 +1050,23 @@ function ProjectCard({ p, i }) {
         cursor: "default",
         display: "flex",
         flexDirection: "column",
+        position: "relative",
+        overflow: "hidden",
       }}
     >
+      <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: `linear-gradient(90deg, ${p.col}, transparent)` }} />
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "1.2rem" }}>
         <div>
           <div className="mono" style={{ fontSize: "0.65rem", color: p.col, letterSpacing: "0.1em", marginBottom: "0.3rem" }}>#{p.num}</div>
-          <span style={{ fontSize: "0.72rem", padding: "0.2rem 0.6rem", background: `${p.col}12`, color: p.col, border: `1px solid ${p.col}30`, borderRadius: "2px", fontFamily: "DM Mono, monospace", letterSpacing: "0.05em" }}>{p.category}</span>
+          <span style={{ fontSize: "0.72rem", padding: "0.2rem 0.7rem", background: `${p.col}12`, color: p.col, border: `1px solid ${p.col}30`, borderRadius: "20px", fontFamily: "DM Mono, monospace", letterSpacing: "0.05em" }}>{p.category}</span>
         </div>
         {p.link && (
-          <a href={p.link} target="_blank" rel="noreferrer" style={{ color: hov ? p.col : "var(--ink2)", transition: "color 0.2s", textDecoration: "none", fontSize: "1.1rem" }}>↗️</a>
+          <a href={p.link} target="_blank" rel="noreferrer" style={{ color: hov ? p.col : "var(--ink2)", transition: "color 0.2s", textDecoration: "none", fontSize: "0.8rem", fontFamily: "DM Mono, monospace", display: "flex", alignItems: "center", gap: "0.3rem" }}>
+            ↗
+          </a>
         )}
       </div>
-      <h3 style={{ fontFamily: "Playfair Display, serif", fontSize: "1.1rem", fontWeight: 700, marginBottom: "0.5rem", color: "var(--ink)", lineHeight: 1.3 }}>{p.name}</h3>
+      <h3 className="serif" style={{ fontSize: "1.05rem", fontWeight: 700, marginBottom: "0.5rem", color: "var(--ink)", lineHeight: 1.3 }}>{p.name}</h3>
       <p style={{ fontSize: "0.8rem", color: "var(--ink2)", lineHeight: 1.7, marginBottom: "1rem" }}>{p.tagline}</p>
       <ul style={{ listStyle: "none", marginBottom: "1.2rem", flex: 1 }}>
         {p.highlights.map((h, j) => (
@@ -922,7 +1093,7 @@ function Projects() {
             Featured <span className="rose-grad">Work</span>
           </h2>
           <a href="https://github.com/aayushichhabra" target="_blank" rel="noreferrer" className="btn-ghost" style={{ fontSize: "0.7rem" }}>
-            View All on GitHub ↗️
+            View All on GitHub ↗
           </a>
         </div>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(320px,1fr))", gap: "1.5rem" }} className="grid3">
@@ -935,12 +1106,12 @@ function Projects() {
 
 /* ─── SKILLS ─── */
 const SKILL_GROUPS = [
-  { label: "Programming & Dev", items: ["Python", "C", "Java", "JavaScript", "OOP", "DSA", "Git"], col: "var(--rose)" },
-  { label: "AI & Machine Learning", items: ["Supervised & Unsupervised ML", "Transfer Learning", "RAG", "Computer Vision", "LangChain", "LangGraph", "Whisper STT", "PyTorch", "TF Lite", "OpenCV", "Scikit-learn", "Pandas"], col: "var(--mauve)" },
-  { label: "Cybersecurity", items: ["CVE Analysis", "Vulnerability Assessment", "Incident Response", "Threat Detection", "Anomaly Detection", "FAISS Vector DBs"], col: "var(--blush)" },
-  { label: "Mobile & Web Dev", items: ["Android Studio", "Kotlin", "React Native", "Expo", "HTML", "CSS", "JavaScript", "Streamlit", "Figma"], col: "var(--sky)" },
-  { label: "Databases & Cloud", items: ["SQL", "Firebase", "Supabase", "MongoDB", "FAISS / Vector DBs"], col: "var(--coral)" },
-  { label: "Tools & Platforms", items: ["Gradio", "Plotly", "Google Gemini API", "Google OAuth2", "Hugging Face", "VS Code", "GitHub", "Postman"], col: "var(--mint)" },
+  { label: "Programming & Dev", items: ["Python", "C", "Java", "JavaScript", "OOP", "DSA", "Git"], col: "var(--rose)", icon: "⌨️" },
+  { label: "AI & Machine Learning", items: ["Supervised & Unsupervised ML", "Transfer Learning", "RAG", "Computer Vision", "LangChain", "LangGraph", "Whisper STT", "PyTorch", "TF Lite", "OpenCV", "Scikit-learn", "Pandas"], col: "var(--mauve)", icon: "🧠" },
+  { label: "Cybersecurity", items: ["CVE Analysis", "Vulnerability Assessment", "Incident Response", "Threat Detection", "Anomaly Detection", "FAISS Vector DBs"], col: "var(--blush)", icon: "🔐" },
+  { label: "Mobile & Web Dev", items: ["Android Studio", "Kotlin", "React Native", "Expo", "HTML", "CSS", "JavaScript", "Streamlit", "Figma"], col: "var(--sky)", icon: "📱" },
+  { label: "Databases & Cloud", items: ["SQL", "Firebase", "Supabase", "MongoDB", "FAISS / Vector DBs"], col: "var(--coral)", icon: "☁️" },
+  { label: "Tools & Platforms", items: ["Gradio", "Plotly", "Google Gemini API", "Google OAuth2", "Hugging Face", "VS Code", "GitHub", "Postman"], col: "var(--mint)", icon: "🛠️" },
 ];
 
 const SKILL_BARS = [
@@ -961,16 +1132,16 @@ function AnimatedBar({ name, pct, col }) {
     return () => obs.disconnect();
   }, []);
   return (
-    <div ref={ref} style={{ marginBottom: "1.2rem" }}>
-      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.45rem" }}>
+    <div ref={ref} style={{ marginBottom: "1.4rem" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.5rem" }}>
         <span style={{ fontSize: "0.83rem", fontWeight: 500 }}>{name}</span>
         <span className="mono" style={{ fontSize: "0.68rem", color: col }}>{pct}%</span>
       </div>
-      <div style={{ height: 3, background: "rgba(255,255,255,0.04)", borderRadius: "2px", overflow: "hidden" }}>
+      <div style={{ height: 3, background: "rgba(255,255,255,0.04)", borderRadius: "99px", overflow: "hidden" }}>
         <div style={{
           height: "100%",
           background: `linear-gradient(90deg, ${col}, ${col}88)`,
-          borderRadius: "2px",
+          borderRadius: "99px",
           boxShadow: `0 0 8px ${col}66`,
           width: vis ? `${pct}%` : "0%",
           transition: "width 1.4s cubic-bezier(0.16,1,0.3,1) 0.2s"
@@ -992,17 +1163,18 @@ function Skills() {
           </h2>
           <div style={{ display: "flex", gap: "0.5rem" }}>
             {[["tags", "By Domain"], ["bars", "Proficiency"]].map(([k, l]) => (
-              <button key={k} onClick={() => setTab(k)} className="mono" style={{ padding: "0.45rem 1rem", border: `1px solid ${tab === k ? "var(--rose)" : "var(--card-b)"}`, background: tab === k ? "rgba(244,63,94,0.08)" : "transparent", color: tab === k ? "var(--rose2)" : "var(--ink2)", cursor: "pointer", fontSize: "0.68rem", letterSpacing: "0.08em", borderRadius: "2px", transition: "all 0.2s" }}>{l}</button>
+              <button key={k} onClick={() => setTab(k)} className="mono" style={{ padding: "0.45rem 1rem", border: `1px solid ${tab === k ? "var(--rose)" : "var(--card-b)"}`, background: tab === k ? "rgba(244,63,94,0.08)" : "transparent", color: tab === k ? "var(--rose2)" : "var(--ink2)", cursor: "pointer", fontSize: "0.68rem", letterSpacing: "0.08em", borderRadius: "20px", transition: "all 0.2s" }}>{l}</button>
             ))}
           </div>
         </div>
 
         {tab === "tags" && (
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(300px,1fr))", gap: "1.2rem" }} className="grid3">
-            {SKILL_GROUPS.map(({ label, items, col }, i) => (
-              <div key={label} className={`rv d${i + 1} card`} style={{ borderRadius: "4px", padding: "1.5rem" }}>
+            {SKILL_GROUPS.map(({ label, items, col, icon }, i) => (
+              <div key={label} className={`rv d${i + 1} card skill-domain-card`} style={{ borderRadius: "6px", padding: "1.5rem", position: "relative", overflow: "hidden" }}>
+                <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: `linear-gradient(90deg, ${col}, transparent)` }} />
                 <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", marginBottom: "1rem" }}>
-                  <div style={{ width: 8, height: 8, borderRadius: "50%", background: col, boxShadow: `0 0 8px ${col}` }} />
+                  <span style={{ fontSize: "1.1rem" }}>{icon}</span>
                   <span style={{ fontSize: "0.82rem", fontWeight: 600, color: col }}>{label}</span>
                 </div>
                 <div className="tag-row">
@@ -1041,7 +1213,7 @@ function Achievements() {
         </h2>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(240px,1fr))", gap: "1.5rem" }} className="grid2">
           {ACHIEVEMENTS.map(({ icon, title, desc, col }, i) => (
-            <div key={title} className={`rv d${i + 1} card`} style={{ borderRadius: "4px", padding: "2rem", position: "relative", overflow: "hidden" }}>
+            <div key={title} className={`rv d${i + 1} card`} style={{ borderRadius: "6px", padding: "2rem", position: "relative", overflow: "hidden" }}>
               <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: `linear-gradient(90deg, ${col}, transparent)` }} />
               <div style={{ fontSize: "2.2rem", marginBottom: "1rem" }}>{icon}</div>
               <h3 style={{ fontWeight: 700, fontSize: "0.9rem", marginBottom: "0.6rem", color: col }}>{title}</h3>
@@ -1051,7 +1223,7 @@ function Achievements() {
         </div>
 
         {/* CGPA Banner */}
-        <div className="rv d5" style={{ marginTop: "3rem", background: "rgba(244,63,94,0.03)", border: "1px solid rgba(244,63,94,0.1)", borderRadius: "4px", padding: "2.5rem 3rem", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "2rem" }}>
+        <div className="rv d5" style={{ marginTop: "3rem", background: "rgba(244,63,94,0.03)", border: "1px solid rgba(244,63,94,0.1)", borderRadius: "6px", padding: "2.5rem 3rem", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "2rem" }}>
           <div>
             <div className="mono" style={{ fontSize: "0.65rem", letterSpacing: "0.2em", color: "var(--ink2)", marginBottom: "0.5rem" }}>ACADEMIC STANDING</div>
             <div className="serif" style={{ fontSize: "3.5rem", fontWeight: 900, lineHeight: 1 }}>
@@ -1083,9 +1255,33 @@ function Contact() {
       setTimeout(() => setCopied(false), 2000);
     });
   };
+
+  const socials = [
+    {
+      label: "LinkedIn",
+      url: "https://www.linkedin.com/in/aayushi-chhabra-54281a34a/",
+      icon: <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+    },
+    {
+      label: "GitHub",
+      url: "https://github.com/aayushichhabra",
+      icon: <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+    },
+    {
+      label: "LeetCode",
+      url: "https://leetcode.com/u/aayushichhabra/",
+      icon: <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M13.483 0a1.374 1.374 0 0 0-.961.438L7.116 6.226l-3.854 4.126a5.266 5.266 0 0 0-1.209 2.104 5.35 5.35 0 0 0-.125.513 5.527 5.527 0 0 0 .062 2.362 5.83 5.83 0 0 0 .349 1.017 5.938 5.938 0 0 0 1.271 1.818l4.277 4.193.039.038c2.248 2.165 5.852 2.133 8.063-.074l2.396-2.392c.54-.54.54-1.414.003-1.955a1.378 1.378 0 0 0-1.951-.003l-2.396 2.392a3.021 3.021 0 0 1-4.205.038l-.02-.019-4.276-4.193c-.652-.64-.972-1.469-.948-2.263a2.68 2.68 0 0 1 .066-.523 2.545 2.545 0 0 1 .619-1.164L9.13 8.114c1.058-1.134 3.204-1.27 4.43-.278l3.501 2.831c.593.48 1.461.387 1.94-.207a1.384 1.384 0 0 0-.207-1.943l-3.5-2.831c-.8-.647-1.766-1.045-2.774-1.202l2.015-2.158A1.384 1.384 0 0 0 13.483 0zm-2.866 12.815a1.38 1.38 0 0 0-1.38 1.382 1.38 1.38 0 0 0 1.38 1.382H20.79a1.38 1.38 0 0 0 1.38-1.382 1.38 1.38 0 0 0-1.38-1.382z"/></svg>
+    },
+    {
+      label: "SecOps Platform",
+      url: "https://intelligent-secops-rag-dashboard.streamlit.app",
+      icon: <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+    },
+  ];
+
   return (
     <section id="contact" className="sec-pad" style={{ background: "var(--bg2)", position: "relative", overflow: "hidden" }}>
-      <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)", width: 600, height: 600, background: "radial-gradient(circle, rgba(244,63,94,0.04) 0%, transparent 70%)", borderRadius: "50%", pointerEvents: "none" }} />
+      <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)", width: 600, height: 600, background: "radial-gradient(circle, rgba(244,63,94,0.05) 0%, transparent 70%)", borderRadius: "50%", pointerEvents: "none" }} />
       <div style={{ maxWidth: 700, margin: "0 auto", textAlign: "center", position: "relative" }}>
         <div className="rv section-label" style={{ justifyContent: "center" }}>Contact</div>
         <h2 className="rv d1 serif" style={{ fontSize: "clamp(2rem,6vw,4rem)", fontWeight: 900, marginBottom: "1.5rem", lineHeight: 1.1 }}>
@@ -1096,27 +1292,32 @@ function Contact() {
           in AI, cybersecurity, and full-stack development. Currently based in Gurugram, Haryana.
         </p>
 
+        {/* Email row */}
         <div className="rv d3" style={{ display: "flex", alignItems: "center", gap: "1rem", justifyContent: "center", marginBottom: "2.5rem", flexWrap: "wrap" }}>
-          <span className="mono" style={{ fontSize: "0.9rem", color: "var(--rose2)", letterSpacing: "0.04em" }}>{email}</span>
-          <button onClick={copy} style={{ background: copied ? "rgba(52,211,153,0.08)" : "rgba(244,63,94,0.08)", border: `1px solid ${copied ? "rgba(52,211,153,0.25)" : "rgba(244,63,94,0.25)"}`, borderRadius: "2px", padding: "0.4rem 0.9rem", cursor: "pointer", color: copied ? "var(--mint)" : "var(--rose2)", fontSize: "0.7rem", fontFamily: "DM Mono, monospace", transition: "all 0.2s" }}>
+          <span className="mono" style={{ fontSize: "0.88rem", color: "var(--rose2)", letterSpacing: "0.04em" }}>{email}</span>
+          <button onClick={copy} style={{ background: copied ? "rgba(52,211,153,0.08)" : "rgba(244,63,94,0.08)", border: `1px solid ${copied ? "rgba(52,211,153,0.25)" : "rgba(244,63,94,0.25)"}`, borderRadius: "20px", padding: "0.4rem 1rem", cursor: "pointer", color: copied ? "var(--mint)" : "var(--rose2)", fontSize: "0.68rem", fontFamily: "DM Mono, monospace", transition: "all 0.2s" }}>
             {copied ? "Copied ✓" : "Copy"}
           </button>
         </div>
 
-        <div className="rv d4" style={{ display: "flex", justifyContent: "center", gap: "1.5rem", flexWrap: "wrap", marginBottom: "3rem" }}>
-          {[
-            { label: "LinkedIn", url: "https://www.linkedin.com/in/aayushi-chhabra-54281a34a/" },
-            { label: "GitHub", url: "https://github.com/aayushichhabra" },
-            { label: "LeetCode", url: "https://leetcode.com/u/aayushichhabra/" },
-            { label: "SecOps Platform ↗️", url: "https://intelligent-secops-rag-dashboard.streamlit.app" },
-          ].map(({ label, url }) => (
-            <a key={label} href={url} target="_blank" rel="noreferrer" className="nav-link" style={{ fontSize: "0.82rem", color: "var(--ink2)" }}>{label}</a>
+        {/* Social links grid */}
+        <div className="rv d4" style={{ display: "flex", justifyContent: "center", gap: "0.75rem", flexWrap: "wrap", marginBottom: "3rem" }}>
+          {socials.map(({ label, url, icon }) => (
+            <a key={label} href={url} target="_blank" rel="noreferrer" className="social-link">
+              {icon}{label}
+            </a>
           ))}
         </div>
 
         <div className="rv d5" style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
-          <a href="mailto:aayushichhabra1010@gmail.com" className="btn-primary">Send a Message</a>
-          <a href="https://www.linkedin.com/in/aayushi-chhabra-54281a34a/" target="_blank" rel="noreferrer" className="btn-ghost">LinkedIn Profile</a>
+          <a href="mailto:aayushichhabra1010@gmail.com" className="btn-primary">
+            <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg>
+            Send a Message
+          </a>
+          <a href="https://www.linkedin.com/in/aayushi-chhabra-54281a34a/" target="_blank" rel="noreferrer" className="btn-ghost">
+            <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+            LinkedIn Profile
+          </a>
         </div>
       </div>
     </section>
@@ -1126,7 +1327,6 @@ function Contact() {
 /* ─── FOOTER ─── */
 function Footer() {
   return (
-    
     <footer style={{ borderTop: "1px solid var(--line)", padding: "2rem 4rem", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "1rem" }}>
       <div>
         <span className="serif" style={{ fontStyle: "italic", color: "var(--rose)", fontSize: "0.9rem" }}>Aayushi Chhabra</span>
