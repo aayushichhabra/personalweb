@@ -237,7 +237,7 @@ const G = `
   .mob-menu a:hover { color: var(--rose); }
 `;
 
-/* ─── SCROLL BAR ─── */
+/* ─── SCROLL PROGRESS ─── */
 function ScrollProg() {
   const [w, setW] = useState(0);
   useEffect(() => {
@@ -287,19 +287,64 @@ function Nav() {
         <a href="#hero" style={{ textDecoration:"none", display:"flex", alignItems:"center", gap:"0.6rem" }}>
           <span style={{ fontFamily:"'Space Grotesk',sans-serif", fontWeight:700, fontSize:"0.85rem", letterSpacing:"0.12em", color:"var(--rose)" }}>AAYUSHI_CHHABRA</span>
         </a>
-        <nav className="hide-m" style={{ display:"flex", gap:"2rem" }}>
+
+        {/* ── DESKTOP NAV — section links + GitHub / LinkedIn / Resume ── */}
+        <nav className="hide-m" style={{ display:"flex", gap:"1.6rem", alignItems:"center" }}>
           {links.map(([id,label]) => <a key={id} href={`#${id}`} className="nav-link">{label}</a>)}
+
+          {/* divider */}
+          <span style={{ width:1, height:14, background:"var(--outline)", display:"inline-block" }} />
+
+          {/* GitHub */}
+          <a href="https://github.com/aayushichhabra" target="_blank" rel="noreferrer" className="nav-link" title="GitHub" style={{ display:"inline-flex", alignItems:"center", gap:"0.35rem" }}>
+            <svg width="13" height="13" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+            </svg>
+            GitHub
+          </a>
+
+          {/* LinkedIn */}
+          <a href="https://linkedin.com/in/aayushi-chhabra-54281a34a" target="_blank" rel="noreferrer" className="nav-link" title="LinkedIn" style={{ display:"inline-flex", alignItems:"center", gap:"0.35rem" }}>
+            <svg width="13" height="13" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/>
+            </svg>
+            LinkedIn
+          </a>
+
+          {/* Resume */}
+          <a
+            href="/Aayushi_Chhabra_Resume.pdf"
+            download="Aayushi_Chhabra_Resume.pdf"
+            className="nav-link"
+            title="Download Resume"
+            style={{ display:"inline-flex", alignItems:"center", gap:"0.35rem", color:"var(--cyan)" }}
+          >
+            <svg width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+              <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+              <polyline points="14,2 14,8 20,8"/>
+              <line x1="12" y1="18" x2="12" y2="12"/>
+              <polyline points="9,15 12,18 15,15"/>
+            </svg>
+            Resume ↓
+          </a>
         </nav>
+
         <div style={{ display:"flex", gap:"0.6rem", alignItems:"center" }}>
           <a href="mailto:aayushichhabra1010@gmail.com" className="btn-primary" style={{ padding:"0.5rem 1.1rem", fontSize:"0.7rem" }}>Hire Me</a>
-          <button onClick={() => setMenu(o=>!o)} className="show-m" style={{ display:"none", background:"none", border:"none", cursor:"pointer", color:"var(--ink)", padding:"0.3rem" }}>
+          <button onClick={() => setMenu(o=>!o)} style={{ display:"none", background:"none", border:"none", cursor:"pointer", color:"var(--ink)", padding:"0.3rem" }} className="show-m">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
           </button>
         </div>
       </header>
+
+      {/* ── MOBILE MENU ── */}
       <div className={`mob-menu${menu?" open":""}`}>
         <button onClick={() => setMenu(false)} style={{ position:"absolute", top:"1.5rem", right:"1.5rem", background:"none", border:"1px solid var(--outline)", color:"var(--ink)", cursor:"pointer", padding:"0.4rem 0.7rem", borderRadius:"0.4rem" }}>✕</button>
         {links.map(([id,label]) => <a key={id} href={`#${id}`} onClick={() => setMenu(false)}>{label}</a>)}
+        {/* Mobile social links */}
+        <a href="https://github.com/aayushichhabra" target="_blank" rel="noreferrer" onClick={() => setMenu(false)}>GitHub</a>
+        <a href="https://linkedin.com/in/aayushi-chhabra-54281a34a" target="_blank" rel="noreferrer" onClick={() => setMenu(false)}>LinkedIn</a>
+        <a href="/Aayushi_Chhabra_Resume.pdf" download="Aayushi_Chhabra_Resume.pdf" onClick={() => setMenu(false)}>Resume ↓</a>
       </div>
     </>
   );
@@ -326,7 +371,6 @@ function Hero() {
       <div style={{ position:"absolute", inset:0, pointerEvents:"none" }}>
         <div style={{ position:"absolute", top:"-15%", right:"5%", width:700, height:700, background:"radial-gradient(circle, rgba(253,121,121,0.07) 0%, transparent 65%)", borderRadius:"50%", animation:"spin 25s linear infinite" }} />
         <div style={{ position:"absolute", bottom:"5%", left:"-10%", width:550, height:550, background:"radial-gradient(circle, rgba(76,215,246,0.05) 0%, transparent 65%)", borderRadius:"50%" }} />
-        {/* Grid lines */}
         <div style={{ position:"absolute", inset:0, backgroundImage:"linear-gradient(rgba(253,121,121,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(253,121,121,0.025) 1px,transparent 1px)", backgroundSize:"60px 60px", opacity:0.8 }} />
       </div>
 
@@ -334,7 +378,6 @@ function Hero() {
         <div style={{ display:"grid", gridTemplateColumns:"1fr auto", gap:"3rem", alignItems:"start" }}>
           {/* LEFT */}
           <div>
-            {/* Badge row */}
             <div className="rv" style={{ display:"flex", alignItems:"center", gap:"0.8rem", marginBottom:"1.8rem", flexWrap:"wrap" }}>
               <div style={{ display:"inline-flex", alignItems:"center", gap:"0.5rem", padding:"0.3rem 0.9rem", background:"var(--rose-dim)", border:"1px solid rgba(253,121,121,0.3)", borderRadius:"9999px" }}>
                 <span style={{ width:7, height:7, borderRadius:"50%", background:"var(--rose)", boxShadow:"0 0 8px var(--rose)", animation:"pulse 2s infinite", display:"inline-block" }} />
@@ -343,7 +386,6 @@ function Hero() {
               <span className="mono" style={{ fontSize:"0.68rem", color:"var(--ink3)", letterSpacing:"0.12em" }}>3RD YEAR CSE · MUJ · 2023–2027</span>
             </div>
 
-            {/* Name */}
             <div className="rv d1">
               <h1 style={{ fontFamily:"'Inter',sans-serif", fontSize:"clamp(3rem,7vw,5.5rem)", fontWeight:800, lineHeight:1.05, letterSpacing:"-0.04em", marginBottom:"1rem" }}>
                 Aayushi{" "}
@@ -351,13 +393,11 @@ function Hero() {
               </h1>
             </div>
 
-            {/* Typewriter */}
             <div className="rv d2" style={{ height:32, marginBottom:"1.4rem", display:"flex", alignItems:"center", gap:"0.4rem" }}>
               <span className="mono" style={{ fontSize:"0.95rem", color:"var(--cyan)" }}>{typed}</span>
               <span style={{ width:2, height:18, background:"var(--cyan)", animation:"blink 1s step-end infinite", display:"inline-block" }} />
             </div>
 
-            {/* Bio */}
             <p className="rv d3" style={{ fontSize:"0.95rem", color:"var(--ink2)", lineHeight:1.85, maxWidth:560, marginBottom:"2.2rem" }}>
               Third-year B.Tech CSE at Manipal University Jaipur with a{" "}
               <span style={{ color:"var(--rose)", fontWeight:700 }}>9.88 CGPA</span>.
@@ -366,7 +406,6 @@ function Hero() {
               Dean's Excellence Award — 5 consecutive semesters.
             </p>
 
-            {/* PRIMARY BUTTONS */}
             <div className="rv d4" style={{ display:"flex", gap:"0.8rem", flexWrap:"wrap", marginBottom:"1.8rem" }}>
               <a href="mailto:aayushichhabra1010@gmail.com" className="btn-primary">
                 <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg>
@@ -375,38 +414,28 @@ function Hero() {
               <a href="#projects" className="btn-outline-rose">View Projects →</a>
             </div>
 
-            {/* ICON BUTTONS ROW — Resume, GitHub, LeetCode */}
             <div className="rv d5" style={{ display:"flex", gap:"0.6rem", flexWrap:"wrap" }}>
-              {/* Resume */}
-              <a 
-              href="/Aayushi_Chhabra_Resume.pdf" 
-              download="Aayushi_Chhabra_Resume.pdf"
-              className="icon-btn" 
-                title="Download Resume"
-              >
-              <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-              <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
-              <polyline points="14,2 14,8 20,8"/>
-              <line x1="12" y1="18" x2="12" y2="12"/>
-              <polyline points="9,15 12,18 15,15"/>
-              </svg>
-              Resume
+              <a href="/Aayushi_Chhabra_Resume.pdf" download="Aayushi_Chhabra_Resume.pdf" className="icon-btn" title="Download Resume">
+                <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                  <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+                  <polyline points="14,2 14,8 20,8"/>
+                  <line x1="12" y1="18" x2="12" y2="12"/>
+                  <polyline points="9,15 12,18 15,15"/>
+                </svg>
+                Resume
               </a>
-              {/* GitHub */}
               <a href="https://github.com/aayushichhabra" target="_blank" rel="noreferrer" className="icon-btn" title="GitHub Profile">
                 <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
                 </svg>
                 GitHub ↗
               </a>
-              {/* LeetCode */}
               <a href="https://leetcode.com/u/aayushichhabra" target="_blank" rel="noreferrer" className="icon-btn cyan" title="LeetCode Profile">
                 <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M13.483 0a1.374 1.374 0 0 0-.961.438L7.116 6.226l-3.854 4.126a5.266 5.266 0 0 0-1.209 2.104 5.35 5.35 0 0 0-.125.513 5.527 5.527 0 0 0 .062 2.362 5.83 5.83 0 0 0 .349 1.017 5.938 5.938 0 0 0 1.271 1.818l4.277 4.193.039.038c2.248 2.165 5.852 2.133 8.063-.074l2.396-2.392c.54-.54.54-1.414.003-1.955a1.378 1.378 0 0 0-1.951-.003l-2.396 2.392a3.021 3.021 0 0 1-4.205.038l-.02-.019-4.276-4.193c-.652-.64-.972-1.469-.948-2.263a2.68 2.68 0 0 1 .066-.523 2.545 2.545 0 0 1 .619-1.164L9.13 8.114c1.058-1.134 3.204-1.27 4.43-.278l3.501 2.831c.593.48 1.461.387 1.94-.207a1.384 1.384 0 0 0-.207-1.943l-3.5-2.831c-.8-.647-1.766-1.045-2.774-1.202l2.015-2.158A1.384 1.384 0 0 0 13.483 0zm-2.866 12.815a1.38 1.38 0 0 0-1.38 1.382 1.38 1.38 0 0 0 1.38 1.382H20.79a1.38 1.38 0 0 0 1.38-1.382 1.38 1.38 0 0 0-1.38-1.382z"/>
                 </svg>
                 LeetCode ↗
               </a>
-              {/* LinkedIn */}
               <a href="https://linkedin.com/in/aayushi-chhabra-54281a34a" target="_blank" rel="noreferrer" className="icon-btn" title="LinkedIn">
                 <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
                 LinkedIn ↗
@@ -489,7 +518,6 @@ function About() {
       <div style={{ maxWidth:1200, margin:"0 auto" }}>
         <div className="rv sec-label">About Me</div>
         <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"1.5rem", alignItems:"start" }}>
-          {/* About card */}
           <div className="rv d1 glass" style={{ padding:"2rem", position:"relative", overflow:"hidden" }}>
             <div style={{ position:"absolute", top:0, left:0, right:0, height:2, background:"linear-gradient(90deg, var(--rose), transparent)" }} />
             <div className="label" style={{ color:"var(--rose)", marginBottom:"1rem", display:"flex", alignItems:"center", gap:"0.5rem" }}>
@@ -521,7 +549,6 @@ function About() {
           </div>
 
           <div style={{ display:"grid", gridTemplateRows:"auto auto", gap:"1.5rem" }}>
-            {/* Education */}
             <div className="rv d2 glass glass-cyan" style={{ padding:"1.8rem", position:"relative", overflow:"hidden" }}>
               <div style={{ position:"absolute", top:0, left:0, right:0, height:2, background:"linear-gradient(90deg, var(--cyan), transparent)" }} />
               <div className="label" style={{ color:"var(--cyan)", marginBottom:"1rem", display:"flex", alignItems:"center", gap:"0.5rem" }}>
@@ -539,7 +566,6 @@ function About() {
               ))}
             </div>
 
-            {/* Certifications */}
             <div className="rv d3 glass" style={{ padding:"1.8rem", position:"relative", overflow:"hidden" }}>
               <div style={{ position:"absolute", top:0, left:0, right:0, height:2, background:"linear-gradient(90deg, var(--rose), transparent)" }} />
               <div className="label" style={{ color:"var(--rose)", marginBottom:"1rem" }}>📜 CERTIFICATIONS</div>
@@ -800,11 +826,12 @@ const SKILL_BARS = [
   { name:"UI/UX & Frontend", pct:75, col:"#34d399" },
 ];
 
+/* ─── FIX: key includes tab so bars remount (fresh IntersectionObserver) on each tab switch ─── */
 function AnimBar({ name, pct, col }) {
   const [vis, setVis] = useState(false);
   const ref = useRef(null);
   useEffect(() => {
-    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) setVis(true); }, { threshold:0.3 });
+    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) setVis(true); }, { threshold: 0.3 });
     if (ref.current) obs.observe(ref.current);
     return () => obs.disconnect();
   }, []);
@@ -823,6 +850,7 @@ function AnimBar({ name, pct, col }) {
 
 function Skills() {
   const [tab, setTab] = useState("tags");
+
   return (
     <section id="skills" style={{ padding:"6rem 2.5rem", background:"var(--bg)" }}>
       <div style={{ maxWidth:1200, margin:"0 auto" }}>
@@ -844,8 +872,9 @@ function Skills() {
           </div>
         </div>
 
-        {tab==="tags" && (
-          <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(280px,1fr))", gap:"1.1rem" }}>
+        {/* ── FIX: key="tags-grid" forces React to remount the grid when switching back ── */}
+        {tab === "tags" && (
+          <div key="tags-grid" style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(280px,1fr))", gap:"1.1rem" }}>
             {SKILL_GROUPS.map(({ label, items, col, icon }, i) => (
               <div key={label} className={`rv d${i+1} glass`} style={{ padding:"1.5rem", borderRadius:"1rem", position:"relative", overflow:"hidden" }}
                 onMouseEnter={e => { e.currentTarget.style.borderColor=`${col}40`; }}
@@ -866,9 +895,10 @@ function Skills() {
           </div>
         )}
 
-        {tab==="bars" && (
-          <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"0 4rem" }}>
-            {SKILL_BARS.map(s => <AnimBar key={s.name} {...s} />)}
+        {/* ── FIX: key includes tab so each tab switch remounts AnimBars with fresh observers ── */}
+        {tab === "bars" && (
+          <div key="bars-grid" style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"0 4rem" }}>
+            {SKILL_BARS.map(s => <AnimBar key={`${tab}-${s.name}`} {...s} />)}
           </div>
         )}
       </div>
@@ -905,7 +935,6 @@ function Achievements() {
           ))}
         </div>
 
-        {/* CGPA banner */}
         <div className="rv d5" style={{ background:"rgba(253,121,121,0.04)", border:"1px solid rgba(253,121,121,0.12)", borderRadius:"1rem", padding:"2.2rem 3rem", display:"flex", alignItems:"center", justifyContent:"space-between", flexWrap:"wrap", gap:"2rem" }}>
           <div>
             <div className="label" style={{ color:"var(--ink3)", marginBottom:"0.4rem", fontSize:"0.62rem" }}>ACADEMIC STANDING</div>
@@ -942,7 +971,6 @@ function Contact() {
           Open to internship opportunities, research collaborations, and interesting projects in AI, cybersecurity, and full-stack development.
         </p>
 
-        {/* Email copy */}
         <div className="rv d3" style={{ display:"flex", alignItems:"center", gap:"0.8rem", justifyContent:"center", marginBottom:"2rem", flexWrap:"wrap" }}>
           <span className="mono" style={{ fontSize:"0.85rem", color:"var(--rose)", letterSpacing:"0.03em" }}>{email}</span>
           <button onClick={() => { navigator.clipboard.writeText(email); setCopied(true); setTimeout(()=>setCopied(false),2000); }}
@@ -951,7 +979,6 @@ function Contact() {
           </button>
         </div>
 
-        {/* Social links */}
         <div className="rv d4" style={{ display:"flex", justifyContent:"center", gap:"0.6rem", flexWrap:"wrap", marginBottom:"2.5rem" }}>
           {[
             { label:"LinkedIn", url:"https://linkedin.com/in/aayushi-chhabra-54281a34a", icon:<svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg> },
