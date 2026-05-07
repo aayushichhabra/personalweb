@@ -39,7 +39,6 @@ const G = `
   .mono { font-family: 'JetBrains Mono', monospace; }
   .grotesk { font-family: 'Space Grotesk', sans-serif; }
 
-  /* ─── BENTO GLASS ─── */
   .glass {
     background: rgba(19,19,19,0.82);
     backdrop-filter: blur(14px);
@@ -64,13 +63,11 @@ const G = `
     box-shadow: 0 0 30px rgba(76,215,246,0.12);
   }
 
-  /* ─── ANIMATIONS ─── */
   @keyframes pulse     { 0%,100%{opacity:1} 50%{opacity:0.35} }
   @keyframes blink     { 0%,100%{opacity:1} 50%{opacity:0} }
   @keyframes marquee   { from{transform:translateX(0)} to{transform:translateX(-50%)} }
   @keyframes fadeUp    { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
   @keyframes glow-pulse{ 0%,100%{text-shadow:0 0 20px rgba(253,121,121,0.3)} 50%{text-shadow:0 0 50px rgba(253,121,121,0.6)} }
-  @keyframes scanline  { 0%{transform:translateY(-10px);opacity:0} 10%{opacity:1} 90%{opacity:1} 100%{transform:translateY(60px);opacity:0} }
   @keyframes spin      { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
 
   .rv { opacity:0; transform:translateY(18px); transition: opacity 0.6s ease, transform 0.6s ease; }
@@ -78,7 +75,6 @@ const G = `
   .d1{transition-delay:.08s} .d2{transition-delay:.16s} .d3{transition-delay:.24s}
   .d4{transition-delay:.32s} .d5{transition-delay:.4s}  .d6{transition-delay:.48s}
 
-  /* ─── CHIPS ─── */
   .chip-rose {
     display: inline-block; font-family: 'JetBrains Mono', monospace;
     font-size: 0.68rem; padding: 0.2rem 0.6rem; border-radius: 9999px;
@@ -102,7 +98,6 @@ const G = `
     border: 1px solid var(--outline); letter-spacing: 0.02em;
   }
 
-  /* ─── BUTTONS ─── */
   .btn-primary {
     display: inline-flex; align-items: center; gap: 0.45rem;
     padding: 0.72rem 1.6rem; border-radius: 0.6rem;
@@ -136,7 +131,6 @@ const G = `
   }
   .btn-outline-cyan:hover { background: rgba(76,215,246,0.08); border-color: var(--cyan); transform: translateY(-1px); box-shadow: 0 0 18px rgba(76,215,246,0.18); }
 
-  /* ─── NAV LINK ─── */
   .nav-link {
     font-family: 'JetBrains Mono', monospace; font-size: 0.78rem;
     color: var(--ink2); text-decoration: none; transition: color 0.2s;
@@ -145,20 +139,16 @@ const G = `
   .nav-link:hover { color: var(--rose); }
   .nav-link.active { color: var(--rose); border-bottom: 1px solid var(--rose); }
 
-  /* ─── LABEL CAPS ─── */
   .label { font-family: 'Space Grotesk', sans-serif; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
 
-  /* ─── SCROLL BAR ─── */
   .scroll-prog {
     position: fixed; top: 0; left: 0; height: 2px; z-index: 9999;
     background: linear-gradient(90deg, var(--rose), var(--cyan));
     box-shadow: 0 0 8px var(--rose); transition: width 0.05s linear;
   }
 
-  /* ─── GLOW TEXT ─── */
   .glow-text { animation: glow-pulse 3s ease-in-out infinite; }
 
-  /* ─── TERMINAL BLOCK ─── */
   .terminal {
     background: var(--s-mid); border: 1px solid var(--outline);
     border-radius: 0.6rem; padding: 1rem 1.2rem;
@@ -168,7 +158,6 @@ const G = `
   .term-prompt { color: var(--cyan); }
   .term-result { color: var(--rose); }
 
-  /* ─── SECTION LABEL ─── */
   .sec-label {
     display: inline-flex; align-items: center; gap: 0.5rem;
     font-family: 'Space Grotesk', sans-serif; font-size: 0.68rem;
@@ -177,38 +166,20 @@ const G = `
   }
   .sec-label::before { content:''; width: 16px; height: 1px; background: var(--rose); }
 
-  /* ─── STAT CARD ─── */
   .stat-val {
     font-family: 'Inter', sans-serif; font-size: 2.4rem;
     font-weight: 800; line-height: 1;
   }
 
-  /* ─── MARQUEE ─── */
   .marquee-wrap { overflow: hidden; white-space: nowrap; }
   .marquee-inner { display: inline-flex; gap: 3rem; animation: marquee 32s linear infinite; }
 
-  /* ─── PROGRESS BAR ─── */
-  .prog-track { height: 3px; background: var(--s-high); border-radius: 99px; overflow: hidden; }
-  .prog-fill {
-    height: 100%; border-radius: 99px;
-    transition: width 1.4s cubic-bezier(0.16,1,0.3,1) 0.2s;
-  }
-
-  /* ─── TIMELINE CONNECTOR ─── */
-  .tl-dot {
-    position: absolute; left: -26px; top: 6px;
-    width: 12px; height: 12px; border-radius: 50%;
-    border: 2px solid var(--surface);
-  }
-
-  /* ─── MOBILE ─── */
   @media(max-width: 768px) {
     .hide-m { display: none !important; }
     .full-m { grid-column: 1 / -1 !important; }
     .pad { padding: 5rem 1.2rem !important; }
   }
 
-  /* ─── ICON LINK BTN ─── */
   .icon-btn {
     display: inline-flex; align-items: center; gap: 0.5rem;
     padding: 0.6rem 1.1rem; border-radius: 0.6rem;
@@ -219,7 +190,6 @@ const G = `
   .icon-btn:hover { border-color: rgba(253,121,121,0.5); color: var(--rose); background: rgba(253,121,121,0.06); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(253,121,121,0.12); }
   .icon-btn.cyan:hover { border-color: rgba(76,215,246,0.5); color: var(--cyan); background: rgba(76,215,246,0.06); box-shadow: 0 6px 20px rgba(76,215,246,0.1); }
 
-  /* Noise overlay */
   body::after {
     content:''; position:fixed; inset:0; pointer-events:none; z-index:9998;
     background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
@@ -237,7 +207,6 @@ const G = `
   .mob-menu a:hover { color: var(--rose); }
 `;
 
-/* ─── SCROLL PROGRESS ─── */
 function ScrollProg() {
   const [w, setW] = useState(0);
   useEffect(() => {
@@ -251,18 +220,16 @@ function ScrollProg() {
   return <div className="scroll-prog" style={{ width: w }} />;
 }
 
-/* ─── REVEAL HOOK ─── */
-function useReveal() {
+function useReveal(dep) {
   useEffect(() => {
     const obs = new IntersectionObserver(entries => {
       entries.forEach(e => { if (e.isIntersecting) e.target.classList.add("on"); });
     }, { threshold: 0.1 });
     document.querySelectorAll(".rv").forEach(el => obs.observe(el));
     return () => obs.disconnect();
-  }, []);
+  }, [dep]);
 }
 
-/* ─── NAV ─── */
 function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [menu, setMenu] = useState(false);
@@ -287,48 +254,22 @@ function Nav() {
         <a href="#hero" style={{ textDecoration:"none", display:"flex", alignItems:"center", gap:"0.6rem" }}>
           <span style={{ fontFamily:"'Space Grotesk',sans-serif", fontWeight:700, fontSize:"0.85rem", letterSpacing:"0.12em", color:"var(--rose)" }}>AAYUSHI_CHHABRA</span>
         </a>
-
-        {/* ── DESKTOP NAV — section links + GitHub / LinkedIn / Resume ── */}
         <nav className="hide-m" style={{ display:"flex", gap:"1.6rem", alignItems:"center" }}>
           {links.map(([id,label]) => <a key={id} href={`#${id}`} className="nav-link">{label}</a>)}
-
-          {/* divider */}
           <span style={{ width:1, height:14, background:"var(--outline)", display:"inline-block" }} />
-
-          {/* GitHub */}
-          <a href="https://github.com/aayushichhabra" target="_blank" rel="noreferrer" className="nav-link" title="GitHub" style={{ display:"inline-flex", alignItems:"center", gap:"0.35rem" }}>
-            <svg width="13" height="13" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
-            </svg>
+          <a href="https://github.com/aayushichhabra" target="_blank" rel="noreferrer" className="nav-link" style={{ display:"inline-flex", alignItems:"center", gap:"0.35rem" }}>
+            <svg width="13" height="13" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
             GitHub
           </a>
-
-          {/* LinkedIn */}
-          <a href="https://linkedin.com/in/aayushi-chhabra-54281a34a" target="_blank" rel="noreferrer" className="nav-link" title="LinkedIn" style={{ display:"inline-flex", alignItems:"center", gap:"0.35rem" }}>
-            <svg width="13" height="13" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/>
-            </svg>
+          <a href="https://linkedin.com/in/aayushi-chhabra-54281a34a" target="_blank" rel="noreferrer" className="nav-link" style={{ display:"inline-flex", alignItems:"center", gap:"0.35rem" }}>
+            <svg width="13" height="13" fill="currentColor" viewBox="0 0 24 24"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
             LinkedIn
           </a>
-
-          {/* Resume */}
-          <a
-            href="/Aayushi_Chhabra_Resume.pdf"
-            download="Aayushi_Chhabra_Resume.pdf"
-            className="nav-link"
-            title="Download Resume"
-            style={{ display:"inline-flex", alignItems:"center", gap:"0.35rem", color:"var(--cyan)" }}
-          >
-            <svg width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-              <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
-              <polyline points="14,2 14,8 20,8"/>
-              <line x1="12" y1="18" x2="12" y2="12"/>
-              <polyline points="9,15 12,18 15,15"/>
-            </svg>
+          <a href="/Aayushi_Chhabra_Resume.pdf" download="Aayushi_Chhabra_Resume.pdf" className="nav-link" style={{ display:"inline-flex", alignItems:"center", gap:"0.35rem", color:"var(--cyan)" }}>
+            <svg width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="12" y1="18" x2="12" y2="12"/><polyline points="9,15 12,18 15,15"/></svg>
             Resume ↓
           </a>
         </nav>
-
         <div style={{ display:"flex", gap:"0.6rem", alignItems:"center" }}>
           <a href="mailto:aayushichhabra1010@gmail.com" className="btn-primary" style={{ padding:"0.5rem 1.1rem", fontSize:"0.7rem" }}>Hire Me</a>
           <button onClick={() => setMenu(o=>!o)} style={{ display:"none", background:"none", border:"none", cursor:"pointer", color:"var(--ink)", padding:"0.3rem" }} className="show-m">
@@ -336,12 +277,9 @@ function Nav() {
           </button>
         </div>
       </header>
-
-      {/* ── MOBILE MENU ── */}
       <div className={`mob-menu${menu?" open":""}`}>
         <button onClick={() => setMenu(false)} style={{ position:"absolute", top:"1.5rem", right:"1.5rem", background:"none", border:"1px solid var(--outline)", color:"var(--ink)", cursor:"pointer", padding:"0.4rem 0.7rem", borderRadius:"0.4rem" }}>✕</button>
         {links.map(([id,label]) => <a key={id} href={`#${id}`} onClick={() => setMenu(false)}>{label}</a>)}
-        {/* Mobile social links */}
         <a href="https://github.com/aayushichhabra" target="_blank" rel="noreferrer" onClick={() => setMenu(false)}>GitHub</a>
         <a href="https://linkedin.com/in/aayushi-chhabra-54281a34a" target="_blank" rel="noreferrer" onClick={() => setMenu(false)}>LinkedIn</a>
         <a href="/Aayushi_Chhabra_Resume.pdf" download="Aayushi_Chhabra_Resume.pdf" onClick={() => setMenu(false)}>Resume ↓</a>
@@ -350,7 +288,6 @@ function Nav() {
   );
 }
 
-/* ─── HERO ─── */
 function Hero() {
   const [typed, setTyped] = useState("");
   const words = ["Cybersecurity & AI Intern","ML Engineer","Android Developer","Deepfake Detection Researcher","Full Stack Developer","Productivity AI Builder"];
@@ -367,16 +304,13 @@ function Hero() {
 
   return (
     <section id="hero" style={{ minHeight:"100vh", display:"flex", alignItems:"center", padding:"7rem 2.5rem 4rem", position:"relative", overflow:"hidden" }}>
-      {/* BG glows */}
       <div style={{ position:"absolute", inset:0, pointerEvents:"none" }}>
         <div style={{ position:"absolute", top:"-15%", right:"5%", width:700, height:700, background:"radial-gradient(circle, rgba(253,121,121,0.07) 0%, transparent 65%)", borderRadius:"50%", animation:"spin 25s linear infinite" }} />
         <div style={{ position:"absolute", bottom:"5%", left:"-10%", width:550, height:550, background:"radial-gradient(circle, rgba(76,215,246,0.05) 0%, transparent 65%)", borderRadius:"50%" }} />
         <div style={{ position:"absolute", inset:0, backgroundImage:"linear-gradient(rgba(253,121,121,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(253,121,121,0.025) 1px,transparent 1px)", backgroundSize:"60px 60px", opacity:0.8 }} />
       </div>
-
       <div style={{ maxWidth:1200, margin:"0 auto", width:"100%", position:"relative", zIndex:1 }}>
         <div style={{ display:"grid", gridTemplateColumns:"1fr auto", gap:"3rem", alignItems:"start" }}>
-          {/* LEFT */}
           <div>
             <div className="rv" style={{ display:"flex", alignItems:"center", gap:"0.8rem", marginBottom:"1.8rem", flexWrap:"wrap" }}>
               <div style={{ display:"inline-flex", alignItems:"center", gap:"0.5rem", padding:"0.3rem 0.9rem", background:"var(--rose-dim)", border:"1px solid rgba(253,121,121,0.3)", borderRadius:"9999px" }}>
@@ -385,19 +319,15 @@ function Hero() {
               </div>
               <span className="mono" style={{ fontSize:"0.68rem", color:"var(--ink3)", letterSpacing:"0.12em" }}>3RD YEAR CSE · MUJ · 2023–2027</span>
             </div>
-
             <div className="rv d1">
               <h1 style={{ fontFamily:"'Inter',sans-serif", fontSize:"clamp(3rem,7vw,5.5rem)", fontWeight:800, lineHeight:1.05, letterSpacing:"-0.04em", marginBottom:"1rem" }}>
-                Aayushi{" "}
-                <span style={{ color:"var(--rose)", textShadow:"0 0 40px rgba(253,121,121,0.4)" }} className="glow-text">Chhabra</span>
+                Aayushi{" "}<span style={{ color:"var(--rose)", textShadow:"0 0 40px rgba(253,121,121,0.4)" }} className="glow-text">Chhabra</span>
               </h1>
             </div>
-
             <div className="rv d2" style={{ height:32, marginBottom:"1.4rem", display:"flex", alignItems:"center", gap:"0.4rem" }}>
               <span className="mono" style={{ fontSize:"0.95rem", color:"var(--cyan)" }}>{typed}</span>
               <span style={{ width:2, height:18, background:"var(--cyan)", animation:"blink 1s step-end infinite", display:"inline-block" }} />
             </div>
-
             <p className="rv d3" style={{ fontSize:"0.95rem", color:"var(--ink2)", lineHeight:1.85, maxWidth:560, marginBottom:"2.2rem" }}>
               Third-year B.Tech CSE at Manipal University Jaipur with a{" "}
               <span style={{ color:"var(--rose)", fontWeight:700 }}>9.88 CGPA</span>.
@@ -405,7 +335,6 @@ function Hero() {
               Finalist at <span style={{ color:"var(--rose)", fontWeight:700 }}>Deloitte Capstone Ideathon</span> (200+ teams).
               Dean's Excellence Award — 5 consecutive semesters.
             </p>
-
             <div className="rv d4" style={{ display:"flex", gap:"0.8rem", flexWrap:"wrap", marginBottom:"1.8rem" }}>
               <a href="mailto:aayushichhabra1010@gmail.com" className="btn-primary">
                 <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg>
@@ -413,37 +342,26 @@ function Hero() {
               </a>
               <a href="#projects" className="btn-outline-rose">View Projects →</a>
             </div>
-
             <div className="rv d5" style={{ display:"flex", gap:"0.6rem", flexWrap:"wrap" }}>
-              <a href="/Aayushi_Chhabra_Resume.pdf" download="Aayushi_Chhabra_Resume.pdf" className="icon-btn" title="Download Resume">
-                <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                  <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
-                  <polyline points="14,2 14,8 20,8"/>
-                  <line x1="12" y1="18" x2="12" y2="12"/>
-                  <polyline points="9,15 12,18 15,15"/>
-                </svg>
+              <a href="/Aayushi_Chhabra_Resume.pdf" download="Aayushi_Chhabra_Resume.pdf" className="icon-btn">
+                <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="12" y1="18" x2="12" y2="12"/><polyline points="9,15 12,18 15,15"/></svg>
                 Resume
               </a>
-              <a href="https://github.com/aayushichhabra" target="_blank" rel="noreferrer" className="icon-btn" title="GitHub Profile">
-                <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
-                </svg>
+              <a href="https://github.com/aayushichhabra" target="_blank" rel="noreferrer" className="icon-btn">
+                <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
                 GitHub ↗
               </a>
-              <a href="https://leetcode.com/u/aayushichhabra" target="_blank" rel="noreferrer" className="icon-btn cyan" title="LeetCode Profile">
-                <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M13.483 0a1.374 1.374 0 0 0-.961.438L7.116 6.226l-3.854 4.126a5.266 5.266 0 0 0-1.209 2.104 5.35 5.35 0 0 0-.125.513 5.527 5.527 0 0 0 .062 2.362 5.83 5.83 0 0 0 .349 1.017 5.938 5.938 0 0 0 1.271 1.818l4.277 4.193.039.038c2.248 2.165 5.852 2.133 8.063-.074l2.396-2.392c.54-.54.54-1.414.003-1.955a1.378 1.378 0 0 0-1.951-.003l-2.396 2.392a3.021 3.021 0 0 1-4.205.038l-.02-.019-4.276-4.193c-.652-.64-.972-1.469-.948-2.263a2.68 2.68 0 0 1 .066-.523 2.545 2.545 0 0 1 .619-1.164L9.13 8.114c1.058-1.134 3.204-1.27 4.43-.278l3.501 2.831c.593.48 1.461.387 1.94-.207a1.384 1.384 0 0 0-.207-1.943l-3.5-2.831c-.8-.647-1.766-1.045-2.774-1.202l2.015-2.158A1.384 1.384 0 0 0 13.483 0zm-2.866 12.815a1.38 1.38 0 0 0-1.38 1.382 1.38 1.38 0 0 0 1.38 1.382H20.79a1.38 1.38 0 0 0 1.38-1.382 1.38 1.38 0 0 0-1.38-1.382z"/>
-                </svg>
+              <a href="https://leetcode.com/u/aayushichhabra" target="_blank" rel="noreferrer" className="icon-btn cyan">
+                <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M13.483 0a1.374 1.374 0 0 0-.961.438L7.116 6.226l-3.854 4.126a5.266 5.266 0 0 0-1.209 2.104 5.35 5.35 0 0 0-.125.513 5.527 5.527 0 0 0 .062 2.362 5.83 5.83 0 0 0 .349 1.017 5.938 5.938 0 0 0 1.271 1.818l4.277 4.193.039.038c2.248 2.165 5.852 2.133 8.063-.074l2.396-2.392c.54-.54.54-1.414.003-1.955a1.378 1.378 0 0 0-1.951-.003l-2.396 2.392a3.021 3.021 0 0 1-4.205.038l-.02-.019-4.276-4.193c-.652-.64-.972-1.469-.948-2.263a2.68 2.68 0 0 1 .066-.523 2.545 2.545 0 0 1 .619-1.164L9.13 8.114c1.058-1.134 3.204-1.27 4.43-.278l3.501 2.831c.593.48 1.461.387 1.94-.207a1.384 1.384 0 0 0-.207-1.943l-3.5-2.831c-.8-.647-1.766-1.045-2.774-1.202l2.015-2.158A1.384 1.384 0 0 0 13.483 0zm-2.866 12.815a1.38 1.38 0 0 0-1.38 1.382 1.38 1.38 0 0 0 1.38 1.382H20.79a1.38 1.38 0 0 0 1.38-1.382 1.38 1.38 0 0 0-1.38-1.382z"/></svg>
                 LeetCode ↗
               </a>
-              <a href="https://linkedin.com/in/aayushi-chhabra-54281a34a" target="_blank" rel="noreferrer" className="icon-btn" title="LinkedIn">
+              <a href="https://linkedin.com/in/aayushi-chhabra-54281a34a" target="_blank" rel="noreferrer" className="icon-btn">
                 <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
                 LinkedIn ↗
               </a>
             </div>
           </div>
 
-          {/* RIGHT — terminal card */}
           <div className="rv d3 hide-m" style={{ width:320, flexShrink:0 }}>
             <div className="glass glass-active" style={{ padding:"1.6rem", position:"relative", overflow:"hidden" }}>
               <div style={{ position:"absolute", top:0, left:0, right:0, height:2, background:"linear-gradient(90deg, var(--rose), var(--cyan))" }} />
@@ -474,7 +392,6 @@ function Hero() {
           </div>
         </div>
 
-        {/* STATS BENTO ROW */}
         <div className="rv d6" style={{ display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:"1rem", marginTop:"3.5rem" }}>
           {[
             { val:"9.88", sub:"CGPA", label:"Academic Excellence", col:"var(--rose)" },
@@ -494,7 +411,6 @@ function Hero() {
   );
 }
 
-/* ─── MARQUEE ─── */
 function Marquee() {
   const items = ["Python","Machine Learning","Cybersecurity","RAG Systems","React Native","LangChain","LangGraph","FAISS Vector DBs","PyTorch · TensorFlow","Anomaly Detection","Deepfake Detection","Kotlin · Android","Whisper STT","Google OAuth2","Streamlit · Plotly","9.88 CGPA","Deloitte Finalist","Ericsson R&D Intern"];
   const all = [...items, ...items];
@@ -511,7 +427,6 @@ function Marquee() {
   );
 }
 
-/* ─── ABOUT ─── */
 function About() {
   return (
     <section id="about" style={{ padding:"6rem 2.5rem", background:"var(--surface)", position:"relative", overflow:"hidden" }}>
@@ -565,7 +480,6 @@ function About() {
                 </div>
               ))}
             </div>
-
             <div className="rv d3 glass" style={{ padding:"1.8rem", position:"relative", overflow:"hidden" }}>
               <div style={{ position:"absolute", top:0, left:0, right:0, height:2, background:"linear-gradient(90deg, var(--rose), transparent)" }} />
               <div className="label" style={{ color:"var(--rose)", marginBottom:"1rem" }}>📜 CERTIFICATIONS</div>
@@ -590,7 +504,6 @@ function About() {
   );
 }
 
-/* ─── EXPERIENCE ─── */
 function Experience() {
   const EXP = [
     {
@@ -656,7 +569,6 @@ function Experience() {
   );
 }
 
-/* ─── PROJECTS ─── */
 const PROJECTS = [
   {
     num:"01", name:"Unified Cybersecurity Platform",
@@ -712,9 +624,7 @@ function ProjectCard({ p, i }) {
   const [hov, setHov] = useState(false);
   if (p.featured) {
     return (
-      <div className="rv d1" style={{ gridColumn:"1/-1" }}
-        onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}
-      >
+      <div className="rv d1" style={{ gridColumn:"1/-1" }} onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}>
         <div style={{
           background:"rgba(19,19,19,0.82)", backdropFilter:"blur(14px)",
           border:`1px solid ${hov ? p.col : "var(--outline)"}`,
@@ -750,10 +660,8 @@ function ProjectCard({ p, i }) {
       </div>
     );
   }
-
   return (
-    <div className={`rv d${(i%3)+1}`}
-      onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}
+    <div className={`rv d${(i%3)+1}`} onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}
       style={{
         background:"rgba(19,19,19,0.82)", backdropFilter:"blur(14px)",
         border:`1px solid ${hov ? p.col : "var(--outline)"}`,
@@ -808,46 +716,57 @@ function Projects() {
 }
 
 /* ─── SKILLS ─── */
+// ✅ FIX: Use real hex values — CSS variables like "var(--rose)" break
+//         when interpolated as "${col}88" or "${col}55" (produces invalid CSS)
 const SKILL_GROUPS = [
-  { label:"Programming & Dev", items:["Python","C","Java","JavaScript","OOP","DSA","Git"], col:"var(--rose)", icon:"⌨️" },
-  { label:"AI & Machine Learning", items:["Supervised & Unsupervised ML","Transfer Learning","RAG","Computer Vision","LangChain","LangGraph","Whisper STT","PyTorch","TF Lite","OpenCV","Scikit-learn","Pandas"], col:"var(--cyan)", icon:"🧠" },
+  { label:"Programming & Dev", items:["Python","C","Java","JavaScript","OOP","DSA","Git"], col:"#FD7979", icon:"⌨️" },
+  { label:"AI & Machine Learning", items:["Supervised & Unsupervised ML","Transfer Learning","RAG","Computer Vision","LangChain","LangGraph","Whisper STT","PyTorch","TF Lite","OpenCV","Scikit-learn","Pandas"], col:"#4cd7f6", icon:"🧠" },
   { label:"Cybersecurity", items:["CVE Analysis","Vulnerability Assessment","Incident Response","Threat Detection","Anomaly Detection","FAISS Vector DBs"], col:"#a78bfa", icon:"🔐" },
-  { label:"Mobile & Web Dev", items:["Android Studio","Kotlin","React Native","Expo","HTML","CSS","JavaScript","Streamlit","Figma"], col:"var(--rose)", icon:"📱" },
-  { label:"Databases & Cloud", items:["SQL","Firebase","Supabase","MongoDB","FAISS / Vector DBs"], col:"var(--cyan)", icon:"☁️" },
+  { label:"Mobile & Web Dev", items:["Android Studio","Kotlin","React Native","Expo","HTML","CSS","JavaScript","Streamlit","Figma"], col:"#FD7979", icon:"📱" },
+  { label:"Databases & Cloud", items:["SQL","Firebase","Supabase","MongoDB","FAISS / Vector DBs"], col:"#4cd7f6", icon:"☁️" },
   { label:"Tools & Platforms", items:["Gradio","Plotly","Google Gemini API","Google OAuth2","Hugging Face","VS Code","GitHub","Postman"], col:"#34d399", icon:"🛠️" },
 ];
 
 const SKILL_BARS = [
-  { name:"Machine Learning & AI Systems", pct:88, col:"var(--rose)" },
-  { name:"Python / Full-stack Dev", pct:87, col:"var(--cyan)" },
-  { name:"Cybersecurity & Threat Detection", pct:84, col:"#a78bfa" },
-  { name:"React Native / Mobile Dev", pct:82, col:"var(--rose)" },
-  { name:"Database Design & Cloud", pct:80, col:"var(--cyan)" },
-  { name:"UI/UX & Frontend", pct:75, col:"#34d399" },
+  { name:"Machine Learning & AI Systems", pct:88, col:"#FD7979" },
+  { name:"Python / Full-stack Dev",        pct:87, col:"#4cd7f6" },
+  { name:"Cybersecurity & Threat Detection",pct:84, col:"#a78bfa" },
+  { name:"React Native / Mobile Dev",       pct:82, col:"#FD7979" },
+  { name:"Database Design & Cloud",         pct:80, col:"#4cd7f6" },
+  { name:"UI/UX & Frontend",                pct:75, col:"#34d399" },
 ];
 
-/* ─── FIX: key includes tab so bars remount (fresh IntersectionObserver) on each tab switch ─── */
-function AnimBar({ name, pct, col }) {
+// ✅ FIX: IntersectionObserver fires on mount (same pattern as working code)
+//         threshold:0 so it triggers as soon as even 1px is visible
+function SkillBar({ name, pct, col, delay }) {
   const [vis, setVis] = useState(false);
   const ref = useRef(null);
+
   useEffect(() => {
     const obs = new IntersectionObserver(
-  ([e]) => {
-    if (e.isIntersecting) setTimeout(() => setVis(true), 80);
-  },
-  { threshold: 0.3 }
-);
+      ([entry]) => { if (entry.isIntersecting) setVis(true); },
+      { threshold: 0 }
+    );
     if (ref.current) obs.observe(ref.current);
     return () => obs.disconnect();
   }, []);
+
   return (
-    <div ref={ref} style={{ marginBottom:"1.3rem" }}>
-      <div style={{ display:"flex", justifyContent:"space-between", marginBottom:"0.45rem" }}>
-        <span className="mono" style={{ fontSize:"0.8rem" }}>{name}</span>
-        <span className="mono" style={{ fontSize:"0.66rem", color:col }}>{pct}%</span>
+    <div ref={ref} style={{ marginBottom:"1.1rem" }}>
+      <div style={{ display:"flex", justifyContent:"space-between", marginBottom:"0.5rem" }}>
+        <span style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:"0.8rem", color:"var(--ink)" }}>{name}</span>
+        <span style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:"0.78rem", color:col }}>{pct}%</span>
       </div>
-      <div className="prog-track">
-        <div className="prog-fill" style={{ background:`linear-gradient(90deg, ${col}, ${col}88)`, width: vis ? `${pct}%` : "0%", boxShadow:`0 0 8px ${col}55` }} />
+      <div style={{ height:3, background:"rgba(255,255,255,0.06)", borderRadius:10, overflow:"hidden" }}>
+        <div style={{
+          height:"100%",
+          // ✅ FIX: col is now a real hex so col+"88" = "#FD797988" — valid CSS
+          background:`linear-gradient(90deg, ${col}, ${col}88)`,
+          borderRadius:10,
+          boxShadow:`0 0 8px ${col}55`,
+          width: vis ? `${pct}%` : "0%",
+          transition:`width 1.4s cubic-bezier(0.25,1,0.5,1) ${delay}s`,
+        }} />
       </div>
     </div>
   );
@@ -855,10 +774,7 @@ function AnimBar({ name, pct, col }) {
 
 function Skills() {
   const [tab, setTab] = useState("tags");
-  useEffect(() => {
-  const els = document.querySelectorAll(".rv");
-  els.forEach(el => el.classList.add("on"));
-}, [tab]);
+  useReveal(tab);
   return (
     <section id="skills" style={{ padding:"6rem 2.5rem", background:"var(--bg)" }}>
       <div style={{ maxWidth:1200, margin:"0 auto" }}>
@@ -880,11 +796,12 @@ function Skills() {
           </div>
         </div>
 
-        {/* ── FIX: key="tags-grid" forces React to remount the grid when switching back ── */}
+        {/* ✅ FIX: Conditional rendering — components remount fresh each time tab switches */}
         {tab === "tags" && (
-          <div key="tags-grid" style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(280px,1fr))", gap:"1.1rem" }}>
+          <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(280px,1fr))", gap:"1.1rem" }}>
             {SKILL_GROUPS.map(({ label, items, col, icon }, i) => (
-              <div key={label} className={`rv d${i+1} glass`} style={{ padding:"1.5rem", borderRadius:"1rem", position:"relative", overflow:"hidden" }}
+              <div key={label} className={`rv d${i+1} glass`}
+                style={{ padding:"1.5rem", borderRadius:"1rem", position:"relative", overflow:"hidden" }}
                 onMouseEnter={e => { e.currentTarget.style.borderColor=`${col}40`; }}
                 onMouseLeave={e => { e.currentTarget.style.borderColor="var(--outline)"; }}
               >
@@ -903,10 +820,11 @@ function Skills() {
           </div>
         )}
 
-        {/* ── FIX: key includes tab so each tab switch remounts AnimBars with fresh observers ── */}
         {tab === "bars" && (
-          <div key="bars-grid" style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"0 4rem" }}>
-            {SKILL_BARS.map(s => <AnimBar key={`${tab}-${s.name}`} {...s} />)}
+          <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"0 4rem" }}>
+            {SKILL_BARS.map((s, i) => (
+              <SkillBar key={s.name} {...s} delay={i * 0.07} />
+            ))}
           </div>
         )}
       </div>
@@ -914,7 +832,6 @@ function Skills() {
   );
 }
 
-/* ─── ACHIEVEMENTS ─── */
 function Achievements() {
   const items = [
     { icon:"🏆", title:"Dean's Excellence Award", desc:"Maintained 9.88 CGPA across 5 consecutive semesters at MUJ.", col:"var(--rose)" },
@@ -942,7 +859,6 @@ function Achievements() {
             </div>
           ))}
         </div>
-
         <div className="rv d5" style={{ background:"rgba(253,121,121,0.04)", border:"1px solid rgba(253,121,121,0.12)", borderRadius:"1rem", padding:"2.2rem 3rem", display:"flex", alignItems:"center", justifyContent:"space-between", flexWrap:"wrap", gap:"2rem" }}>
           <div>
             <div className="label" style={{ color:"var(--ink3)", marginBottom:"0.4rem", fontSize:"0.62rem" }}>ACADEMIC STANDING</div>
@@ -963,7 +879,6 @@ function Achievements() {
   );
 }
 
-/* ─── CONTACT ─── */
 function Contact() {
   const [copied, setCopied] = useState(false);
   const email = "aayushichhabra1010@gmail.com";
@@ -978,7 +893,6 @@ function Contact() {
         <p className="rv d2" style={{ fontSize:"0.9rem", color:"var(--ink2)", lineHeight:1.85, marginBottom:"2.5rem" }}>
           Open to internship opportunities, research collaborations, and interesting projects in AI, cybersecurity, and full-stack development.
         </p>
-
         <div className="rv d3" style={{ display:"flex", alignItems:"center", gap:"0.8rem", justifyContent:"center", marginBottom:"2rem", flexWrap:"wrap" }}>
           <span className="mono" style={{ fontSize:"0.85rem", color:"var(--rose)", letterSpacing:"0.03em" }}>{email}</span>
           <button onClick={() => { navigator.clipboard.writeText(email); setCopied(true); setTimeout(()=>setCopied(false),2000); }}
@@ -986,7 +900,6 @@ function Contact() {
             {copied ? "Copied ✓" : "Copy"}
           </button>
         </div>
-
         <div className="rv d4" style={{ display:"flex", justifyContent:"center", gap:"0.6rem", flexWrap:"wrap", marginBottom:"2.5rem" }}>
           {[
             { label:"LinkedIn", url:"https://linkedin.com/in/aayushi-chhabra-54281a34a", icon:<svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg> },
@@ -997,7 +910,6 @@ function Contact() {
             <a key={label} href={url} target="_blank" rel="noreferrer" className="icon-btn">{icon}{label}</a>
           ))}
         </div>
-
         <div className="rv d5" style={{ display:"flex", gap:"0.8rem", justifyContent:"center", flexWrap:"wrap" }}>
           <a href="mailto:aayushichhabra1010@gmail.com" className="btn-primary">
             <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg>
@@ -1012,7 +924,6 @@ function Contact() {
   );
 }
 
-/* ─── FOOTER ─── */
 function Footer() {
   return (
     <footer style={{ borderTop:"1px solid var(--outline)", padding:"1.8rem 2.5rem", display:"flex", justifyContent:"space-between", alignItems:"center", flexWrap:"wrap", gap:"1rem", background:"var(--surface)" }}>
@@ -1031,9 +942,8 @@ function Footer() {
   );
 }
 
-/* ─── APP ─── */
 export default function App() {
-  useReveal();
+  useReveal(null);
   return (
     <>
       <style>{G}</style>
