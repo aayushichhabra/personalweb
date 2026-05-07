@@ -831,7 +831,12 @@ function AnimBar({ name, pct, col }) {
   const [vis, setVis] = useState(false);
   const ref = useRef(null);
   useEffect(() => {
-    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) setVis(true); }, { threshold: 0.3 });
+    const obs = new IntersectionObserver(
+  ([e]) => {
+    if (e.isIntersecting) setTimeout(() => setVis(true), 80);
+  },
+  { threshold: 0.3 }
+);
     if (ref.current) obs.observe(ref.current);
     return () => obs.disconnect();
   }, []);
@@ -850,7 +855,10 @@ function AnimBar({ name, pct, col }) {
 
 function Skills() {
   const [tab, setTab] = useState("tags");
-
+  useEffect(() => {
+  const els = document.querySelectorAll(".rv");
+  els.forEach(el => el.classList.add("on"));
+}, [tab]);
   return (
     <section id="skills" style={{ padding:"6rem 2.5rem", background:"var(--bg)" }}>
       <div style={{ maxWidth:1200, margin:"0 auto" }}>
