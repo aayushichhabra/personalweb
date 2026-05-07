@@ -188,21 +188,6 @@ const G = `
   }
 
   .sec-pad { padding: 7rem 4rem; }
-  @media(max-width:768px) {
-    .sec-pad { padding: 5rem 1.5rem !important; }
-    .grid2   { grid-template-columns: 1fr !important; }
-    .grid3   { grid-template-columns: 1fr !important; }
-    .hero-layout { flex-direction: column !important; }
-    .hide-m  { display: none !important; }
-    .hero-name { font-size: clamp(2.5rem,12vw,5rem) !important; }
-    .nav-links { display: none !important; }
-    .show-m { display: block !important; }
-    .tl-section-grid { grid-template-columns: 1fr !important; }
-    .tl-center-line { left: 20px !important; }
-    .tl-item { padding-left: 50px !important; padding-right: 0 !important; }
-    .tl-item-right { padding-left: 50px !important; padding-right: 0 !important; text-align: left !important; }
-    .tl-dot { left: 14px !important; right: auto !important; }
-  }
 
   .divider {
     height: 1px;
@@ -297,13 +282,6 @@ const G = `
 
   .tag-row { display:flex; flex-wrap:wrap; gap:0.4rem; }
 
-  @keyframes petalFloat {
-    0% { transform: translateY(0) rotate(0deg) scale(1); opacity: 0; }
-    10% { opacity: 0.6; }
-    90% { opacity: 0.6; }
-    100% { transform: translateY(-100vh) rotate(720deg) scale(0.3); opacity: 0; }
-  }
-
   /* Avatar ring animation */
   .avatar-wrapper {
     position: relative;
@@ -346,9 +324,6 @@ const G = `
     grid-template-columns: 1fr 1fr;
     gap: 2rem;
     align-items: center;
-  }
-  @media(max-width:768px) {
-    .project-featured { grid-template-columns: 1fr !important; }
   }
 
   /* Social link hover */
@@ -399,6 +374,74 @@ const G = `
     letter-spacing: 0.1em;
     color: #34d399;
   }
+
+  /* ─── MOBILE RESPONSIVE ─── */
+  @media(max-width:768px) {
+    /* Nav */
+    nav { padding: 0.8rem 1.2rem !important; }
+    .nav-links { display: none !important; }
+    .mob-hamburger { display: flex !important; }
+
+    /* Sections */
+    .sec-pad { padding: 4rem 1.2rem !important; }
+
+    /* Hero */
+    #hero { padding: 6rem 1.2rem 4rem !important; }
+    .hero-layout { flex-direction: column !important; gap: 2.5rem !important; }
+    .hero-name { font-size: clamp(2.6rem, 13vw, 4.5rem) !important; }
+    .hero-right-card { display: none !important; }
+    .hero-stats { gap: 1.5rem !important; flex-wrap: wrap !important; }
+    .hero-stats > div { flex: 1 1 calc(50% - 1rem); }
+    .hero-btns { flex-wrap: wrap !important; gap: 0.75rem !important; }
+
+    /* About grids */
+    .about-grid { grid-template-columns: 1fr !important; gap: 2.5rem !important; }
+
+    /* Projects */
+    .project-featured { grid-template-columns: 1fr !important; }
+    .projects-grid { grid-template-columns: 1fr !important; }
+
+    /* Skills */
+    .skills-grid { grid-template-columns: 1fr !important; }
+    .bars-grid { grid-template-columns: 1fr !important; }
+
+    /* Achievements */
+    .achievements-grid { grid-template-columns: 1fr !important; }
+    .cgpa-banner { flex-direction: column !important; align-items: flex-start !important; gap: 1.5rem !important; padding: 1.5rem !important; }
+    .cgpa-stats { gap: 1.5rem !important; }
+
+    /* Timeline */
+    .tl-desktop-line { display: none !important; }
+    .tl-mobile-line { display: block !important; }
+
+    /* Progress sidebar */
+    .progress-sidebar { display: none !important; }
+
+    /* Footer */
+    footer { padding: 1.5rem 1.2rem !important; flex-direction: column !important; text-align: center !important; gap: 0.75rem !important; }
+
+    /* Contact */
+    .contact-email-row { flex-direction: column !important; align-items: center !important; gap: 0.75rem !important; }
+    .contact-email-text { font-size: 0.75rem !important; word-break: break-all !important; }
+    .contact-socials { justify-content: center !important; }
+    .contact-btns { justify-content: center !important; }
+
+    /* Skills tab buttons */
+    .skills-tab-row { flex-wrap: wrap !important; }
+
+    /* Experience */
+    .exp-header { flex-direction: column !important; align-items: flex-start !important; }
+  }
+
+  @media(max-width:480px) {
+    .sec-pad { padding: 3rem 1rem !important; }
+    #hero { padding: 5.5rem 1rem 3rem !important; }
+    .hero-name { font-size: clamp(2.2rem, 14vw, 3.5rem) !important; }
+    .hero-stats > div { flex: 1 1 100%; }
+    .btn-primary, .btn-ghost { padding: 0.7rem 1.2rem !important; font-size: 0.72rem !important; }
+    .mob-menu a { font-size: 1.6rem; }
+    .cgpa-banner .serif { font-size: 2.8rem !important; }
+  }
 `;
 
 /* ─── SCROLL PROGRESS ─── */
@@ -426,6 +469,17 @@ function useReveal() {
   }, []);
 }
 
+/* ─── MOBILE HOOK ─── */
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(() => typeof window !== "undefined" && window.innerWidth <= 768);
+  useEffect(() => {
+    const fn = () => setIsMobile(window.innerWidth <= 768);
+    window.addEventListener("resize", fn, { passive: true });
+    return () => window.removeEventListener("resize", fn);
+  }, []);
+  return isMobile;
+}
+
 /* ─── SECTION PROGRESS ─── */
 function SectionProgress() {
   const SECS = ["hero","about","timeline","experience","projects","skills","achievements","contact"];
@@ -438,7 +492,7 @@ function SectionProgress() {
     return () => obs.disconnect();
   }, []);
   return (
-    <div className="progress-sidebar hide-m">
+    <div className="progress-sidebar">
       {SECS.map(s => (
         <div key={s} className={`prog-dot${active === s ? " active" : ""}`}
           title={s.toUpperCase()}
@@ -481,12 +535,19 @@ function Nav() {
         </div>
         <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
           <a href="mailto:aayushichhabra1010@gmail.com" className="btn-primary" style={{ padding: "0.55rem 1.2rem", fontSize: "0.72rem" }}>Hire Me</a>
+          {/* Hamburger — always rendered, shown via CSS on mobile */}
           <button
+            className="mob-hamburger"
             onClick={() => setMenuOpen(o => !o)}
-            style={{ display: "none", background: "none", border: "none", cursor: "pointer", color: "var(--ink)", padding: "0.3rem" }}
-            className="show-m"
+            style={{
+              display: "none",
+              background: "none", border: "1px solid rgba(244,63,94,0.2)",
+              cursor: "pointer", color: "var(--ink)", padding: "0.35rem 0.5rem",
+              borderRadius: "4px", alignItems: "center", justifyContent: "center",
+            }}
+            aria-label="Open menu"
           >
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
             </svg>
           </button>
@@ -535,9 +596,9 @@ function Hero() {
       </div>
 
       <div style={{ maxWidth: 1100, margin: "0 auto", width: "100%", position: "relative", zIndex: 1 }}>
-        <div style={{ display: "flex", gap: "4rem", alignItems: "center", flexWrap: "wrap" }} className="hero-layout">
+        <div className="hero-layout" style={{ display: "flex", gap: "4rem", alignItems: "center", flexWrap: "wrap" }}>
           {/* LEFT */}
-          <div style={{ flex: 1, minWidth: 300 }}>
+          <div style={{ flex: 1, minWidth: 0 }}>
             <div className="rv" style={{ display: "flex", alignItems: "center", gap: "1rem", marginBottom: "2rem", flexWrap: "wrap" }}>
               <div className="mono" style={{ fontSize: "0.7rem", letterSpacing: "0.2em", color: "var(--rose)", textTransform: "uppercase" }}>
                 3rd Year CSE · MUJ · 2023–2027
@@ -567,7 +628,7 @@ function Hero() {
               Dean's Excellence Award recipient — 5 consecutive semesters.
             </p>
 
-            <div className="rv d4" style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
+            <div className="rv d4 hero-btns" style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
               <a href="mailto:aayushichhabra1010@gmail.com" className="btn-primary">
                 <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg>
                 Get In Touch
@@ -578,7 +639,7 @@ function Hero() {
               </a>
             </div>
 
-            <div className="rv d5" style={{ display: "flex", gap: "2.5rem", marginTop: "3.5rem", flexWrap: "wrap" }}>
+            <div className="rv d5 hero-stats" style={{ display: "flex", gap: "2.5rem", marginTop: "3.5rem", flexWrap: "wrap" }}>
               {[["9.88", "CGPA"], ["5×", "Dean's Award"], ["6+", "Projects Built"], ["200+", "Teams Beaten"]].map(([n, l]) => (
                 <div key={l} style={{ position: "relative" }}>
                   <div className="stat-number" style={{ fontSize: "1.8rem" }}>{n}</div>
@@ -588,8 +649,8 @@ function Hero() {
             </div>
           </div>
 
-          {/* RIGHT — decorative card */}
-          <div className="rv d3 hide-m" style={{ width: 340 }}>
+          {/* RIGHT — decorative card (hidden on mobile via CSS class) */}
+          <div className="rv d3 hero-right-card" style={{ width: 340, flexShrink: 0 }}>
             <div className="glass" style={{ borderRadius: "8px", padding: "2rem", position: "relative", overflow: "hidden" }}>
               <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: "linear-gradient(90deg, var(--rose), var(--mauve), var(--sky))" }} />
               <div style={{ position: "absolute", bottom: 0, right: 0, width: 120, height: 120, background: "radial-gradient(circle, rgba(192,132,252,0.08) 0%, transparent 70%)", borderRadius: "50%", pointerEvents: "none" }} />
@@ -644,14 +705,13 @@ function Ticker() {
 function About() {
   return (
     <section id="about" className="sec-pad" style={{ background: "var(--bg2)", position: "relative", overflow: "hidden" }}>
-      {/* Decorative blobs */}
       <div style={{ position: "absolute", top: "10%", right: "-5%", width: 400, height: 400, background: "radial-gradient(circle, rgba(244,63,94,0.04) 0%, transparent 70%)", borderRadius: "50%", pointerEvents: "none" }} />
       <div style={{ position: "absolute", bottom: "5%", left: "-8%", width: 300, height: 300, background: "radial-gradient(circle, rgba(192,132,252,0.04) 0%, transparent 70%)", borderRadius: "50%", pointerEvents: "none" }} />
 
       <div style={{ maxWidth: 1100, margin: "0 auto", position: "relative" }}>
         <div className="rv section-label">About</div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "5rem", alignItems: "start" }} className="grid2">
+        <div className="about-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "5rem", alignItems: "start" }}>
           <div>
             <h2 className="rv d1 serif" style={{ fontSize: "clamp(1.8rem,4vw,3rem)", fontWeight: 900, lineHeight: 1.15, marginBottom: "1.5rem" }}>
               Building at the intersection of<br /><span className="rose-grad">AI & Security</span>
@@ -669,7 +729,6 @@ function About() {
               and practically impactful.
             </p>
 
-            {/* Social links row */}
             <div className="rv d4" style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
               {[
                 { label: "Email", href: "mailto:aayushichhabra1010@gmail.com", icon: <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg> },
@@ -736,8 +795,9 @@ const TIMELINE_DATA = [
   { year: "2025", title: "Building ResQNet & DeepFake Detection", desc: "Developing a cross-platform crisis management app and an AI-powered deepfake detection system with Grad-CAM explainability.", icon: "🚀", col: "var(--mauve)", side: "left" },
 ];
 
-
 function Timeline() {
+  const isMobile = useIsMobile();
+
   return (
     <section id="timeline" className="sec-pad" style={{ background: "var(--bg)", position: "relative", overflow: "hidden" }}>
       <div style={{ position: "absolute", top: "20%", left: "50%", transform: "translateX(-50%)", width: 600, height: 600, background: "radial-gradient(circle, rgba(244,63,94,0.03) 0%, transparent 70%)", borderRadius: "50%", pointerEvents: "none" }} />
@@ -749,40 +809,49 @@ function Timeline() {
         </h2>
 
         <div style={{ position: "relative" }}>
-          {/* Center line desktop */}
-          <div className="tl-center-line hide-m" style={{
-            position: "absolute", left: "50%", top: 0, bottom: 0, width: 2,
-            background: "linear-gradient(180deg, var(--rose), var(--mauve), transparent)",
-            transform: "translateX(-50%)",
-          }} />
-          {/* Center line mobile */}
-          <div className="tl-center-line" style={{
-            position: "absolute", left: 20, top: 0, bottom: 0, width: 2,
-            background: "linear-gradient(180deg, var(--rose), var(--mauve), transparent)",
-            display: "none",
-          }} />
+          {/* Desktop center line */}
+          {!isMobile && (
+            <div className="tl-desktop-line" style={{
+              position: "absolute", left: "50%", top: 0, bottom: 0, width: 2,
+              background: "linear-gradient(180deg, var(--rose), var(--mauve), transparent)",
+              transform: "translateX(-50%)",
+            }} />
+          )}
+          {/* Mobile left line */}
+          {isMobile && (
+            <div className="tl-mobile-line" style={{
+              position: "absolute", left: 16, top: 0, bottom: 0, width: 2,
+              background: "linear-gradient(180deg, var(--rose), var(--mauve), transparent)",
+            }} />
+          )}
 
           {TIMELINE_DATA.map((item, i) => {
             const isLeft = item.side === "left";
             return (
               <div
                 key={i}
-                className={`rv d${Math.min(i % 3 + 1, 5)} tl-item${isLeft ? "" : " tl-item-right"}`}
+                className={`rv d${Math.min(i % 3 + 1, 5)}`}
                 style={{
                   display: "flex",
-                  justifyContent: isLeft ? "flex-end" : "flex-start",
+                  justifyContent: isMobile ? "flex-start" : (isLeft ? "flex-end" : "flex-start"),
                   position: "relative",
                   marginBottom: "2.5rem",
-                  paddingRight: isLeft ? "calc(50% + 30px)" : "0",
-                  paddingLeft: isLeft ? "0" : "calc(50% + 30px)",
+                  paddingRight: isMobile ? 0 : (isLeft ? "calc(50% + 30px)" : "0"),
+                  paddingLeft: isMobile ? "44px" : (isLeft ? "0" : "calc(50% + 30px)"),
+                  textAlign: isMobile ? "left" : (isLeft ? "right" : "left"),
                 }}
               >
                 {/* Connector dot */}
-                <div className="tl-dot" style={{
-                  position: "absolute", left: "50%", top: 20, width: 14, height: 14,
+                <div style={{
+                  position: "absolute",
+                  left: isMobile ? 10 : "50%",
+                  top: 20,
+                  width: 14, height: 14,
                   borderRadius: "50%", background: item.col,
                   boxShadow: `0 0 12px ${item.col}, 0 0 28px ${item.col}44`,
-                  border: "3px solid var(--bg)", transform: "translateX(-50%)", zIndex: 2,
+                  border: "3px solid var(--bg)",
+                  transform: isMobile ? "none" : "translateX(-50%)",
+                  zIndex: 2,
                 }} />
 
                 <div style={{
@@ -802,14 +871,14 @@ function Timeline() {
                   }}
                 >
                   <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: `linear-gradient(90deg, ${item.col}, transparent)` }} />
-                  <div style={{ display: "flex", alignItems: "center", gap: "0.8rem", marginBottom: "0.5rem" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "0.8rem", marginBottom: "0.5rem", flexDirection: "row" }}>
                     <span style={{ fontSize: "1.4rem" }}>{item.icon}</span>
                     <div>
                       <span className="mono" style={{ fontSize: "0.62rem", letterSpacing: "0.15em", color: item.col, textTransform: "uppercase", display: "block", marginBottom: "0.1rem" }}>{item.year}</span>
                       <h3 style={{ fontWeight: 700, fontSize: "0.9rem", lineHeight: 1.3 }}>{item.title}</h3>
                     </div>
                   </div>
-                  <p style={{ fontSize: "0.8rem", color: "var(--ink2)", lineHeight: 1.75, marginLeft: "2.7rem" }}>{item.desc}</p>
+                  <p style={{ fontSize: "0.8rem", color: "var(--ink2)", lineHeight: 1.75, marginLeft: "2.7rem", textAlign: "left" }}>{item.desc}</p>
                 </div>
               </div>
             );
@@ -875,12 +944,12 @@ function Experience() {
             <div key={company} className={`rv d${i + 1}`} style={{ marginBottom: "2.5rem", position: "relative" }}>
               <div style={{ position: "absolute", left: -27, top: 6, width: 12, height: 12, borderRadius: "50%", background: col, boxShadow: `0 0 10px ${col}`, border: "2px solid var(--bg2)" }} />
               <div className="card" style={{ borderRadius: "6px", padding: "1.8rem" }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "0.5rem", marginBottom: "1rem" }}>
+                <div className="exp-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "0.5rem", marginBottom: "1rem" }}>
                   <div>
                     <div style={{ fontWeight: 700, fontSize: "1rem", marginBottom: "0.25rem" }}>{role}</div>
                     <div style={{ color: col, fontSize: "0.85rem", fontWeight: 600 }}>{company} · {loc}</div>
                   </div>
-                  <span className="mono" style={{ fontSize: "0.65rem", letterSpacing: "0.08em", color: "var(--ink2)", padding: "0.3rem 0.8rem", background: "rgba(255,255,255,0.04)", border: "1px solid var(--line)", borderRadius: "20px" }}>{period}</span>
+                  <span className="mono" style={{ fontSize: "0.65rem", letterSpacing: "0.08em", color: "var(--ink2)", padding: "0.3rem 0.8rem", background: "rgba(255,255,255,0.04)", border: "1px solid var(--line)", borderRadius: "20px", whiteSpace: "nowrap" }}>{period}</span>
                 </div>
                 <ul style={{ listStyle: "none", marginBottom: "1rem", display: "flex", flexDirection: "column", gap: "0.45rem" }}>
                   {bullets.map((b, j) => (
@@ -985,7 +1054,7 @@ function ProjectCard({ p, i }) {
   const [hov, setHov] = useState(false);
   if (p.featured) {
     return (
-      <div className={`rv d1 project-featured`}
+      <div className="rv d1 project-featured"
         onMouseEnter={() => setHov(true)}
         onMouseLeave={() => setHov(false)}
         style={{
@@ -1008,7 +1077,7 @@ function ProjectCard({ p, i }) {
             <div className="mono" style={{ fontSize: "0.65rem", color: p.col, letterSpacing: "0.1em" }}>#{p.num} · FEATURED</div>
             <span style={{ fontSize: "0.72rem", padding: "0.2rem 0.8rem", background: `${p.col}12`, color: p.col, border: `1px solid ${p.col}30`, borderRadius: "20px", fontFamily: "DM Mono, monospace", letterSpacing: "0.05em" }}>{p.category}</span>
           </div>
-          <h3 className="serif" style={{ fontSize: "1.6rem", fontWeight: 700, marginBottom: "0.6rem", color: "var(--ink)", lineHeight: 1.2 }}>{p.name}</h3>
+          <h3 className="serif" style={{ fontSize: "clamp(1.2rem, 3vw, 1.6rem)", fontWeight: 700, marginBottom: "0.6rem", color: "var(--ink)", lineHeight: 1.2 }}>{p.name}</h3>
           <p style={{ fontSize: "0.9rem", color: "var(--ink2)", lineHeight: 1.75, marginBottom: "1.5rem" }}>{p.tagline}</p>
           <div className="tag-row" style={{ marginBottom: "1.5rem" }}>
             {p.tech.map(t => <span key={t} className="chip-r" style={{ borderColor: `${p.col}25`, color: p.col }}>{t}</span>)}
@@ -1096,7 +1165,7 @@ function Projects() {
             View All on GitHub ↗
           </a>
         </div>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(320px,1fr))", gap: "1.5rem" }} className="grid3">
+        <div className="projects-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(300px,1fr))", gap: "1.5rem" }}>
           {PROJECTS.map((p, i) => <ProjectCard key={p.num} p={p} i={i} />)}
         </div>
       </div>
@@ -1157,7 +1226,7 @@ function Skills() {
     <section id="skills" className="sec-pad" style={{ background: "var(--bg2)" }}>
       <div style={{ maxWidth: 1100, margin: "0 auto" }}>
         <div className="rv section-label">Skills</div>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", flexWrap: "wrap", gap: "1rem", marginBottom: "2.5rem" }}>
+        <div className="skills-tab-row" style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", flexWrap: "wrap", gap: "1rem", marginBottom: "2.5rem" }}>
           <h2 className="rv d1 serif" style={{ fontSize: "clamp(1.8rem,4vw,2.8rem)", fontWeight: 900 }}>
             Technical <span className="rose-grad">Toolkit</span>
           </h2>
@@ -1169,7 +1238,7 @@ function Skills() {
         </div>
 
         {tab === "tags" && (
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(300px,1fr))", gap: "1.2rem" }} className="grid3">
+          <div className="skills-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(280px,1fr))", gap: "1.2rem" }}>
             {SKILL_GROUPS.map(({ label, items, col, icon }, i) => (
               <div key={label} className={`rv d${i + 1} card skill-domain-card`} style={{ borderRadius: "6px", padding: "1.5rem", position: "relative", overflow: "hidden" }}>
                 <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: `linear-gradient(90deg, ${col}, transparent)` }} />
@@ -1186,7 +1255,7 @@ function Skills() {
         )}
 
         {tab === "bars" && (
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0 4rem" }} className="grid2">
+          <div className="bars-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0 4rem" }}>
             {SKILL_BARS.map(s => <AnimatedBar key={s.name} {...s} />)}
           </div>
         )}
@@ -1211,7 +1280,7 @@ function Achievements() {
         <h2 className="rv d1 serif" style={{ fontSize: "clamp(1.8rem,4vw,2.8rem)", fontWeight: 900, marginBottom: "3.5rem" }}>
           Milestones & <span className="rose-grad">Awards</span>
         </h2>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(240px,1fr))", gap: "1.5rem" }} className="grid2">
+        <div className="achievements-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(240px,1fr))", gap: "1.5rem" }}>
           {ACHIEVEMENTS.map(({ icon, title, desc, col }, i) => (
             <div key={title} className={`rv d${i + 1} card`} style={{ borderRadius: "6px", padding: "2rem", position: "relative", overflow: "hidden" }}>
               <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: `linear-gradient(90deg, ${col}, transparent)` }} />
@@ -1223,7 +1292,7 @@ function Achievements() {
         </div>
 
         {/* CGPA Banner */}
-        <div className="rv d5" style={{ marginTop: "3rem", background: "rgba(244,63,94,0.03)", border: "1px solid rgba(244,63,94,0.1)", borderRadius: "6px", padding: "2.5rem 3rem", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "2rem" }}>
+        <div className="rv d5 cgpa-banner" style={{ marginTop: "3rem", background: "rgba(244,63,94,0.03)", border: "1px solid rgba(244,63,94,0.1)", borderRadius: "6px", padding: "2.5rem 3rem", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "2rem" }}>
           <div>
             <div className="mono" style={{ fontSize: "0.65rem", letterSpacing: "0.2em", color: "var(--ink2)", marginBottom: "0.5rem" }}>ACADEMIC STANDING</div>
             <div className="serif" style={{ fontSize: "3.5rem", fontWeight: 900, lineHeight: 1 }}>
@@ -1231,7 +1300,7 @@ function Achievements() {
             </div>
             <div className="mono" style={{ fontSize: "0.7rem", color: "var(--ink2)", marginTop: "0.3rem" }}>CGPA · Manipal University Jaipur</div>
           </div>
-          <div style={{ display: "flex", gap: "3rem", flexWrap: "wrap" }}>
+          <div className="cgpa-stats" style={{ display: "flex", gap: "3rem", flexWrap: "wrap" }}>
             {[["5×", "Dean's Award"], ["3+", "Internships"], ["Top 10", "Deloitte Ideathon"]].map(([n, l]) => (
               <div key={l} style={{ textAlign: "center" }}>
                 <div className="serif" style={{ fontSize: "2rem", fontWeight: 900, color: "var(--rose2)" }}>{n}</div>
@@ -1293,15 +1362,15 @@ function Contact() {
         </p>
 
         {/* Email row */}
-        <div className="rv d3" style={{ display: "flex", alignItems: "center", gap: "1rem", justifyContent: "center", marginBottom: "2.5rem", flexWrap: "wrap" }}>
-          <span className="mono" style={{ fontSize: "0.88rem", color: "var(--rose2)", letterSpacing: "0.04em" }}>{email}</span>
-          <button onClick={copy} style={{ background: copied ? "rgba(52,211,153,0.08)" : "rgba(244,63,94,0.08)", border: `1px solid ${copied ? "rgba(52,211,153,0.25)" : "rgba(244,63,94,0.25)"}`, borderRadius: "20px", padding: "0.4rem 1rem", cursor: "pointer", color: copied ? "var(--mint)" : "var(--rose2)", fontSize: "0.68rem", fontFamily: "DM Mono, monospace", transition: "all 0.2s" }}>
+        <div className="rv d3 contact-email-row" style={{ display: "flex", alignItems: "center", gap: "1rem", justifyContent: "center", marginBottom: "2.5rem", flexWrap: "wrap" }}>
+          <span className="mono contact-email-text" style={{ fontSize: "0.88rem", color: "var(--rose2)", letterSpacing: "0.04em" }}>{email}</span>
+          <button onClick={copy} style={{ background: copied ? "rgba(52,211,153,0.08)" : "rgba(244,63,94,0.08)", border: `1px solid ${copied ? "rgba(52,211,153,0.25)" : "rgba(244,63,94,0.25)"}`, borderRadius: "20px", padding: "0.4rem 1rem", cursor: "pointer", color: copied ? "var(--mint)" : "var(--rose2)", fontSize: "0.68rem", fontFamily: "DM Mono, monospace", transition: "all 0.2s", whiteSpace: "nowrap" }}>
             {copied ? "Copied ✓" : "Copy"}
           </button>
         </div>
 
         {/* Social links grid */}
-        <div className="rv d4" style={{ display: "flex", justifyContent: "center", gap: "0.75rem", flexWrap: "wrap", marginBottom: "3rem" }}>
+        <div className="rv d4 contact-socials" style={{ display: "flex", justifyContent: "center", gap: "0.75rem", flexWrap: "wrap", marginBottom: "3rem" }}>
           {socials.map(({ label, url, icon }) => (
             <a key={label} href={url} target="_blank" rel="noreferrer" className="social-link">
               {icon}{label}
@@ -1309,7 +1378,7 @@ function Contact() {
           ))}
         </div>
 
-        <div className="rv d5" style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
+        <div className="rv d5 contact-btns" style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
           <a href="mailto:aayushichhabra1010@gmail.com" className="btn-primary">
             <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg>
             Send a Message
