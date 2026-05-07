@@ -12,6 +12,8 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  --angle: 215deg;
 }
 
 * {
@@ -33,17 +35,18 @@ body {
   min-height: 100vh;
   width: 100%;
 }
+
 @keyframes meteor {
   0% {
     opacity: 0;
-    transform: translateY(0) rotate(var(--angle));
+    transform: translateY(0) rotate(var(--angle, 215deg));
   }
   10% {
     opacity: 1;
   }
   100% {
     opacity: 0;
-    transform: translateY(600px) rotate(var(--angle));
+    transform: translateY(600px) rotate(var(--angle, 215deg));
   }
 }
 

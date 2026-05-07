@@ -1,190 +1,197 @@
 import { useState, useEffect, useRef } from "react";
 
-/* ─── GLOBAL STYLES ─── */
 const G = `
-  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Outfit:wght@300;400;500;600;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@600;700&display=swap');
 
   :root {
-    --bg:       #000000;
-    --bg2:      #050505;
-    --card:     rgba(255,255,255,0.03);
-    --card-b:   rgba(255,255,255,0.06);
-    --ink:      #f5f0f0;
-    --ink2:     #9e8e8e;
-    --rose:     #f43f5e;
-    --rose2:    #fda4af;
-    --rose3:    #ffe4e6;
-    --blush:    #fb7185;
-    --mauve:    #c084fc;
-    --mauve2:   #e9d5ff;
-    --coral:    #fb923c;
-    --mint:     #34d399;
-    --sky:      #38bdf8;
-    --line:     rgba(244,63,94,0.08);
-    --glow-r:   rgba(244,63,94,0.15);
-    --glow-m:   rgba(192,132,252,0.12);
+    --bg:        #0a0a0a;
+    --surface:   #131313;
+    --s-low:     #1c1b1b;
+    --s-mid:     #201f1f;
+    --s-high:    #2a2a2a;
+    --s-highest: #353534;
+    --outline:   rgba(77,67,84,0.35);
+    --ink:       #e5e2e1;
+    --ink2:      #cfc2d6;
+    --ink3:      #988d9f;
+    --rose:      #FD7979;
+    --rose-dim:  rgba(253,121,121,0.12);
+    --rose-glow: rgba(253,121,121,0.25);
+    --cyan:      #4cd7f6;
+    --cyan-dim:  rgba(76,215,246,0.1);
+    --cyan-glow: rgba(76,215,246,0.2);
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
   body {
     background: var(--bg);
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Inter', sans-serif;
     color: var(--ink);
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
   }
 
-  ::-webkit-scrollbar { width: 5px; }
-  ::-webkit-scrollbar-track { background: var(--bg); }
-  ::-webkit-scrollbar-thumb { background: linear-gradient(var(--rose), var(--mauve)); border-radius: 3px; }
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--surface); }
+  ::-webkit-scrollbar-thumb { background: linear-gradient(var(--rose), var(--cyan)); border-radius: 4px; }
 
-  .serif  { font-family: 'Playfair Display', Georgia, serif; }
-  .mono   { font-family: 'DM Mono', monospace; }
-  .sans   { font-family: 'Outfit', sans-serif; }
-
-  @keyframes fadeUp   { from{opacity:0;transform:translateY(32px)} to{opacity:1;transform:translateY(0)} }
-  @keyframes fadeIn   { from{opacity:0} to{opacity:1} }
-  @keyframes shimmer  { 0%{background-position:-200% 0} 100%{background-position:200% 0} }
-  @keyframes pulse    { 0%,100%{opacity:1} 50%{opacity:0.4} }
-  @keyframes glow     { 0%,100%{text-shadow:0 0 30px rgba(244,63,94,0.3)} 50%{text-shadow:0 0 60px rgba(244,63,94,0.6),0 0 100px rgba(244,63,94,0.2)} }
-  @keyframes lineIn   { from{width:0} to{width:100%} }
-  @keyframes spin     { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
-  @keyframes blink    { 0%,100%{opacity:1} 50%{opacity:0} }
-  @keyframes marquee  { from{transform:translateX(0)} to{transform:translateX(-50%)} }
-  @keyframes scanY    { 0%{transform:translateY(-100%)} 100%{transform:translateY(100vh)} }
-  @keyframes cardHov  { from{transform:translateY(0)} to{transform:translateY(-6px)} }
-  @keyframes ringFill { from{stroke-dashoffset:314} to{stroke-dashoffset:var(--target)} }
-  @keyframes barFill  { from{width:0} to{width:var(--w)} }
-  @keyframes float    { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
-  @keyframes avatarRing { 0%{transform:rotate(0deg)} 100%{transform:rotate(360deg)} }
-  @keyframes meshMove { 0%{transform:translate(0,0) scale(1)} 50%{transform:translate(30px,-20px) scale(1.05)} 100%{transform:translate(0,0) scale(1)} }
-
-  .rv { opacity:0; transform:translateY(24px); transition:opacity 0.7s ease, transform 0.7s ease; }
-  .rv.on { opacity:1; transform:translateY(0); }
-  .d1 { transition-delay:0.1s; } .d2 { transition-delay:0.2s; }
-  .d3 { transition-delay:0.3s; } .d4 { transition-delay:0.4s; }
-  .d5 { transition-delay:0.5s; }
-
-  .rose-grad { background: linear-gradient(135deg, var(--rose) 0%, var(--rose2) 50%, var(--blush) 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
-  .mauve-grad { background: linear-gradient(135deg, var(--mauve) 0%, var(--mauve2) 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+  .mono { font-family: 'JetBrains Mono', monospace; }
+  .grotesk { font-family: 'Space Grotesk', sans-serif; }
 
   .glass {
-    background: var(--card);
-    backdrop-filter: blur(12px);
-    border: 1px solid var(--card-b);
+    background: rgba(19,19,19,0.82);
+    backdrop-filter: blur(14px);
+    border: 1px solid var(--outline);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+    border-radius: 1rem;
+  }
+  .glass:hover {
+    border-color: rgba(253,121,121,0.4);
+    box-shadow: 0 0 28px rgba(253,121,121,0.1);
+  }
+  .glass-cyan:hover {
+    border-color: rgba(76,215,246,0.4) !important;
+    box-shadow: 0 0 28px rgba(76,215,246,0.12) !important;
+  }
+  .glass-active {
+    border-color: rgba(253,121,121,0.45);
+    box-shadow: 0 0 30px rgba(253,121,121,0.12);
+  }
+  .glass-active-cyan {
+    border-color: rgba(76,215,246,0.45);
+    box-shadow: 0 0 30px rgba(76,215,246,0.12);
   }
 
-  .chip-r {
-    display: inline-block;
-    font-family: 'DM Mono', monospace;
-    font-size: 0.7rem;
-    padding: 0.22rem 0.65rem;
-    border-radius: 20px;
-    background: rgba(244,63,94,0.07);
-    color: var(--rose2);
-    border: 1px solid rgba(244,63,94,0.18);
-    letter-spacing: 0.02em;
+  @keyframes pulse     { 0%,100%{opacity:1} 50%{opacity:0.35} }
+  @keyframes blink     { 0%,100%{opacity:1} 50%{opacity:0} }
+  @keyframes marquee   { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+  @keyframes fadeUp    { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes glow-pulse{ 0%,100%{text-shadow:0 0 20px rgba(253,121,121,0.3)} 50%{text-shadow:0 0 50px rgba(253,121,121,0.6)} }
+  @keyframes spin      { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+
+  .rv { opacity:0; transform:translateY(18px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .rv.on { opacity:1; transform:translateY(0); }
+  .d1{transition-delay:.08s} .d2{transition-delay:.16s} .d3{transition-delay:.24s}
+  .d4{transition-delay:.32s} .d5{transition-delay:.4s}  .d6{transition-delay:.48s}
+
+  .chip-rose {
+    display: inline-block; font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem; padding: 0.2rem 0.6rem; border-radius: 9999px;
+    background: rgba(253,121,121,0.1); color: var(--rose);
+    border: 1px solid rgba(253,121,121,0.25); letter-spacing: 0.02em;
     transition: all 0.2s;
   }
-  .chip-r:hover { background:rgba(244,63,94,0.15); border-color:var(--rose); color:var(--rose); }
-
-  .chip-m {
-    display: inline-block;
-    font-family: 'DM Mono', monospace;
-    font-size: 0.7rem;
-    padding: 0.22rem 0.65rem;
-    border-radius: 20px;
-    background: rgba(192,132,252,0.06);
-    color: var(--mauve2);
-    border: 1px solid rgba(192,132,252,0.18);
-    letter-spacing: 0.02em;
+  .chip-rose:hover { background: rgba(253,121,121,0.2); border-color: var(--rose); }
+  .chip-cyan {
+    display: inline-block; font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem; padding: 0.2rem 0.6rem; border-radius: 9999px;
+    background: rgba(76,215,246,0.08); color: var(--cyan);
+    border: 1px solid rgba(76,215,246,0.2); letter-spacing: 0.02em;
     transition: all 0.2s;
   }
-  .chip-m:hover { background:rgba(192,132,252,0.14); border-color:var(--mauve); color:var(--mauve); }
-
-  .card {
-    background: var(--card);
-    border: 1px solid var(--card-b);
-    backdrop-filter: blur(8px);
-    transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+  .chip-cyan:hover { background: rgba(76,215,246,0.15); border-color: var(--cyan); }
+  .chip-neutral {
+    display: inline-block; font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem; padding: 0.2rem 0.6rem; border-radius: 9999px;
+    background: var(--s-high); color: var(--ink2);
+    border: 1px solid var(--outline); letter-spacing: 0.02em;
   }
-  .card:hover {
-    border-color: rgba(244,63,94,0.25);
-    transform: translateY(-4px);
-    box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 30px rgba(244,63,94,0.06);
-  }
-
-  .nav-link {
-    position: relative;
-    text-decoration: none;
-    font-size: 0.8rem;
-    font-family: 'DM Mono', monospace;
-    letter-spacing: 0.08em;
-    color: var(--ink2);
-    transition: color 0.2s;
-  }
-  .nav-link::after {
-    content: '';
-    position: absolute;
-    bottom: -3px; left: 0;
-    width: 0; height: 1px;
-    background: var(--rose);
-    transition: width 0.3s ease;
-  }
-  .nav-link:hover { color: var(--rose2); }
-  .nav-link:hover::after { width: 100%; }
 
   .btn-primary {
-    display: inline-flex; align-items: center; gap: 0.5rem;
-    padding: 0.8rem 2rem;
-    font-family: 'DM Mono', monospace;
-    font-size: 0.78rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    background: linear-gradient(135deg, var(--rose), #be123c);
-    color: #ffffff;
-    font-weight: 600;
-    border: none;
-    cursor: pointer;
-    text-decoration: none;
-    border-radius: 3px;
-    transition: filter 0.2s, transform 0.2s, box-shadow 0.2s;
-    box-shadow: 0 4px 20px rgba(244,63,94,0.3);
+    display: inline-flex; align-items: center; gap: 0.45rem;
+    padding: 0.72rem 1.6rem; border-radius: 0.6rem;
+    font-family: 'Space Grotesk', sans-serif; font-size: 0.74rem;
+    font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+    background: var(--rose); color: #fff; border: none; cursor: pointer;
+    text-decoration: none; transition: all 0.2s;
+    box-shadow: 0 4px 18px rgba(253,121,121,0.35);
   }
-  .btn-primary:hover { filter:brightness(1.15); transform:translateY(-2px); box-shadow:0 8px 30px rgba(244,63,94,0.45); }
+  .btn-primary:hover { filter: brightness(1.1); transform: translateY(-1px); box-shadow: 0 8px 28px rgba(253,121,121,0.45); }
 
-  .btn-ghost {
-    display: inline-flex; align-items: center; gap: 0.5rem;
-    padding: 0.78rem 1.8rem;
-    font-family: 'DM Mono', monospace;
-    font-size: 0.78rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    background: transparent;
-    color: var(--rose2);
-    border: 1px solid rgba(244,63,94,0.35);
-    cursor: pointer;
-    text-decoration: none;
-    border-radius: 3px;
-    transition: all 0.2s;
+  .btn-outline-rose {
+    display: inline-flex; align-items: center; gap: 0.45rem;
+    padding: 0.7rem 1.5rem; border-radius: 0.6rem;
+    font-family: 'Space Grotesk', sans-serif; font-size: 0.74rem;
+    font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+    background: transparent; color: var(--rose);
+    border: 1px solid rgba(253,121,121,0.45); cursor: pointer;
+    text-decoration: none; transition: all 0.2s;
   }
-  .btn-ghost:hover { background:rgba(244,63,94,0.06); border-color:var(--rose); color:var(--rose); }
+  .btn-outline-rose:hover { background: rgba(253,121,121,0.08); border-color: var(--rose); transform: translateY(-1px); box-shadow: 0 0 18px rgba(253,121,121,0.18); }
 
-  .section-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.7rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--rose);
-    display: flex; align-items: center; gap: 0.8rem;
-    margin-bottom: 1.2rem;
+  .btn-outline-cyan {
+    display: inline-flex; align-items: center; gap: 0.45rem;
+    padding: 0.7rem 1.5rem; border-radius: 0.6rem;
+    font-family: 'Space Grotesk', sans-serif; font-size: 0.74rem;
+    font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+    background: transparent; color: var(--cyan);
+    border: 1px solid rgba(76,215,246,0.4); cursor: pointer;
+    text-decoration: none; transition: all 0.2s;
   }
+  .btn-outline-cyan:hover { background: rgba(76,215,246,0.08); border-color: var(--cyan); transform: translateY(-1px); box-shadow: 0 0 18px rgba(76,215,246,0.18); }
+
+  .nav-link {
+    font-family: 'JetBrains Mono', monospace; font-size: 0.78rem;
+    color: var(--ink2); text-decoration: none; transition: color 0.2s;
+    padding-bottom: 2px;
+  }
+  .nav-link:hover { color: var(--rose); }
+  .nav-link.active { color: var(--rose); border-bottom: 1px solid var(--rose); }
+
+  .label { font-family: 'Space Grotesk', sans-serif; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
+
+  .scroll-prog {
+    position: fixed; top: 0; left: 0; height: 2px; z-index: 9999;
+    background: linear-gradient(90deg, var(--rose), var(--cyan));
+    box-shadow: 0 0 8px var(--rose); transition: width 0.05s linear;
+  }
+
+  .glow-text { animation: glow-pulse 3s ease-in-out infinite; }
+
+  .terminal {
+    background: var(--s-mid); border: 1px solid var(--outline);
+    border-radius: 0.6rem; padding: 1rem 1.2rem;
+    font-family: 'JetBrains Mono', monospace; font-size: 0.75rem;
+    line-height: 1.7; color: var(--ink2);
+  }
+  .term-prompt { color: var(--cyan); }
+  .term-result { color: var(--rose); }
+
+  .sec-label {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    font-family: 'Space Grotesk', sans-serif; font-size: 0.68rem;
+    font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--rose); margin-bottom: 1.2rem;
+  }
+  .sec-label::before { content:''; width: 16px; height: 1px; background: var(--rose); }
+
+  .stat-val {
+    font-family: 'Inter', sans-serif; font-size: 2.4rem;
+    font-weight: 800; line-height: 1;
+  }
+
+  .marquee-wrap { overflow: hidden; white-space: nowrap; }
+  .marquee-inner { display: inline-flex; gap: 3rem; animation: marquee 32s linear infinite; }
+
+  .icon-btn {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 0.6rem 1.1rem; border-radius: 0.6rem;
+    font-family: 'JetBrains Mono', monospace; font-size: 0.73rem; font-weight: 600;
+    text-decoration: none; transition: all 0.22s; border: 1px solid var(--outline);
+    background: var(--s-low); color: var(--ink2);
+  }
+  .icon-btn:hover { border-color: rgba(253,121,121,0.5); color: var(--rose); background: rgba(253,121,121,0.06); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(253,121,121,0.12); }
+  .icon-btn.cyan:hover { border-color: rgba(76,215,246,0.5); color: var(--cyan); background: rgba(76,215,246,0.06); box-shadow: 0 6px 20px rgba(76,215,246,0.1); }
+
+  body::after {
+    content:''; position:fixed; inset:0; pointer-events:none; z-index:9998;
+    background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    opacity: 0.15;
+  }
+
   .section-label::before {
-    content: '';
-    display: block;
-    width: 24px; height: 1px;
-    background: var(--rose);
+    content: ''; display: block; width: 24px; height: 1px; background: var(--rose);
   }
 
   .sec-pad { padding: 7rem 4rem; }
@@ -195,40 +202,20 @@ const G = `
     margin: 0;
   }
 
-  /* Noise grain overlay */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 9999;
-    opacity: 0.2;
-  }
-
   .scroll-bar {
     position: fixed; top: 0; left: 0; height: 2px;
-    background: linear-gradient(90deg, var(--rose), var(--mauve), var(--sky));
-    z-index: 9998;
-    transition: width 0.05s linear;
-    box-shadow: 0 0 10px var(--rose);
+    background: linear-gradient(90deg, var(--rose), var(--cyan));
+    z-index: 9998; transition: width 0.05s linear; box-shadow: 0 0 10px var(--rose);
   }
 
-  /* Timeline line */
   .tl-line {
-    position: absolute;
-    left: 11px; top: 0; bottom: 0;
-    width: 1px;
+    position: absolute; left: 11px; top: 0; bottom: 0; width: 1px;
     background: linear-gradient(180deg, var(--rose), transparent);
   }
 
   .stat-number {
-    font-family: 'Playfair Display', serif;
-    font-size: 3rem;
-    font-weight: 900;
-    color: var(--rose2);
-    line-height: 1;
-    animation: glow 3s ease-in-out infinite;
+    font-family: 'Inter', sans-serif; font-size: 3rem; font-weight: 900;
+    color: var(--rose); line-height: 1; animation: glow-pulse 3s ease-in-out infinite;
   }
 
   @keyframes floatBg {
@@ -238,154 +225,65 @@ const G = `
 
   .progress-sidebar {
     position: fixed; right: 1.5rem; top: 50%; transform: translateY(-50%);
-    display: flex; flex-direction: column; gap: 0.6rem;
-    z-index: 800;
+    display: flex; flex-direction: column; gap: 0.6rem; z-index: 800;
   }
   .prog-dot {
-    width: 5px; height: 5px;
-    border-radius: 50%;
-    background: rgba(244,63,94,0.2);
-    cursor: pointer;
-    transition: all 0.3s;
-    position: relative;
+    width: 5px; height: 5px; border-radius: 50%; background: rgba(244,63,94,0.2);
+    cursor: pointer; transition: all 0.3s; position: relative;
   }
   .prog-dot::after {
-    content: '';
-    position: absolute;
-    inset: -3px;
-    border-radius: 50%;
-    border: 1px solid transparent;
-    transition: all 0.3s;
+    content: ''; position: absolute; inset: -3px; border-radius: 50%;
+    border: 1px solid transparent; transition: all 0.3s;
   }
   .prog-dot.active { background: var(--rose); box-shadow: 0 0 10px var(--rose); width: 6px; height: 6px; }
   .prog-dot.active::after { border-color: rgba(244,63,94,0.3); }
 
   .mob-menu {
-    display: none;
-    position: fixed; inset: 0;
-    background: rgba(0,0,0,0.97);
-    z-index: 700;
-    flex-direction: column;
-    align-items: center; justify-content: center;
-    gap: 2rem;
-    backdrop-filter: blur(20px);
+    display: none; position: fixed; inset: 0;
+    background: rgba(10,10,10,0.97); z-index: 700;
+    flex-direction: column; align-items: center; justify-content: center;
+    gap: 2rem; backdrop-filter: blur(20px);
   }
   .mob-menu.open { display: flex; }
-  .mob-menu a {
-    font-family: 'Playfair Display', serif;
-    font-size: 2rem;
-    color: var(--ink);
-    text-decoration: none;
-    transition: color 0.2s;
-  }
-  .mob-menu a:hover { color: var(--rose2); }
+  .mob-menu a { font-family: 'Inter', sans-serif; font-size: 1.8rem; font-weight: 700; color: var(--ink); text-decoration: none; }
+  .mob-menu a:hover { color: var(--rose); }
 
   .tag-row { display:flex; flex-wrap:wrap; gap:0.4rem; }
 
-  /* Avatar ring animation */
-  .avatar-wrapper {
-    position: relative;
-    width: 200px;
-    height: 200px;
-    margin: 0 auto 2rem;
-  }
-  .avatar-ring {
-    position: absolute;
-    inset: -4px;
-    border-radius: 50%;
-    background: conic-gradient(from 0deg, var(--rose), var(--mauve), var(--sky), var(--rose));
-    animation: avatarRing 4s linear infinite;
-    padding: 3px;
-  }
-  .avatar-inner {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    border: 3px solid var(--bg);
-    background: var(--bg);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 5rem;
-    position: relative;
-    overflow: hidden;
-  }
-  .avatar-inner::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(circle at 30% 30%, rgba(244,63,94,0.15), transparent 60%);
-  }
-
-  /* Featured project card */
   .project-featured {
-    grid-column: 1 / -1;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2rem;
-    align-items: center;
+    grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: center;
   }
 
-  /* Social link hover */
   .social-link {
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    padding: 0.7rem 1.2rem;
-    border: 1px solid var(--card-b);
-    border-radius: 3px;
-    text-decoration: none;
-    color: var(--ink2);
-    font-size: 0.78rem;
-    font-family: 'DM Mono', monospace;
-    letter-spacing: 0.06em;
-    transition: all 0.25s;
-    background: var(--card);
+    display: flex; align-items: center; gap: 0.6rem; padding: 0.7rem 1.2rem;
+    border: 1px solid var(--outline); border-radius: 3px; text-decoration: none;
+    color: var(--ink2); font-size: 0.78rem; font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.06em; transition: all 0.25s; background: var(--surface);
   }
   .social-link:hover {
-    border-color: var(--rose);
-    color: var(--rose2);
-    background: rgba(244,63,94,0.05);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(244,63,94,0.12);
+    border-color: var(--rose); color: var(--rose); background: rgba(244,63,94,0.05);
+    transform: translateY(-2px); box-shadow: 0 8px 24px rgba(244,63,94,0.12);
   }
 
-  /* Skill domain card hover */
-  .skill-domain-card {
-    transition: all 0.3s;
-    cursor: default;
-  }
-  .skill-domain-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 16px 40px rgba(0,0,0,0.4);
-  }
-
-  /* Glow badge */
   .glow-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.3rem 0.9rem;
-    background: rgba(52,211,153,0.08);
-    border: 1px solid rgba(52,211,153,0.25);
-    border-radius: 20px;
-    font-family: 'DM Mono', monospace;
-    font-size: 0.65rem;
-    letter-spacing: 0.1em;
-    color: #34d399;
+    display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.3rem 0.9rem;
+    background: rgba(52,211,153,0.08); border: 1px solid rgba(52,211,153,0.25);
+    border-radius: 20px; font-family: 'JetBrains Mono', monospace; font-size: 0.65rem;
+    letter-spacing: 0.1em; color: #34d399;
   }
 
   /* ─── MOBILE RESPONSIVE ─── */
   @media(max-width:768px) {
-    /* Nav */
+    .hide-m { display: none !important; }
+    .full-m { grid-column: 1 / -1 !important; }
+    .pad { padding: 5rem 1.2rem !important; }
+
     nav { padding: 0.8rem 1.2rem !important; }
     .nav-links { display: none !important; }
     .mob-hamburger { display: flex !important; }
 
-    /* Sections */
     .sec-pad { padding: 4rem 1.2rem !important; }
 
-    /* Hero */
     #hero { padding: 6rem 1.2rem 4rem !important; }
     .hero-layout { flex-direction: column !important; gap: 2.5rem !important; }
     .hero-name { font-size: clamp(2.6rem, 13vw, 4.5rem) !important; }
@@ -394,42 +292,27 @@ const G = `
     .hero-stats > div { flex: 1 1 calc(50% - 1rem); }
     .hero-btns { flex-wrap: wrap !important; gap: 0.75rem !important; }
 
-    /* About grids */
     .about-grid { grid-template-columns: 1fr !important; gap: 2.5rem !important; }
-
-    /* Projects */
     .project-featured { grid-template-columns: 1fr !important; }
     .projects-grid { grid-template-columns: 1fr !important; }
-
-    /* Skills */
     .skills-grid { grid-template-columns: 1fr !important; }
     .bars-grid { grid-template-columns: 1fr !important; }
-
-    /* Achievements */
     .achievements-grid { grid-template-columns: 1fr !important; }
+
     .cgpa-banner { flex-direction: column !important; align-items: flex-start !important; gap: 1.5rem !important; padding: 1.5rem !important; }
     .cgpa-stats { gap: 1.5rem !important; }
 
-    /* Timeline */
     .tl-desktop-line { display: none !important; }
     .tl-mobile-line { display: block !important; }
-
-    /* Progress sidebar */
     .progress-sidebar { display: none !important; }
 
-    /* Footer */
     footer { padding: 1.5rem 1.2rem !important; flex-direction: column !important; text-align: center !important; gap: 0.75rem !important; }
 
-    /* Contact */
     .contact-email-row { flex-direction: column !important; align-items: center !important; gap: 0.75rem !important; }
     .contact-email-text { font-size: 0.75rem !important; word-break: break-all !important; }
     .contact-socials { justify-content: center !important; }
     .contact-btns { justify-content: center !important; }
-
-    /* Skills tab buttons */
     .skills-tab-row { flex-wrap: wrap !important; }
-
-    /* Experience */
     .exp-header { flex-direction: column !important; align-items: flex-start !important; }
   }
 
@@ -438,14 +321,13 @@ const G = `
     #hero { padding: 5.5rem 1rem 3rem !important; }
     .hero-name { font-size: clamp(2.2rem, 14vw, 3.5rem) !important; }
     .hero-stats > div { flex: 1 1 100%; }
-    .btn-primary, .btn-ghost { padding: 0.7rem 1.2rem !important; font-size: 0.72rem !important; }
+    .btn-primary, .btn-outline-rose, .btn-outline-cyan { padding: 0.7rem 1.2rem !important; font-size: 0.72rem !important; }
     .mob-menu a { font-size: 1.6rem; }
-    .cgpa-banner .serif { font-size: 2.8rem !important; }
+    .cgpa-banner .stat-val { font-size: 2.8rem !important; }
   }
 `;
 
-/* ─── SCROLL PROGRESS ─── */
-function ScrollBar() {
+function ScrollProg() {
   const [w, setW] = useState(0);
   useEffect(() => {
     const fn = () => {
@@ -455,21 +337,19 @@ function ScrollBar() {
     window.addEventListener("scroll", fn, { passive: true });
     return () => window.removeEventListener("scroll", fn);
   }, []);
-  return <div className="scroll-bar" style={{ width: w }} />;
+  return <div className="scroll-prog" style={{ width: w }} />;
 }
 
-/* ─── REVEAL HOOK ─── */
-function useReveal() {
+function useReveal(dep) {
   useEffect(() => {
     const obs = new IntersectionObserver(entries => {
       entries.forEach(e => { if (e.isIntersecting) e.target.classList.add("on"); });
-    }, { threshold: 0.12 });
+    }, { threshold: 0.1 });
     document.querySelectorAll(".rv").forEach(el => obs.observe(el));
     return () => obs.disconnect();
-  }, []);
+  }, [dep]);
 }
 
-/* ─── MOBILE HOOK ─── */
 function useIsMobile() {
   const [isMobile, setIsMobile] = useState(() => typeof window !== "undefined" && window.innerWidth <= 768);
   useEffect(() => {
@@ -480,7 +360,6 @@ function useIsMobile() {
   return isMobile;
 }
 
-/* ─── SECTION PROGRESS ─── */
 function SectionProgress() {
   const SECS = ["hero","about","timeline","experience","projects","skills","achievements","contact"];
   const [active, setActive] = useState("hero");
@@ -503,197 +382,192 @@ function SectionProgress() {
   );
 }
 
-/* ─── NAV ─── */
 function Nav() {
   const [scrolled, setScrolled] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [menu, setMenu] = useState(false);
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 40);
     window.addEventListener("scroll", fn, { passive: true });
     return () => window.removeEventListener("scroll", fn);
   }, []);
-  const links = [["about","About"],["timeline","Journey"],["experience","Exp"],["projects","Projects"],["skills","Skills"],["achievements","Awards"],["contact","Contact"]];
+  const links = [["about","About"],["experience","Exp"],["projects","Projects"],["skills","Skills"],["achievements","Awards"],["contact","Contact"]];
   return (
     <>
-      <nav style={{
-        position: "fixed", top: 0, left: 0, right: 0, zIndex: 600,
-        padding: "1.2rem 4rem",
-        background: scrolled ? "rgba(0,0,0,0.92)" : "transparent",
-        backdropFilter: scrolled ? "blur(24px)" : "none",
-        borderBottom: scrolled ? "1px solid rgba(244,63,94,0.07)" : "none",
-        display: "flex", alignItems: "center", justifyContent: "space-between",
-        transition: "all 0.4s ease",
+      <header style={{
+        position:"fixed", top:0, left:0, right:0, zIndex:600,
+        padding:"0.9rem 2.5rem",
+        background: scrolled ? "rgba(13,13,13,0.92)" : "transparent",
+        backdropFilter: scrolled ? "blur(20px)" : "none",
+        borderBottom: scrolled ? "1px solid rgba(77,67,84,0.3)" : "none",
+        boxShadow: scrolled ? "0 0 20px rgba(253,121,121,0.06)" : "none",
+        display:"flex", alignItems:"center", justifyContent:"space-between",
+        transition:"all 0.4s",
       }}>
-        <a href="#hero" style={{ textDecoration: "none", display: "flex", alignItems: "center", gap: "0.5rem" }}>
-          <span className="serif" style={{ fontSize: "1.1rem", fontStyle: "italic", color: "var(--rose2)", fontWeight: 700 }}>AC</span>
-          <span className="mono" style={{ fontSize: "0.65rem", color: "var(--ink2)", letterSpacing: "0.15em" }}>PORTFOLIO</span>
+        <a href="#hero" style={{ textDecoration:"none", display:"flex", alignItems:"center", gap:"0.6rem" }}>
+          <span style={{ fontFamily:"'Space Grotesk',sans-serif", fontWeight:700, fontSize:"0.85rem", letterSpacing:"0.12em", color:"var(--rose)" }}>AAYUSHI_CHHABRA</span>
         </a>
-        <div className="nav-links" style={{ display: "flex", gap: "2.5rem" }}>
-          {links.map(([id, label]) => (
-            <a key={id} href={`#${id}`} className="nav-link">{label}</a>
-          ))}
-        </div>
-        <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
-          <a href="mailto:aayushichhabra1010@gmail.com" className="btn-primary" style={{ padding: "0.55rem 1.2rem", fontSize: "0.72rem" }}>Hire Me</a>
-          {/* Hamburger — always rendered, shown via CSS on mobile */}
-          <button
-            className="mob-hamburger"
-            onClick={() => setMenuOpen(o => !o)}
-            style={{
-              display: "none",
-              background: "none", border: "1px solid rgba(244,63,94,0.2)",
-              cursor: "pointer", color: "var(--ink)", padding: "0.35rem 0.5rem",
-              borderRadius: "4px", alignItems: "center", justifyContent: "center",
-            }}
-            aria-label="Open menu"
-          >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
-            </svg>
+        <nav className="hide-m nav-links" style={{ display:"flex", gap:"1.6rem", alignItems:"center" }}>
+          {links.map(([id,label]) => <a key={id} href={`#${id}`} className="nav-link">{label}</a>)}
+          <span style={{ width:1, height:14, background:"var(--outline)", display:"inline-block" }} />
+          <a href="https://github.com/aayushichhabra" target="_blank" rel="noreferrer" className="nav-link" style={{ display:"inline-flex", alignItems:"center", gap:"0.35rem" }}>
+            <svg width="13" height="13" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+            GitHub
+          </a>
+          <a href="https://linkedin.com/in/aayushi-chhabra-54281a34a" target="_blank" rel="noreferrer" className="nav-link" style={{ display:"inline-flex", alignItems:"center", gap:"0.35rem" }}>
+            <svg width="13" height="13" fill="currentColor" viewBox="0 0 24 24"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+            LinkedIn
+          </a>
+          <a href="/Aayushi_Chhabra_Resume.pdf" download="Aayushi_Chhabra_Resume.pdf" className="nav-link" style={{ display:"inline-flex", alignItems:"center", gap:"0.35rem", color:"var(--cyan)" }}>
+            <svg width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="12" y1="18" x2="12" y2="12"/><polyline points="9,15 12,18 15,15"/></svg>
+            Resume ↓
+          </a>
+        </nav>
+        <div style={{ display:"flex", gap:"0.6rem", alignItems:"center" }}>
+          <a href="mailto:aayushichhabra1010@gmail.com" className="btn-primary" style={{ padding:"0.5rem 1.1rem", fontSize:"0.7rem" }}>Hire Me</a>
+          <button onClick={() => setMenu(o=>!o)} style={{ display:"none", background:"none", border:"1px solid rgba(244,63,94,0.2)", cursor:"pointer", color:"var(--ink)", padding:"0.35rem 0.5rem", borderRadius: "4px" }} className="mob-hamburger show-m">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
           </button>
         </div>
-      </nav>
-      <div className={`mob-menu${menuOpen ? " open" : ""}`}>
-        <button onClick={() => setMenuOpen(false)} style={{ position: "absolute", top: "2rem", right: "2rem", background: "none", border: "1px solid var(--card-b)", color: "var(--ink)", cursor: "pointer", padding: "0.5rem 0.8rem", borderRadius: "2px", fontSize: "0.9rem" }}>✕</button>
-        {links.map(([id, label]) => (
-          <a key={id} href={`#${id}`} onClick={() => setMenuOpen(false)}>{label}</a>
-        ))}
+      </header>
+      <div className={`mob-menu${menu?" open":""}`}>
+        <button onClick={() => setMenu(false)} style={{ position:"absolute", top:"1.5rem", right:"1.5rem", background:"none", border:"1px solid var(--outline)", color:"var(--ink)", cursor:"pointer", padding:"0.4rem 0.7rem", borderRadius:"0.4rem" }}>✕</button>
+        {links.map(([id,label]) => <a key={id} href={`#${id}`} onClick={() => setMenu(false)}>{label}</a>)}
+        <a href="https://github.com/aayushichhabra" target="_blank" rel="noreferrer" onClick={() => setMenu(false)}>GitHub</a>
+        <a href="https://linkedin.com/in/aayushi-chhabra-54281a34a" target="_blank" rel="noreferrer" onClick={() => setMenu(false)}>LinkedIn</a>
+        <a href="/Aayushi_Chhabra_Resume.pdf" download="Aayushi_Chhabra_Resume.pdf" onClick={() => setMenu(false)}>Resume ↓</a>
       </div>
     </>
   );
 }
 
-/* ─── HERO ─── */
 function Hero() {
   const [typed, setTyped] = useState("");
-  const words = ["Cybersecurity & AI Intern", "ML Engineer", "Android Developer", "Productivity AI Builder", "Deepfake Detection Researcher", "Full Stack Developer"];
+  const words = ["Cybersecurity & AI Intern","ML Engineer","Android Developer","Deepfake Detection Researcher","Full Stack Developer","Productivity AI Builder"];
   useEffect(() => {
-    let wi = 0, idx = 0, dir = 1;
+    let wi=0, idx=0, dir=1;
     const iv = setInterval(() => {
       const w = words[wi % words.length];
-      setTyped(dir === 1 ? w.slice(0, idx + 1) : w.slice(0, idx));
-      if (dir === 1) { idx++; if (idx === w.length) dir = -1; }
-      else { idx--; if (idx < 0) { dir = 1; idx = 0; wi++; } }
-    }, 75);
+      setTyped(dir===1 ? w.slice(0,idx+1) : w.slice(0,idx));
+      if (dir===1) { idx++; if (idx===w.length) dir=-1; }
+      else { idx--; if (idx<0) { dir=1; idx=0; wi++; } }
+    }, 72);
     return () => clearInterval(iv);
   }, []);
 
   return (
-    <section id="hero" style={{
-      minHeight: "100vh",
-      display: "flex",
-      alignItems: "center",
-      padding: "8rem 4rem 5rem",
-      position: "relative",
-      overflow: "hidden",
-    }}>
-      {/* Background elements */}
-      <div style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
-        <div style={{ position: "absolute", top: "-20%", left: "60%", width: 700, height: 700, background: "radial-gradient(circle, rgba(244,63,94,0.08) 0%, transparent 65%)", borderRadius: "50%", animation: "meshMove 12s ease-in-out infinite" }} />
-        <div style={{ position: "absolute", bottom: "10%", left: "-10%", width: 600, height: 600, background: "radial-gradient(circle, rgba(192,132,252,0.05) 0%, transparent 65%)", borderRadius: "50%", animation: "meshMove 16s ease-in-out infinite reverse" }} />
-        <div style={{ position: "absolute", top: "40%", left: "40%", width: 400, height: 400, background: "radial-gradient(circle, rgba(56,189,248,0.03) 0%, transparent 65%)", borderRadius: "50%" }} />
-        <div style={{ position: "absolute", inset: 0, backgroundImage: "linear-gradient(rgba(244,63,94,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(244,63,94,0.02) 1px,transparent 1px)", backgroundSize: "60px 60px" }} />
+    <section id="hero" style={{ minHeight:"100vh", display:"flex", alignItems:"center", padding:"7rem 2.5rem 4rem", position:"relative", overflow:"hidden" }}>
+      <div style={{ position:"absolute", inset:0, pointerEvents:"none" }}>
+        <div style={{ position:"absolute", top:"-15%", right:"5%", width:700, height:700, background:"radial-gradient(circle, rgba(253,121,121,0.07) 0%, transparent 65%)", borderRadius:"50%", animation:"spin 25s linear infinite" }} />
+        <div style={{ position:"absolute", bottom:"5%", left:"-10%", width:550, height:550, background:"radial-gradient(circle, rgba(76,215,246,0.05) 0%, transparent 65%)", borderRadius:"50%" }} />
+        <div style={{ position:"absolute", inset:0, backgroundImage:"linear-gradient(rgba(253,121,121,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(253,121,121,0.025) 1px,transparent 1px)", backgroundSize:"60px 60px", opacity:0.8 }} />
       </div>
 
-      <div style={{ maxWidth: 1100, margin: "0 auto", width: "100%", position: "relative", zIndex: 1 }}>
-        <div className="hero-layout" style={{ display: "flex", gap: "4rem", alignItems: "center", flexWrap: "wrap" }}>
-          {/* LEFT */}
-          <div style={{ flex: 1, minWidth: 0 }}>
-            <div className="rv" style={{ display: "flex", alignItems: "center", gap: "1rem", marginBottom: "2rem", flexWrap: "wrap" }}>
-              <div className="mono" style={{ fontSize: "0.7rem", letterSpacing: "0.2em", color: "var(--rose)", textTransform: "uppercase" }}>
-                3rd Year CSE · MUJ · 2023–2027
+      <div style={{ maxWidth:1200, margin:"0 auto", width:"100%", position:"relative", zIndex:1 }}>
+        <div className="hero-layout" style={{ display:"grid", gridTemplateColumns:"1fr auto", gap:"3rem", alignItems:"start" }}>
+          <div>
+            <div className="rv" style={{ display:"flex", alignItems:"center", gap:"0.8rem", marginBottom:"1.8rem", flexWrap:"wrap" }}>
+              <div style={{ display:"inline-flex", alignItems:"center", gap:"0.5rem", padding:"0.3rem 0.9rem", background:"var(--rose-dim)", border:"1px solid rgba(253,121,121,0.3)", borderRadius:"9999px" }}>
+                <span style={{ width:7, height:7, borderRadius:"50%", background:"var(--rose)", boxShadow:"0 0 8px var(--rose)", animation:"pulse 2s infinite", display:"inline-block" }} />
+                <span className="mono" style={{ fontSize:"0.68rem", color:"var(--rose)", letterSpacing:"0.1em" }}>OPEN TO WORK</span>
               </div>
-              <div className="glow-badge">
-                <span style={{ width: 7, height: 7, borderRadius: "50%", background: "#34d399", boxShadow: "0 0 8px #34d399", animation: "pulse 2s ease infinite", display: "inline-block", flexShrink: 0 }} />
-                OPEN TO WORK
-              </div>
+              <span className="mono" style={{ fontSize:"0.68rem", color:"var(--ink3)", letterSpacing:"0.12em" }}>3RD YEAR CSE · MUJ · 2023–2027</span>
             </div>
-
             <div className="rv d1">
-              <h1 className="hero-name serif" style={{ fontSize: "clamp(3rem,8vw,6rem)", fontWeight: 900, lineHeight: 0.95, letterSpacing: "-0.02em", marginBottom: "1.5rem" }}>
-                Aayushi<br />
-                <span className="rose-grad">Chhabra</span>
+              <h1 className="hero-name" style={{ fontFamily:"'Inter',sans-serif", fontSize:"clamp(3rem,7vw,5.5rem)", fontWeight:800, lineHeight:1.05, letterSpacing:"-0.04em", marginBottom:"1rem" }}>
+                Aayushi{" "}<span style={{ color:"var(--rose)", textShadow:"0 0 40px rgba(253,121,121,0.4)" }} className="glow-text">Chhabra</span>
               </h1>
             </div>
-
-            <div className="rv d2" style={{ height: 36, marginBottom: "1.5rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
-              <span className="mono" style={{ fontSize: "0.95rem", color: "var(--rose2)" }}>{typed}</span>
-              <span style={{ width: 2, height: 20, background: "var(--rose)", animation: "blink 1s step-end infinite", display: "inline-block" }} />
+            <div className="rv d2" style={{ height:32, marginBottom:"1.4rem", display:"flex", alignItems:"center", gap:"0.4rem" }}>
+              <span className="mono" style={{ fontSize:"0.95rem", color:"var(--cyan)" }}>{typed}</span>
+              <span style={{ width:2, height:18, background:"var(--cyan)", animation:"blink 1s step-end infinite", display:"inline-block" }} />
             </div>
-
-            <p className="rv d3" style={{ fontSize: "0.95rem", color: "var(--ink2)", lineHeight: 1.85, maxWidth: 540, marginBottom: "2.5rem" }}>
-              Third-year B.Tech CSE student at Manipal University Jaipur with a <span style={{ color: "var(--rose2)", fontWeight: 600 }}>9.88 CGPA</span>.
-              Industry experience at <span style={{ color: "var(--rose2)", fontWeight: 600 }}>Ericsson</span> in Cybersecurity & AI.
-              Finalist at <span style={{ color: "var(--rose2)", fontWeight: 600 }}>Deloitte Capstone Ideathon</span> (200+ teams).
-              Dean's Excellence Award recipient — 5 consecutive semesters.
+            <p className="rv d3" style={{ fontSize:"0.95rem", color:"var(--ink2)", lineHeight:1.85, maxWidth:560, marginBottom:"2.2rem" }}>
+              Third-year B.Tech CSE at Manipal University Jaipur with a{" "}
+              <span style={{ color:"var(--rose)", fontWeight:700 }}>9.88 CGPA</span>.
+              Industry experience at <span style={{ color:"var(--rose)", fontWeight:700 }}>Ericsson</span> in Cybersecurity & AI.
+              Finalist at <span style={{ color:"var(--rose)", fontWeight:700 }}>Deloitte Capstone Ideathon</span> (200+ teams).
+              Dean's Excellence Award — 5 consecutive semesters.
             </p>
 
-            <div className="rv d4 hero-btns" style={{ display: "flex", gap: "1rem", flexWrap: "wrap" }}>
+            <div className="rv d4 hero-btns" style={{ display:"flex", gap:"0.8rem", flexWrap:"wrap", marginBottom:"1.8rem" }}>
               <a href="mailto:aayushichhabra1010@gmail.com" className="btn-primary">
                 <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg>
                 Get In Touch
               </a>
-              <a href="https://github.com/aayushichhabra" target="_blank" rel="noreferrer" className="btn-ghost">
+              <a href="#projects" className="btn-outline-rose">View Projects →</a>
+            </div>
+            <div className="rv d5" style={{ display:"flex", gap:"0.6rem", flexWrap:"wrap" }}>
+              <a href="/Aayushi_Chhabra_Resume.pdf" download="Aayushi_Chhabra_Resume.pdf" className="icon-btn">
+                <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="12" y1="18" x2="12" y2="12"/><polyline points="9,15 12,18 15,15"/></svg>
+                Resume
+              </a>
+              <a href="https://github.com/aayushichhabra" target="_blank" rel="noreferrer" className="icon-btn">
                 <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
                 GitHub ↗
+              </a>
+              <a href="https://leetcode.com/u/aayushichhabra" target="_blank" rel="noreferrer" className="icon-btn cyan">
+                <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M13.483 0a1.374 1.374 0 0 0-.961.438L7.116 6.226l-3.854 4.126a5.266 5.266 0 0 0-1.209 2.104 5.35 5.35 0 0 0-.125.513 5.527 5.527 0 0 0 .062 2.362 5.83 5.83 0 0 0 .349 1.017 5.938 5.938 0 0 0 1.271 1.818l4.277 4.193.039.038c2.248 2.165 5.852 2.133 8.063-.074l2.396-2.392c.54-.54.54-1.414.003-1.955a1.378 1.378 0 0 0-1.951-.003l-2.396 2.392a3.021 3.021 0 0 1-4.205.038l-.02-.019-4.276-4.193c-.652-.64-.972-1.469-.948-2.263a2.68 2.68 0 0 1 .066-.523 2.545 2.545 0 0 1 .619-1.164L9.13 8.114c1.058-1.134 3.204-1.27 4.43-.278l3.501 2.831c.593.48 1.461.387 1.94-.207a1.384 1.384 0 0 0-.207-1.943l-3.5-2.831c-.8-.647-1.766-1.045-2.774-1.202l2.015-2.158A1.384 1.384 0 0 0 13.483 0zm-2.866 12.815a1.38 1.38 0 0 0-1.38 1.382 1.38 1.38 0 0 0 1.38 1.382H20.79a1.38 1.38 0 0 0 1.38-1.382 1.38 1.38 0 0 0-1.38-1.382z"/></svg>
+                LeetCode ↗
+              </a>
+              <a href="https://linkedin.com/in/aayushi-chhabra-54281a34a" target="_blank" rel="noreferrer" className="icon-btn">
+                <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+                LinkedIn ↗
               </a>
             </div>
 
             <div className="rv d5 hero-stats" style={{ display: "flex", gap: "2.5rem", marginTop: "3.5rem", flexWrap: "wrap" }}>
-              {[["9.88", "CGPA"], ["5×", "Dean's Award"], ["6+", "Projects Built"], ["200+", "Teams Beaten"]].map(([n, l]) => (
+              {[["9.88", "CGPA", "var(--rose)"], ["5×", "Dean's Award", "var(--cyan)"], ["6+", "Projects Built", "var(--rose)"], ["Top 10", "Deloitte Ideathon", "var(--cyan)"]].map(([n, l, col]) => (
                 <div key={l} style={{ position: "relative" }}>
-                  <div className="stat-number" style={{ fontSize: "1.8rem" }}>{n}</div>
+                  <div className="stat-number" style={{ fontSize: "1.8rem", color: col }}>{n}</div>
                   <div className="mono" style={{ fontSize: "0.62rem", letterSpacing: "0.15em", color: "var(--ink2)", marginTop: "0.2rem" }}>{l}</div>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* RIGHT — decorative card (hidden on mobile via CSS class) */}
-          <div className="rv d3 hero-right-card" style={{ width: 340, flexShrink: 0 }}>
-            <div className="glass" style={{ borderRadius: "8px", padding: "2rem", position: "relative", overflow: "hidden" }}>
-              <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: "linear-gradient(90deg, var(--rose), var(--mauve), var(--sky))" }} />
-              <div style={{ position: "absolute", bottom: 0, right: 0, width: 120, height: 120, background: "radial-gradient(circle, rgba(192,132,252,0.08) 0%, transparent 70%)", borderRadius: "50%", pointerEvents: "none" }} />
-              <div className="serif" style={{ fontSize: "0.75rem", fontStyle: "italic", color: "var(--rose)", marginBottom: "1.2rem", letterSpacing: "0.05em" }}>// Currently Working On</div>
-
+          <div className="rv d3 hide-m hero-right-card" style={{ width:320, flexShrink:0 }}>
+            <div className="glass glass-active" style={{ padding:"1.6rem", position:"relative", overflow:"hidden" }}>
+              <div style={{ position:"absolute", top:0, left:0, right:0, height:2, background:"linear-gradient(90deg, var(--rose), var(--cyan))" }} />
+              <div className="label" style={{ color:"var(--rose)", marginBottom:"1.2rem", display:"flex", alignItems:"center", gap:"0.5rem" }}>
+                <span>⬡</span> CURRENTLY BUILDING
+              </div>
               {[
-                { title: "ResQNet", desc: "Cross-platform crisis mgmt. w/ BLE & offline-first tech", tech: "React Native · Supabase", col: "var(--mauve)" },
-                { title: "StyleVault", desc: "AI men's fashion app — wardrobe mgmt. & outfit suggestions", tech: "Kotlin · Firebase · Gemini", col: "var(--sky)" },
-                { title: "CVE Agent", desc: "Agentic CVE triage + dependency scanner with LangGraph", tech: "LangGraph · NIST NVD · Gemini", col: "var(--blush)" },
-              ].map(({ title, desc, tech, col }) => (
-                <div key={title} style={{ marginBottom: "1.3rem", paddingBottom: "1.3rem", borderBottom: "1px solid var(--line)" }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.3rem" }}>
-                    <div style={{ width: 6, height: 6, borderRadius: "50%", background: col, boxShadow: `0 0 8px ${col}` }} />
-                    <span style={{ fontWeight: 600, fontSize: "0.9rem" }}>{title}</span>
+                { name:"ResQNet", desc:"Cross-platform crisis mgmt. w/ BLE & offline-first tech", tech:"React Native · Supabase", col:"var(--cyan)" },
+                { name:"StyleVault", desc:"AI men's fashion — wardrobe mgmt & outfit suggestions", tech:"Kotlin · Firebase · Gemini", col:"var(--rose)" },
+                { name:"CVE Agent", desc:"Agentic CVE triage + dependency scanner w/ LangGraph", tech:"LangGraph · NIST NVD · Gemini", col:"#a78bfa" },
+              ].map(({ name, desc, tech, col }) => (
+                <div key={name} style={{ marginBottom:"1.1rem", paddingBottom:"1.1rem", borderBottom:"1px solid var(--outline)" }}>
+                  <div style={{ display:"flex", alignItems:"center", gap:"0.45rem", marginBottom:"0.25rem" }}>
+                    <div style={{ width:6, height:6, borderRadius:"50%", background:col, boxShadow:`0 0 8px ${col}` }} />
+                    <span style={{ fontWeight:700, fontSize:"0.88rem" }}>{name}</span>
                   </div>
-                  <p style={{ fontSize: "0.78rem", color: "var(--ink2)", lineHeight: 1.6, marginBottom: "0.4rem" }}>{desc}</p>
-                  <span className="mono" style={{ fontSize: "0.65rem", color: col, opacity: 0.8 }}>{tech}</span>
+                  <p style={{ fontSize:"0.75rem", color:"var(--ink2)", lineHeight:1.6, marginBottom:"0.3rem" }}>{desc}</p>
+                  <span className="mono" style={{ fontSize:"0.62rem", color:col, opacity:0.85 }}>{tech}</span>
                 </div>
               ))}
-
-              <div className="mono" style={{ fontSize: "0.65rem", color: "var(--ink2)", display: "flex", alignItems: "center", gap: "0.4rem" }}>
-                <span style={{ color: "#34d399", animation: "pulse 2s infinite" }}>●</span> Gurugram, Haryana, India
+              <div className="terminal" style={{ marginTop:"0.8rem", padding:"0.75rem 1rem" }}>
+                <div><span className="term-prompt">&gt; </span>status --check</div>
+                <div><span className="term-result">Available for internships</span></div>
+                <div><span className="term-prompt">&gt; </span>location</div>
+                <div><span className="term-result">Gurugram, Haryana, IN</span></div>
               </div>
             </div>
           </div>
         </div>
       </div>
-
-      <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 140, background: "linear-gradient(to bottom, transparent, var(--bg))", pointerEvents: "none" }} />
     </section>
   );
 }
 
-/* ─── TICKER MARQUEE ─── */
-function Ticker() {
-  const items = ["Python · C · Java · JavaScript","Machine Learning","Cybersecurity","RAG Systems","React Native","LangChain","LangGraph Agents","FAISS Vector Databases","PyTorch · TensorFlow","Anomaly Detection","Deepfake Detection","Kotlin · Android","Whisper STT","Google OAuth2","Streamlit · Plotly","9.88 CGPA","Deloitte Finalist","Ericsson R&D Intern"];
+function Marquee() {
+  const items = ["Python","Machine Learning","Cybersecurity","RAG Systems","React Native","LangChain","LangGraph","FAISS Vector DBs","PyTorch · TensorFlow","Anomaly Detection","Deepfake Detection","Kotlin · Android","Whisper STT","Google OAuth2","Streamlit · Plotly","9.88 CGPA","Deloitte Finalist","Ericsson R&D Intern"];
   const all = [...items, ...items];
   return (
-    <div style={{ borderTop: "1px solid var(--line)", borderBottom: "1px solid var(--line)", overflow: "hidden", padding: "0.9rem 0", background: "rgba(244,63,94,0.01)" }}>
-      <div style={{ display: "flex", gap: "4rem", animation: "marquee 30s linear infinite", width: "max-content" }}>
-        {all.map((t, i) => (
-          <span key={i} className="mono" style={{ fontSize: "0.7rem", letterSpacing: "0.1em", color: "var(--ink2)", whiteSpace: "nowrap" }}>
-            <span style={{ color: "var(--rose)", marginRight: "0.8rem" }}>✦</span>{t}
+    <div style={{ borderTop:"1px solid var(--outline)", borderBottom:"1px solid var(--outline)", padding:"0.85rem 0", background:"rgba(253,121,121,0.01)", overflow:"hidden" }}>
+      <div className="marquee-inner">
+        {all.map((t,i) => (
+          <span key={i} className="mono" style={{ fontSize:"0.72rem", letterSpacing:"0.1em", color:"var(--ink2)", whiteSpace:"nowrap" }}>
+            <span style={{ color:"var(--rose)", marginRight:"0.7rem" }}>✦</span>{t}
           </span>
         ))}
       </div>
@@ -701,79 +575,76 @@ function Ticker() {
   );
 }
 
-/* ─── ABOUT ─── */
 function About() {
   return (
-    <section id="about" className="sec-pad" style={{ background: "var(--bg2)", position: "relative", overflow: "hidden" }}>
-      <div style={{ position: "absolute", top: "10%", right: "-5%", width: 400, height: 400, background: "radial-gradient(circle, rgba(244,63,94,0.04) 0%, transparent 70%)", borderRadius: "50%", pointerEvents: "none" }} />
-      <div style={{ position: "absolute", bottom: "5%", left: "-8%", width: 300, height: 300, background: "radial-gradient(circle, rgba(192,132,252,0.04) 0%, transparent 70%)", borderRadius: "50%", pointerEvents: "none" }} />
-
-      <div style={{ maxWidth: 1100, margin: "0 auto", position: "relative" }}>
-        <div className="rv section-label">About</div>
-
-        <div className="about-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "5rem", alignItems: "start" }}>
-          <div>
-            <h2 className="rv d1 serif" style={{ fontSize: "clamp(1.8rem,4vw,3rem)", fontWeight: 900, lineHeight: 1.15, marginBottom: "1.5rem" }}>
-              Building at the intersection of<br /><span className="rose-grad">AI & Security</span>
+    <section id="about" className="sec-pad" style={{ background:"var(--surface)", position:"relative", overflow:"hidden" }}>
+      <div style={{ maxWidth:1200, margin:"0 auto" }}>
+        <div className="rv sec-label">About Me</div>
+        <div className="about-grid" style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"1.5rem", alignItems:"start" }}>
+          <div className="rv d1 glass" style={{ padding:"2rem", position:"relative", overflow:"hidden" }}>
+            <div style={{ position:"absolute", top:0, left:0, right:0, height:2, background:"linear-gradient(90deg, var(--rose), transparent)" }} />
+            <div className="label" style={{ color:"var(--rose)", marginBottom:"1rem", display:"flex", alignItems:"center", gap:"0.5rem" }}>
+              <span>⬡</span> ABOUT_ME.SH
+            </div>
+            <h2 style={{ fontFamily:"'Inter',sans-serif", fontSize:"1.7rem", fontWeight:800, letterSpacing:"-0.02em", lineHeight:1.2, marginBottom:"1.2rem" }}>
+              Building at the intersection of<br /><span style={{ color:"var(--rose)" }}>AI & Security</span>
             </h2>
-            <p className="rv d2" style={{ fontSize: "0.9rem", color: "var(--ink2)", lineHeight: 1.9, marginBottom: "1.5rem" }}>
-              I'm Aayushi — a Computer Science student at Manipal University Jaipur,
-              maintaining a <strong style={{ color: "var(--rose2)" }}>9.88 CGPA</strong> across 5 semesters.
-              My work spans AI systems, cybersecurity, and full-stack mobile development.
+            <p style={{ fontSize:"0.88rem", color:"var(--ink2)", lineHeight:1.9, marginBottom:"1rem" }}>
+              I'm Aayushi — a Computer Science student at Manipal University Jaipur, maintaining a <strong style={{ color:"var(--rose)" }}>9.88 CGPA</strong> across 5 semesters. My work spans AI systems, cybersecurity, and full-stack mobile development.
             </p>
-            <p className="rv d3" style={{ fontSize: "0.9rem", color: "var(--ink2)", lineHeight: 1.9, marginBottom: "2rem" }}>
-              At Ericsson, I worked on CVE triage, anomaly detection models, and automated
-              incident response pipelines in a production SecOps environment. From agentic CVE
-              triage tools built with LangGraph, to AI productivity assistants with Gmail integration
-              and Whisper transcription — I build end-to-end solutions that are technically rigorous
-              and practically impactful.
+            <p style={{ fontSize:"0.88rem", color:"var(--ink2)", lineHeight:1.9, marginBottom:"1.5rem" }}>
+              At Ericsson, I worked on CVE triage, anomaly detection models, and automated incident response pipelines in a production SecOps environment. From agentic CVE triage tools built with LangGraph, to AI productivity assistants with Gmail integration and Whisper transcription.
             </p>
 
-            <div className="rv d4" style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
-              {[
-                { label: "Email", href: "mailto:aayushichhabra1010@gmail.com", icon: <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg> },
-                { label: "LinkedIn", href: "https://linkedin.com/in/aayushi-chhabra-54281a34a", icon: <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg> },
-                { label: "GitHub", href: "https://github.com/aayushichhabra", icon: <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg> },
-                { label: "LeetCode", href: "https://leetcode.com/u/aayushichhabra", icon: <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M13.483 0a1.374 1.374 0 0 0-.961.438L7.116 6.226l-3.854 4.126a5.266 5.266 0 0 0-1.209 2.104 5.35 5.35 0 0 0-.125.513 5.527 5.527 0 0 0 .062 2.362 5.83 5.83 0 0 0 .349 1.017 5.938 5.938 0 0 0 1.271 1.818l4.277 4.193.039.038c2.248 2.165 5.852 2.133 8.063-.074l2.396-2.392c.54-.54.54-1.414.003-1.955a1.378 1.378 0 0 0-1.951-.003l-2.396 2.392a3.021 3.021 0 0 1-4.205.038l-.02-.019-4.276-4.193c-.652-.64-.972-1.469-.948-2.263a2.68 2.68 0 0 1 .066-.523 2.545 2.545 0 0 1 .619-1.164L9.13 8.114c1.058-1.134 3.204-1.27 4.43-.278l3.501 2.831c.593.48 1.461.387 1.94-.207a1.384 1.384 0 0 0-.207-1.943l-3.5-2.831c-.8-.647-1.766-1.045-2.774-1.202l2.015-2.158A1.384 1.384 0 0 0 13.483 0zm-2.866 12.815a1.38 1.38 0 0 0-1.38 1.382 1.38 1.38 0 0 0 1.38 1.382H20.79a1.38 1.38 0 0 0 1.38-1.382 1.38 1.38 0 0 0-1.38-1.382z"/></svg> },
-              ].map(({ label, href, icon }) => (
-                <a key={label} href={href} target={label !== "Email" ? "_blank" : undefined} rel="noreferrer" className="social-link">
-                  {icon}{label}
-                </a>
-              ))}
+            <div style={{ display:"flex", gap:"0.6rem", flexWrap:"wrap" }}>
+              <a href="mailto:aayushichhabra1010@gmail.com" className="icon-btn">
+                <svg width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg>
+                Email
+              </a>
+              <a href="https://linkedin.com/in/aayushi-chhabra-54281a34a" target="_blank" rel="noreferrer" className="icon-btn">
+                <svg width="13" height="13" fill="currentColor" viewBox="0 0 24 24"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+                LinkedIn
+              </a>
+              <a href="https://github.com/aayushichhabra" target="_blank" rel="noreferrer" className="icon-btn">
+                <svg width="13" height="13" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+                GitHub
+              </a>
             </div>
           </div>
 
-          {/* Right: Education + certifications */}
-          <div>
-            <div className="rv d1 glass" style={{ borderRadius: "6px", padding: "1.8rem", marginBottom: "1.5rem" }}>
-              <div className="mono" style={{ fontSize: "0.65rem", letterSpacing: "0.15em", color: "var(--rose)", marginBottom: "1.2rem" }}>// EDUCATION</div>
+          <div style={{ display:"grid", gridTemplateRows:"auto auto", gap:"1.5rem" }}>
+            <div className="rv d2 glass glass-cyan" style={{ padding:"1.8rem", position:"relative", overflow:"hidden" }}>
+              <div style={{ position:"absolute", top:0, left:0, right:0, height:2, background:"linear-gradient(90deg, var(--cyan), transparent)" }} />
+              <div className="label" style={{ color:"var(--cyan)", marginBottom:"1rem", display:"flex", alignItems:"center", gap:"0.5rem" }}>
+                <span>📚</span> EDUCATION
+              </div>
               {[
-                { school: "Manipal University Jaipur", degree: "B.Tech — Computer Science & Engineering", detail: "CGPA: 9.88  ·  2023–2027", loc: "Jaipur, Rajasthan", highlight: true },
-                { school: "Manav Rachna International School", degree: "Class X: 95%  ·  Class XII: 96%", detail: "2021–2023", loc: "Gurugram, Haryana", highlight: false },
-              ].map(({ school, degree, detail, loc, highlight }) => (
-                <div key={school} style={{ marginBottom: "1.2rem", paddingBottom: "1.2rem", borderBottom: "1px solid var(--line)" }}>
-                  <div style={{ fontWeight: 600, fontSize: "0.88rem", marginBottom: "0.25rem", color: highlight ? "var(--rose2)" : "var(--ink)" }}>{school}</div>
-                  <div style={{ fontSize: "0.8rem", color: "var(--ink2)", marginBottom: "0.2rem" }}>{degree}</div>
-                  <div className="mono" style={{ fontSize: "0.66rem", color: highlight ? "var(--mauve)" : "var(--ink2)", opacity: 0.8 }}>{detail}  ·  {loc}</div>
+                { school:"Manipal University Jaipur", degree:"B.Tech — Computer Science & Engineering", detail:"CGPA: 9.88  ·  2023–2027", highlight:true },
+                { school:"Manav Rachna International School", degree:"Class X: 95%  ·  Class XII: 96%", detail:"2021–2023 · Gurugram, Haryana", highlight:false },
+              ].map(({ school, degree, detail, highlight }) => (
+                <div key={school} style={{ marginBottom:"0.9rem", paddingBottom:"0.9rem", borderBottom:"1px solid var(--outline)" }}>
+                  <div style={{ fontWeight:700, fontSize:"0.88rem", marginBottom:"0.2rem", color: highlight ? "var(--rose)" : "var(--ink)" }}>{school}</div>
+                  <div style={{ fontSize:"0.78rem", color:"var(--ink2)", marginBottom:"0.15rem" }}>{degree}</div>
+                  <div className="mono" style={{ fontSize:"0.63rem", color: highlight ? "var(--cyan)" : "var(--ink3)" }}>{detail}</div>
                 </div>
               ))}
             </div>
-
-            <div className="rv d2 glass" style={{ borderRadius: "6px", padding: "1.8rem" }}>
-              <div className="mono" style={{ fontSize: "0.65rem", letterSpacing: "0.15em", color: "var(--rose)", marginBottom: "1.2rem" }}>// CERTIFICATIONS</div>
-              {[
-                { org: "NPTEL", items: ["Programming, DSA using Python", "Design & Analysis of Algorithms"] },
-                { org: "Oracle Academy", items: ["DB Foundations", "DB Programming with SQL", "DB Design"] },
-                { org: "Red Hat", items: ["System Administration I (RH124)"] },
-                { org: "Coursera", items: ["AWS: Storage"] },
-              ].map(({ org, items }) => (
-                <div key={org} style={{ marginBottom: "0.9rem", display: "flex", gap: "0.8rem", alignItems: "flex-start" }}>
-                  <span className="mono" style={{ fontSize: "0.65rem", color: "var(--rose)", minWidth: 80, paddingTop: "0.1rem", fontWeight: 500 }}>{org}</span>
-                  <div>
-                    {items.map(i => <div key={i} style={{ fontSize: "0.78rem", color: "var(--ink2)", lineHeight: 1.7 }}>{i}</div>)}
+            <div className="rv d3 glass" style={{ padding:"1.8rem", position:"relative", overflow:"hidden" }}>
+              <div style={{ position:"absolute", top:0, left:0, right:0, height:2, background:"linear-gradient(90deg, var(--rose), transparent)" }} />
+              <div className="label" style={{ color:"var(--rose)", marginBottom:"1rem" }}>📜 CERTIFICATIONS</div>
+              <div style={{ display:"flex", flexDirection:"column", gap:"0.5rem" }}>
+                {[
+                  { org:"NPTEL", items:"Programming, DSA using Python · Design & Analysis of Algorithms" },
+                  { org:"Oracle Academy", items:"DB Foundations · DB Programming with SQL · DB Design" },
+                  { org:"Red Hat", items:"System Administration I (RH124)" },
+                  { org:"Coursera", items:"AWS: Storage" },
+                ].map(({ org, items }) => (
+                  <div key={org} style={{ display:"flex", gap:"0.7rem" }}>
+                    <span className="mono" style={{ fontSize:"0.65rem", color:"var(--rose)", minWidth:90, fontWeight:600, paddingTop:"0.1rem" }}>{org}</span>
+                    <span style={{ fontSize:"0.77rem", color:"var(--ink2)", lineHeight:1.6 }}>{items}</span>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </div>
           </div>
         </div>
@@ -785,14 +656,14 @@ function About() {
 /* ─── TIMELINE ─── */
 const TIMELINE_DATA = [
   { year: "2023", title: "Started B.Tech at MUJ", desc: "Began Computer Science & Engineering at Manipal University Jaipur. Set the academic foundation with a strong first semester.", icon: "🎓", col: "var(--rose)", side: "left" },
-  { year: "2023", title: "Dean's Excellence Award — Sem 1", desc: "Achieved 9.88 CGPA in the very first semester, earning the first Dean's Excellence Award.", icon: "🏆", col: "var(--blush)", side: "right" },
-  { year: "2024", title: "Oracle & NPTEL Certifications", desc: "Completed certifications in Database Foundations, SQL Programming, DSA with Python, and Design & Analysis of Algorithms.", icon: "📜", col: "var(--mauve)", side: "left" },
+  { year: "2023", title: "Dean's Excellence Award — Sem 1", desc: "Achieved 9.88 CGPA in the very first semester, earning the first Dean's Excellence Award.", icon: "🏆", col: "var(--cyan)", side: "right" },
+  { year: "2024", title: "Oracle & NPTEL Certifications", desc: "Completed certifications in Database Foundations, SQL Programming, DSA with Python, and Design & Analysis of Algorithms.", icon: "📜", col: "#a78bfa", side: "left" },
   { year: "2024", title: "5× Dean's Award Streak", desc: "Maintained 9.88 CGPA for 5 consecutive semesters — a testament to unwavering academic dedication.", icon: "⭐", col: "var(--rose)", side: "right" },
-  { year: "2025", title: "Prodigy InfoTech — Android Intern", desc: "Built mobile app features using Android Studio and SQLite. First hands-on industry engineering experience.", icon: "📱", col: "var(--coral)", side: "left" },
-  { year: "2025", title: "Cognifyz Technologies — UI/UX Intern", desc: "Contributed to dashboard design improvements in Figma, enhancing usability across product interfaces.", icon: "🎨", col: "var(--sky)", side: "right" },
+  { year: "2025", title: "Prodigy InfoTech — Android Intern", desc: "Built mobile app features using Android Studio and SQLite. First hands-on industry engineering experience.", icon: "📱", col: "var(--cyan)", side: "left" },
+  { year: "2025", title: "Cognifyz Technologies — UI/UX Intern", desc: "Contributed to dashboard design improvements in Figma, enhancing usability across product interfaces.", icon: "🎨", col: "#a78bfa", side: "right" },
   { year: "2025", title: "Ericsson R&D — Cybersecurity & AI Intern", desc: "Worked on CVE triage, anomaly detection models, and automated incident response pipelines in a production SecOps environment.", icon: "🔐", col: "var(--rose)", side: "left" },
-  { year: "2025", title: "Deloitte Capstone Ideathon — Top 10", desc: "Competed against 200+ teams and secured a Top 10 finish for innovative solution design and problem-solving.", icon: "🎯", col: "var(--blush)", side: "right" },
-  { year: "2025", title: "Building ResQNet & DeepFake Detection", desc: "Developing a cross-platform crisis management app and an AI-powered deepfake detection system with Grad-CAM explainability.", icon: "🚀", col: "var(--mauve)", side: "left" },
+  { year: "2025", title: "Deloitte Capstone Ideathon — Top 10", desc: "Competed against 200+ teams and secured a Top 10 finish for innovative solution design and problem-solving.", icon: "🎯", col: "var(--cyan)", side: "right" },
+  { year: "2025", title: "Building ResQNet & DeepFake Detection", desc: "Developing a cross-platform crisis management app and an AI-powered deepfake detection system with Grad-CAM explainability.", icon: "🚀", col: "#a78bfa", side: "left" },
 ];
 
 function Timeline() {
@@ -803,9 +674,9 @@ function Timeline() {
       <div style={{ position: "absolute", top: "20%", left: "50%", transform: "translateX(-50%)", width: 600, height: 600, background: "radial-gradient(circle, rgba(244,63,94,0.03) 0%, transparent 70%)", borderRadius: "50%", pointerEvents: "none" }} />
 
       <div style={{ maxWidth: 900, margin: "0 auto", position: "relative" }}>
-        <div className="rv section-label">Journey</div>
-        <h2 className="rv d1 serif" style={{ fontSize: "clamp(1.8rem,4vw,2.8rem)", fontWeight: 900, marginBottom: "4rem" }}>
-          My <span className="rose-grad">Timeline</span>
+        <div className="rv sec-label">Journey</div>
+        <h2 className="rv d1" style={{ fontFamily:"'Inter',sans-serif", fontSize: "clamp(1.8rem,4vw,2.8rem)", fontWeight: 900, marginBottom: "4rem" }}>
+          My <span style={{ color:"var(--rose)" }}>Timeline</span>
         </h2>
 
         <div style={{ position: "relative" }}>
@@ -813,7 +684,7 @@ function Timeline() {
           {!isMobile && (
             <div className="tl-desktop-line" style={{
               position: "absolute", left: "50%", top: 0, bottom: 0, width: 2,
-              background: "linear-gradient(180deg, var(--rose), var(--mauve), transparent)",
+              background: "linear-gradient(180deg, var(--rose), var(--cyan), transparent)",
               transform: "translateX(-50%)",
             }} />
           )}
@@ -821,7 +692,7 @@ function Timeline() {
           {isMobile && (
             <div className="tl-mobile-line" style={{
               position: "absolute", left: 16, top: 0, bottom: 0, width: 2,
-              background: "linear-gradient(180deg, var(--rose), var(--mauve), transparent)",
+              background: "linear-gradient(180deg, var(--rose), var(--cyan), transparent)",
             }} />
           )}
 
@@ -854,10 +725,9 @@ function Timeline() {
                   zIndex: 2,
                 }} />
 
-                <div style={{
-                  background: "var(--card)", border: "1px solid var(--card-b)", borderRadius: "6px",
-                  padding: "1.4rem 1.6rem", backdropFilter: "blur(8px)", width: "100%",
-                  transition: "all 0.3s", position: "relative", overflow: "hidden",
+                <div className="glass" style={{
+                  padding: "1.4rem 1.6rem", width: "100%",
+                  position: "relative", overflow: "hidden",
                 }}
                   onMouseEnter={e => {
                     e.currentTarget.style.borderColor = `${item.col}50`;
@@ -865,7 +735,7 @@ function Timeline() {
                     e.currentTarget.style.boxShadow = `0 12px 40px rgba(0,0,0,0.4), 0 0 20px ${item.col}15`;
                   }}
                   onMouseLeave={e => {
-                    e.currentTarget.style.borderColor = "var(--card-b)";
+                    e.currentTarget.style.borderColor = "var(--outline)";
                     e.currentTarget.style.transform = "translateY(0)";
                     e.currentTarget.style.boxShadow = "none";
                   }}
@@ -889,77 +759,61 @@ function Timeline() {
   );
 }
 
-/* ─── EXPERIENCE ─── */
 function Experience() {
   const EXP = [
     {
-      role: "Research & Development Intern",
-      company: "Ericsson",
-      loc: "Gurugram, Haryana",
-      period: "Jun 2025 – Jul 2025",
-      col: "var(--rose)",
-      bullets: [
-        "Worked on Cybersecurity & AI projects including vulnerability analysis, CVE triage, and threat detection.",
-        "Developed anomaly detection models for a production-grade SecOps environment.",
-        "Contributed to automated incident response pipelines."
-      ],
-      tags: ["Cybersecurity", "AI/ML", "CVE Triage", "Anomaly Detection"]
+      role:"Research & Development Intern", company:"Ericsson", loc:"Gurugram, Haryana",
+      period:"Jun 2025 – Jul 2025", col:"var(--rose)",
+      bullets:["Worked on Cybersecurity & AI projects including vulnerability analysis, CVE triage, and threat detection.","Developed anomaly detection models for a production-grade SecOps environment.","Contributed to automated incident response pipelines."],
+      tags:["Cybersecurity","AI/ML","CVE Triage","Anomaly Detection"]
     },
     {
-      role: "UI/UX Design Intern",
-      company: "Cognifyz Technologies",
-      loc: "Remote",
-      period: "Mar 2025",
-      col: "var(--mauve)",
-      bullets: [
-        "Contributed to dashboard design improvements using Figma and front-end tooling.",
-        "Enhanced usability and visual consistency across product interfaces."
-      ],
-      tags: ["Figma", "UI/UX", "Dashboard Design"]
+      role:"UI/UX Design Intern", company:"Cognifyz Technologies", loc:"Remote",
+      period:"Mar 2025", col:"var(--cyan)",
+      bullets:["Contributed to dashboard design improvements using Figma and front-end tooling.","Enhanced usability and visual consistency across product interfaces."],
+      tags:["Figma","UI/UX","Dashboard Design"]
     },
     {
-      role: "Android App Development Intern",
-      company: "Prodigy InfoTech",
-      loc: "Remote",
-      period: "Feb 2025",
-      col: "var(--blush)",
-      bullets: [
-        "Developed and tested mobile app features using Android Studio and SQLite.",
-        "Implemented data persistence and UI components for a production Android application."
-      ],
-      tags: ["Android Studio", "SQLite", "Java", "Mobile Dev"]
+      role:"Android App Development Intern", company:"Prodigy InfoTech", loc:"Remote",
+      period:"Feb 2025", col:"#a78bfa",
+      bullets:["Developed and tested mobile app features using Android Studio and SQLite.","Implemented data persistence and UI components for a production Android application."],
+      tags:["Android Studio","SQLite","Java","Mobile Dev"]
     }
   ];
-  return (
-    <section id="experience" className="sec-pad" style={{ background: "var(--bg2)" }}>
-      <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-        <div className="rv section-label">Experience</div>
-        <h2 className="rv d1 serif" style={{ fontSize: "clamp(1.8rem,4vw,2.8rem)", fontWeight: 900, marginBottom: "3.5rem" }}>
-          Work <span className="rose-grad">History</span>
-        </h2>
 
-        <div style={{ position: "relative", paddingLeft: "2.5rem" }}>
-          <div className="tl-line" />
+  return (
+    <section id="experience" className="sec-pad" style={{ background:"var(--bg)" }}>
+      <div style={{ maxWidth:1200, margin:"0 auto" }}>
+        <div className="rv sec-label">Experience</div>
+        <h2 className="rv d1" style={{ fontFamily:"'Inter',sans-serif", fontSize:"clamp(1.8rem,3.5vw,2.6rem)", fontWeight:800, letterSpacing:"-0.02em", marginBottom:"3rem" }}>
+          Work <span style={{ color:"var(--rose)" }}>History</span>
+        </h2>
+        <div style={{ position:"relative", paddingLeft:"2rem" }}>
+          <div style={{ position:"absolute", left:0, top:0, bottom:0, width:1, background:"linear-gradient(180deg, var(--rose), var(--cyan), transparent)" }} />
           {EXP.map(({ role, company, loc, period, col, bullets, tags }, i) => (
-            <div key={company} className={`rv d${i + 1}`} style={{ marginBottom: "2.5rem", position: "relative" }}>
-              <div style={{ position: "absolute", left: -27, top: 6, width: 12, height: 12, borderRadius: "50%", background: col, boxShadow: `0 0 10px ${col}`, border: "2px solid var(--bg2)" }} />
-              <div className="card" style={{ borderRadius: "6px", padding: "1.8rem" }}>
-                <div className="exp-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "0.5rem", marginBottom: "1rem" }}>
+            <div key={company} className={`rv d${i+1}`} style={{ marginBottom:"2rem", position:"relative" }}>
+              <div style={{ position:"absolute", left:-26, top:6, width:11, height:11, borderRadius:"50%", background:col, boxShadow:`0 0 10px ${col}`, border:"2px solid var(--bg)" }} />
+              <div className="glass" style={{ padding:"1.8rem", borderRadius:"1rem" }}
+                onMouseEnter={e => { e.currentTarget.style.borderColor=`${col}50`; e.currentTarget.style.boxShadow=`0 0 25px ${col}15`; }}
+                onMouseLeave={e => { e.currentTarget.style.borderColor="var(--outline)"; e.currentTarget.style.boxShadow="none"; }}
+              >
+                <div style={{ position:"absolute", top:0, left:0, right:0, height:2, borderRadius:"1rem 1rem 0 0", background:`linear-gradient(90deg, ${col}, transparent)` }} />
+                <div className="exp-header" style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", flexWrap:"wrap", gap:"0.5rem", marginBottom:"1rem" }}>
                   <div>
-                    <div style={{ fontWeight: 700, fontSize: "1rem", marginBottom: "0.25rem" }}>{role}</div>
-                    <div style={{ color: col, fontSize: "0.85rem", fontWeight: 600 }}>{company} · {loc}</div>
+                    <div style={{ fontWeight:700, fontSize:"1rem", marginBottom:"0.2rem" }}>{role}</div>
+                    <div style={{ color:col, fontSize:"0.84rem", fontWeight:600 }}>{company} · {loc}</div>
                   </div>
-                  <span className="mono" style={{ fontSize: "0.65rem", letterSpacing: "0.08em", color: "var(--ink2)", padding: "0.3rem 0.8rem", background: "rgba(255,255,255,0.04)", border: "1px solid var(--line)", borderRadius: "20px", whiteSpace: "nowrap" }}>{period}</span>
+                  <span className="mono" style={{ fontSize:"0.63rem", color:"var(--ink3)", padding:"0.25rem 0.75rem", background:"var(--s-mid)", border:"1px solid var(--outline)", borderRadius:"9999px" }}>{period}</span>
                 </div>
-                <ul style={{ listStyle: "none", marginBottom: "1rem", display: "flex", flexDirection: "column", gap: "0.45rem" }}>
-                  {bullets.map((b, j) => (
-                    <li key={j} style={{ fontSize: "0.83rem", color: "var(--ink2)", lineHeight: 1.7, display: "flex", gap: "0.6rem" }}>
-                      <span style={{ color: col, flexShrink: 0, marginTop: 2 }}>→</span>{b}
+                <ul style={{ listStyle:"none", marginBottom:"1rem", display:"flex", flexDirection:"column", gap:"0.4rem" }}>
+                  {bullets.map((b,j) => (
+                    <li key={j} style={{ fontSize:"0.82rem", color:"var(--ink2)", lineHeight:1.7, display:"flex", gap:"0.55rem" }}>
+                      <span style={{ color:col, flexShrink:0 }}>→</span>{b}
                     </li>
                   ))}
                 </ul>
-                <div className="tag-row">
-                  {tags.map(t => <span key={t} className="chip-r">{t}</span>)}
+                <div style={{ display:"flex", flexWrap:"wrap", gap:"0.4rem" }}>
+                  {tags.map(t => <span key={t} className="chip-rose" style={{ borderColor:`${col}30`, color:col }}>{t}</span>)}
                 </div>
               </div>
             </div>
@@ -970,83 +824,54 @@ function Experience() {
   );
 }
 
-/* ─── PROJECTS ─── */
 const PROJECTS = [
   {
-    num: "01",
-    name: "Unified Cybersecurity Platform",
-    tagline: "AI-driven SecOps ecosystem for real-time threat detection & automated incident response",
-    category: "AI/ML · Security",
-    tech: ["Python", "Streamlit", "LangChain", "Gemini", "FAISS", "AWS Boto3", "Plotly"],
-    highlights: ["RAG-powered incident guidance with semantic threat search", "FAISS + Gemini embeddings for rapid containment recommendations", "Interactive network attack analytics & anomaly detection", "Comprehensive SecOps situational awareness dashboard"],
-    link: "https://intelligent-secops-rag-dashboard.streamlit.app",
-    col: "var(--rose)",
-    featured: true,
+    num:"01", name:"Unified Cybersecurity Platform",
+    tagline:"AI-driven SecOps ecosystem for real-time threat detection & automated incident response",
+    category:"AI/ML · Security", col:"var(--rose)", featured:true,
+    tech:["Python","Streamlit","LangChain","Gemini","FAISS","AWS Boto3","Plotly"],
+    highlights:["RAG-powered incident guidance with semantic threat search","FAISS + Gemini embeddings for rapid containment","Interactive network attack analytics & anomaly detection","Comprehensive SecOps situational awareness dashboard"],
+    link:"https://intelligent-secops-rag-dashboard.streamlit.app",
   },
   {
-    num: "02",
-    name: "ResQNet",
-    tagline: "Cross-platform crisis management ecosystem for citizens, NGOs & government agencies",
-    category: "Mobile · Full Stack",
-    tech: ["React Native", "Expo", "BLE", "Supabase", "Firebase", "NativeWind", "Geolib"],
-    highlights: ["Offline-first BLE-based mobile crisis reporting", "Automated resource allocation via incident clustering", "Multi-channel data ingestion for real-time situational awareness", "Geolocation-based alert routing"],
-    link: "https://github.com/aayushichhabra/ResQNet",
-    col: "var(--mauve)",
+    num:"02", name:"ResQNet",
+    tagline:"Cross-platform crisis management for citizens, NGOs & government agencies",
+    category:"Mobile · Full Stack", col:"var(--cyan)",
+    tech:["React Native","Expo","BLE","Supabase","Firebase","NativeWind","Geolib"],
+    highlights:["Offline-first BLE-based mobile crisis reporting","Automated resource allocation via incident clustering","Multi-channel real-time situational awareness","Geolocation-based alert routing"],
+    link:"https://github.com/aayushichhabra/ResQNet",
   },
   {
-    num: "03",
-    name: "DeepFake Detection System",
-    tagline: "End-to-end deepfake detection pipeline with visual explainability",
-    category: "AI/ML · Computer Vision",
-    tech: ["Python", "PyTorch", "EfficientNetB0", "Grad-CAM", "OpenCV", "Scikit-learn"],
-    highlights: ["Robust binary classification: real vs. AI-generated images", "Grad-CAM explainability heatmaps for security auditors", "Transfer learning with EfficientNetB0 backbone", "Transparent model decision-making pipeline"],
-    link: "https://github.com/aayushichhabra/DeepFakeImageDetection",
-    col: "var(--blush)",
+    num:"03", name:"DeepFake Detection System",
+    tagline:"End-to-end deepfake detection pipeline with visual explainability",
+    category:"AI/ML · Computer Vision", col:"#a78bfa",
+    tech:["Python","PyTorch","EfficientNetB0","Grad-CAM","OpenCV","Scikit-learn"],
+    highlights:["Binary classification: real vs. AI-generated images","Grad-CAM explainability heatmaps for security auditors","Transfer learning with EfficientNetB0 backbone"],
+    link:"https://github.com/aayushichhabra/DeepFakeImageDetection",
   },
   {
-    num: "04",
-    name: "Promptly AI",
-    tagline: "AI-powered productivity assistant that automates email triage, reply drafting, and meeting intelligence",
-    category: "AI · Full Stack",
-    tech: ["Python", "Streamlit", "Gemini 2.5 Flash", "Whisper", "Gmail API", "Google OAuth2", "LangChain"],
-    highlights: [
-      "Gmail OAuth integration: auto-scans inbox to extract reminders and deadlines",
-      "Batch email processing via Gemini — generates context-aware, ready-to-send reply drafts",
-      "Whisper-based audio transcription → structured Minutes of Meeting with action items",
-      "Unified dashboard aggregating reminders and meeting summaries across sessions",
-    ],
-    link: "https://github.com/aayushichhabra",
-    col: "var(--sky)",
+    num:"04", name:"Promptly AI",
+    tagline:"AI productivity assistant — email triage, reply drafting & meeting intelligence",
+    category:"AI · Full Stack", col:"var(--cyan)",
+    tech:["Python","Streamlit","Gemini 2.5 Flash","Whisper","Gmail API","Google OAuth2","LangChain"],
+    highlights:["Gmail OAuth: auto-scans inbox for reminders & deadlines","Gemini batch email processing with ready-to-send drafts","Whisper audio → structured Minutes of Meeting","Unified dashboard across sessions"],
+    link:"https://github.com/aayushichhabra",
   },
   {
-    num: "05",
-    name: "CVE Agent",
-    tagline: "Agentic AI tool for real-time CVE triage, dependency vulnerability scanning, and automated fix generation",
-    category: "AI/ML · Cybersecurity",
-    tech: ["Python", "Streamlit", "Gemini API", "LangGraph", "NIST NVD API", "OSV.dev", "BeautifulSoup4"],
-    highlights: [
-      "LangGraph-orchestrated agentic pipeline: fetches, analyzes, and summarizes CVEs from NIST NVD",
-      "Dependency scanner: upload requirements.txt and instantly surface known CVEs with CVSS scores",
-      "AI-generated structured fix recommendations with downloadable patched dependency files",
-      "Multi-format support: PyPI, Go, Alpine, and Debian package ecosystems",
-    ],
-    link: "https://github.com/aayushichhabra",
-    col: "var(--coral)",
+    num:"05", name:"CVE Agent",
+    tagline:"Agentic AI for real-time CVE triage, dependency scanning & fix generation",
+    category:"AI/ML · Cybersecurity", col:"var(--rose)",
+    tech:["Python","Streamlit","Gemini API","LangGraph","NIST NVD API","OSV.dev","BeautifulSoup4"],
+    highlights:["LangGraph pipeline: fetches & summarizes CVEs from NIST NVD","Dependency scanner with CVSS scores from requirements.txt","AI-generated fix recommendations with downloadable files"],
+    link:"https://github.com/aayushichhabra",
   },
   {
-    num: "06",
-    name: "StyleVault",
-    tagline: "AI-powered men's fashion companion app for wardrobe management, outfit suggestions & body-fit analysis",
-    category: "Android · AI",
-    tech: ["Kotlin", "Android Studio", "Firebase", "Gemini API", "Camera API", "Figma"],
-    highlights: [
-      "AI-driven outfit recommendations personalized to wardrobe, weather, and occasion",
-      "Digital closet management: upload, categorize, and plan outfits from your wardrobe",
-      "Body measurement activity for fit-based AI styling suggestions",
-      "Fills a clear market gap — built after competitive analysis of 10+ existing apps",
-    ],
-    link: "https://github.com/aayushichhabra",
-    col: "var(--mauve)",
+    num:"06", name:"StyleVault",
+    tagline:"AI-powered men's fashion app for wardrobe management & body-fit analysis",
+    category:"Android · AI", col:"#a78bfa",
+    tech:["Kotlin","Android Studio","Firebase","Gemini API","Camera API","Figma"],
+    highlights:["AI outfit recommendations by wardrobe, weather & occasion","Digital closet: upload, categorize & plan outfits","Body measurement for fit-based AI styling suggestions"],
+    link:"https://github.com/aayushichhabra",
   },
 ];
 
@@ -1054,98 +879,73 @@ function ProjectCard({ p, i }) {
   const [hov, setHov] = useState(false);
   if (p.featured) {
     return (
-      <div className="rv d1 project-featured"
-        onMouseEnter={() => setHov(true)}
-        onMouseLeave={() => setHov(false)}
-        style={{
-          background: hov ? "rgba(244,63,94,0.04)" : "var(--card)",
-          border: `1px solid ${hov ? p.col : "var(--card-b)"}`,
-          borderRadius: "8px",
-          padding: "2.5rem",
-          transition: "all 0.3s",
-          boxShadow: hov ? `0 24px 80px rgba(0,0,0,0.5), 0 0 40px ${p.col}15` : "none",
-          position: "relative",
-          overflow: "hidden",
-        }}
-      >
-        <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: `linear-gradient(90deg, ${p.col}, var(--mauve), transparent)` }} />
-        <div style={{ position: "absolute", top: "-30%", right: "-10%", width: 300, height: 300, background: `radial-gradient(circle, ${p.col}08 0%, transparent 70%)`, borderRadius: "50%", pointerEvents: "none" }} />
-
-        {/* Left side */}
-        <div style={{ position: "relative" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: "1rem", marginBottom: "1.2rem", flexWrap: "wrap" }}>
-            <div className="mono" style={{ fontSize: "0.65rem", color: p.col, letterSpacing: "0.1em" }}>#{p.num} · FEATURED</div>
-            <span style={{ fontSize: "0.72rem", padding: "0.2rem 0.8rem", background: `${p.col}12`, color: p.col, border: `1px solid ${p.col}30`, borderRadius: "20px", fontFamily: "DM Mono, monospace", letterSpacing: "0.05em" }}>{p.category}</span>
+      <div className="rv d1 project-featured" style={{ gridColumn:"1/-1" }} onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}>
+        <div style={{
+          background:"rgba(19,19,19,0.82)", backdropFilter:"blur(14px)",
+          border:`1px solid ${hov ? p.col : "var(--outline)"}`,
+          boxShadow: hov ? `0 0 40px ${p.col}18` : "none",
+          borderRadius:"1.2rem", padding:"2.5rem",
+          display:"grid", gridTemplateColumns:"1fr 1fr", gap:"2.5rem", alignItems:"start",
+          transition:"all 0.3s", position:"relative", overflow:"hidden"
+        }} className="about-grid">
+          <div style={{ position:"absolute", top:0, left:0, right:0, height:2, background:`linear-gradient(90deg, ${p.col}, var(--cyan), transparent)` }} />
+          <div>
+            <div style={{ display:"flex", alignItems:"center", gap:"0.8rem", marginBottom:"1rem", flexWrap:"wrap" }}>
+              <span className="label" style={{ color:p.col, padding:"0.2rem 0.7rem", background:`${p.col}15`, border:`1px solid ${p.col}30`, borderRadius:"9999px" }}>#{p.num} · FEATURED</span>
+              <span className="label" style={{ color:"var(--ink3)", fontSize:"0.6rem" }}>{p.category}</span>
+            </div>
+            <h3 style={{ fontFamily:"'Inter',sans-serif", fontSize:"1.6rem", fontWeight:800, marginBottom:"0.6rem", letterSpacing:"-0.02em", lineHeight:1.2 }}>{p.name}</h3>
+            <p style={{ fontSize:"0.88rem", color:"var(--ink2)", lineHeight:1.75, marginBottom:"1.5rem" }}>{p.tagline}</p>
+            <div className="tag-row" style={{ marginBottom:"1.5rem" }}>
+              {p.tech.map(t => <span key={t} className="chip-rose" style={{ borderColor:`${p.col}30`, color:p.col }}>{t}</span>)}
+            </div>
+            <a href={p.link} target="_blank" rel="noreferrer" className="btn-primary" style={{ fontSize:"0.72rem", padding:"0.6rem 1.4rem", background: p.col, boxShadow: `0 4px 18px ${p.col}55` }}>View Live →</a>
           </div>
-          <h3 className="serif" style={{ fontSize: "clamp(1.2rem, 3vw, 1.6rem)", fontWeight: 700, marginBottom: "0.6rem", color: "var(--ink)", lineHeight: 1.2 }}>{p.name}</h3>
-          <p style={{ fontSize: "0.9rem", color: "var(--ink2)", lineHeight: 1.75, marginBottom: "1.5rem" }}>{p.tagline}</p>
-          <div className="tag-row" style={{ marginBottom: "1.5rem" }}>
-            {p.tech.map(t => <span key={t} className="chip-r" style={{ borderColor: `${p.col}25`, color: p.col }}>{t}</span>)}
+          <div style={{ background:"var(--s-low)", border:"1px solid var(--outline)", borderRadius:"0.8rem", padding:"1.5rem" }}>
+            <div className="label" style={{ color:"var(--ink3)", marginBottom:"1rem", fontSize:"0.62rem" }}>// KEY FEATURES</div>
+            <ul style={{ listStyle:"none", display:"flex", flexDirection:"column", gap:"0.75rem" }}>
+              {p.highlights.map((h,j) => (
+                <li key={j} style={{ fontSize:"0.81rem", color:"var(--ink2)", lineHeight:1.65, display:"flex", gap:"0.55rem" }}>
+                  <span style={{ color:p.col, flexShrink:0, fontSize:"0.65rem", marginTop:"0.22rem" }}>◆</span>{h}
+                </li>
+              ))}
+            </ul>
           </div>
-          {p.link && (
-            <a href={p.link} target="_blank" rel="noreferrer" className="btn-primary" style={{ fontSize: "0.72rem", padding: "0.6rem 1.5rem" }}>
-              View Live ↗
-            </a>
-          )}
-        </div>
-
-        {/* Right side — highlights */}
-        <div style={{ background: "rgba(255,255,255,0.02)", border: "1px solid var(--card-b)", borderRadius: "6px", padding: "1.5rem" }}>
-          <div className="mono" style={{ fontSize: "0.62rem", letterSpacing: "0.15em", color: "var(--ink2)", marginBottom: "1rem" }}>// KEY FEATURES</div>
-          <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: "0.8rem" }}>
-            {p.highlights.map((h, j) => (
-              <li key={j} style={{ fontSize: "0.82rem", color: "var(--ink2)", lineHeight: 1.65, display: "flex", gap: "0.6rem", alignItems: "flex-start" }}>
-                <span style={{ color: p.col, flexShrink: 0, fontSize: "0.7rem", marginTop: "0.2rem" }}>◆</span>{h}
-              </li>
-            ))}
-          </ul>
         </div>
       </div>
     );
   }
-
   return (
-    <div className={`rv d${(i % 3) + 1}`}
-      onMouseEnter={() => setHov(true)}
-      onMouseLeave={() => setHov(false)}
+    <div className={`rv d${(i%3)+1}`} onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}
       style={{
-        background: hov ? "rgba(244,63,94,0.04)" : "var(--card)",
-        border: `1px solid ${hov ? p.col : "var(--card-b)"}`,
-        borderRadius: "6px",
-        padding: "2rem",
-        transition: "all 0.3s",
-        transform: hov ? "translateY(-6px)" : "none",
-        boxShadow: hov ? `0 20px 60px rgba(0,0,0,0.5), 0 0 30px ${p.col}18` : "none",
-        cursor: "default",
-        display: "flex",
-        flexDirection: "column",
-        position: "relative",
-        overflow: "hidden",
+        background:"rgba(19,19,19,0.82)", backdropFilter:"blur(14px)",
+        border:`1px solid ${hov ? p.col : "var(--outline)"}`,
+        boxShadow: hov ? `0 0 28px ${p.col}18` : "none",
+        borderRadius:"1rem", padding:"2rem",
+        transform: hov ? "translateY(-4px)" : "none",
+        transition:"all 0.3s", display:"flex", flexDirection:"column",
+        position:"relative", overflow:"hidden", cursor:"default"
       }}
     >
-      <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: `linear-gradient(90deg, ${p.col}, transparent)` }} />
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "1.2rem" }}>
+      <div style={{ position:"absolute", top:0, left:0, right:0, height:2, background:`linear-gradient(90deg, ${p.col}, transparent)` }} />
+      <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", marginBottom:"1rem" }}>
         <div>
-          <div className="mono" style={{ fontSize: "0.65rem", color: p.col, letterSpacing: "0.1em", marginBottom: "0.3rem" }}>#{p.num}</div>
-          <span style={{ fontSize: "0.72rem", padding: "0.2rem 0.7rem", background: `${p.col}12`, color: p.col, border: `1px solid ${p.col}30`, borderRadius: "20px", fontFamily: "DM Mono, monospace", letterSpacing: "0.05em" }}>{p.category}</span>
+          <span className="mono" style={{ fontSize:"0.62rem", color:p.col, display:"block", marginBottom:"0.3rem" }}>#{p.num}</span>
+          <span className="label" style={{ fontSize:"0.6rem", color:p.col, padding:"0.2rem 0.6rem", background:`${p.col}12`, border:`1px solid ${p.col}25`, borderRadius:"9999px" }}>{p.category}</span>
         </div>
-        {p.link && (
-          <a href={p.link} target="_blank" rel="noreferrer" style={{ color: hov ? p.col : "var(--ink2)", transition: "color 0.2s", textDecoration: "none", fontSize: "0.8rem", fontFamily: "DM Mono, monospace", display: "flex", alignItems: "center", gap: "0.3rem" }}>
-            ↗
-          </a>
-        )}
+        {p.link && <a href={p.link} target="_blank" rel="noreferrer" style={{ color: hov ? p.col : "var(--ink3)", textDecoration:"none", fontSize:"0.8rem", fontFamily:"'JetBrains Mono',monospace", transition:"color 0.2s" }}>↗</a>}
       </div>
-      <h3 className="serif" style={{ fontSize: "1.05rem", fontWeight: 700, marginBottom: "0.5rem", color: "var(--ink)", lineHeight: 1.3 }}>{p.name}</h3>
-      <p style={{ fontSize: "0.8rem", color: "var(--ink2)", lineHeight: 1.7, marginBottom: "1rem" }}>{p.tagline}</p>
-      <ul style={{ listStyle: "none", marginBottom: "1.2rem", flex: 1 }}>
-        {p.highlights.map((h, j) => (
-          <li key={j} style={{ fontSize: "0.78rem", color: "var(--ink2)", lineHeight: 1.65, marginBottom: "0.3rem", display: "flex", gap: "0.5rem" }}>
-            <span style={{ color: p.col, flexShrink: 0 }}>›</span>{h}
+      <h3 style={{ fontFamily:"'Inter',sans-serif", fontSize:"1.05rem", fontWeight:700, marginBottom:"0.45rem", lineHeight:1.3 }}>{p.name}</h3>
+      <p style={{ fontSize:"0.79rem", color:"var(--ink2)", lineHeight:1.7, marginBottom:"0.9rem" }}>{p.tagline}</p>
+      <ul style={{ listStyle:"none", marginBottom:"1.1rem", flex:1 }}>
+        {p.highlights.map((h,j) => (
+          <li key={j} style={{ fontSize:"0.77rem", color:"var(--ink2)", lineHeight:1.65, marginBottom:"0.28rem", display:"flex", gap:"0.45rem" }}>
+            <span style={{ color:p.col, flexShrink:0 }}>›</span>{h}
           </li>
         ))}
       </ul>
       <div className="tag-row">
-        {p.tech.map(t => <span key={t} className="chip-r" style={{ borderColor: `${p.col}25`, color: p.col }}>{t}</span>)}
+        {p.tech.map(t => <span key={t} className={p.col === "var(--cyan)" ? "chip-cyan" : "chip-rose"} style={{ borderColor:`${p.col}25`, color:p.col }}>{t}</span>)}
       </div>
     </div>
   );
@@ -1153,20 +953,17 @@ function ProjectCard({ p, i }) {
 
 function Projects() {
   return (
-    <section id="projects" className="sec-pad" style={{ background: "var(--bg)", position: "relative", overflow: "hidden" }}>
-      <div style={{ position: "absolute", bottom: "-10%", right: "-5%", width: 500, height: 500, background: "radial-gradient(circle, rgba(192,132,252,0.03) 0%, transparent 70%)", borderRadius: "50%", pointerEvents: "none" }} />
-      <div style={{ maxWidth: 1100, margin: "0 auto", position: "relative" }}>
-        <div className="rv section-label">Projects</div>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", flexWrap: "wrap", gap: "1rem", marginBottom: "3.5rem" }}>
-          <h2 className="rv d1 serif" style={{ fontSize: "clamp(1.8rem,4vw,2.8rem)", fontWeight: 900 }}>
-            Featured <span className="rose-grad">Work</span>
+    <section id="projects" className="sec-pad" style={{ background:"var(--surface)" }}>
+      <div style={{ maxWidth:1200, margin:"0 auto" }}>
+        <div className="rv sec-label">Projects</div>
+        <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-end", flexWrap:"wrap", gap:"1rem", marginBottom:"3rem" }}>
+          <h2 className="rv d1" style={{ fontFamily:"'Inter',sans-serif", fontSize:"clamp(1.8rem,3.5vw,2.6rem)", fontWeight:800, letterSpacing:"-0.02em" }}>
+            Featured <span style={{ color:"var(--rose)" }}>Work</span>
           </h2>
-          <a href="https://github.com/aayushichhabra" target="_blank" rel="noreferrer" className="btn-ghost" style={{ fontSize: "0.7rem" }}>
-            View All on GitHub ↗
-          </a>
+          <a href="https://github.com/aayushichhabra" target="_blank" rel="noreferrer" className="btn-outline-rose" style={{ fontSize:"0.7rem" }}>View All on GitHub ↗</a>
         </div>
-        <div className="projects-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(300px,1fr))", gap: "1.5rem" }}>
-          {PROJECTS.map((p, i) => <ProjectCard key={p.num} p={p} i={i} />)}
+        <div className="projects-grid" style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(310px,1fr))", gap:"1.3rem" }}>
+          {PROJECTS.map((p,i) => <ProjectCard key={p.num} p={p} i={i} />)}
         </div>
       </div>
     </section>
@@ -1175,45 +972,50 @@ function Projects() {
 
 /* ─── SKILLS ─── */
 const SKILL_GROUPS = [
-  { label: "Programming & Dev", items: ["Python", "C", "Java", "JavaScript", "OOP", "DSA", "Git"], col: "var(--rose)", icon: "⌨️" },
-  { label: "AI & Machine Learning", items: ["Supervised & Unsupervised ML", "Transfer Learning", "RAG", "Computer Vision", "LangChain", "LangGraph", "Whisper STT", "PyTorch", "TF Lite", "OpenCV", "Scikit-learn", "Pandas"], col: "var(--mauve)", icon: "🧠" },
-  { label: "Cybersecurity", items: ["CVE Analysis", "Vulnerability Assessment", "Incident Response", "Threat Detection", "Anomaly Detection", "FAISS Vector DBs"], col: "var(--blush)", icon: "🔐" },
-  { label: "Mobile & Web Dev", items: ["Android Studio", "Kotlin", "React Native", "Expo", "HTML", "CSS", "JavaScript", "Streamlit", "Figma"], col: "var(--sky)", icon: "📱" },
-  { label: "Databases & Cloud", items: ["SQL", "Firebase", "Supabase", "MongoDB", "FAISS / Vector DBs"], col: "var(--coral)", icon: "☁️" },
-  { label: "Tools & Platforms", items: ["Gradio", "Plotly", "Google Gemini API", "Google OAuth2", "Hugging Face", "VS Code", "GitHub", "Postman"], col: "var(--mint)", icon: "🛠️" },
+  { label:"Programming & Dev", items:["Python","C","Java","JavaScript","OOP","DSA","Git"], col:"#FD7979", icon:"⌨️" },
+  { label:"AI & Machine Learning", items:["Supervised & Unsupervised ML","Transfer Learning","RAG","Computer Vision","LangChain","LangGraph","Whisper STT","PyTorch","TF Lite","OpenCV","Scikit-learn","Pandas"], col:"#4cd7f6", icon:"🧠" },
+  { label:"Cybersecurity", items:["CVE Analysis","Vulnerability Assessment","Incident Response","Threat Detection","Anomaly Detection","FAISS Vector DBs"], col:"#a78bfa", icon:"🔐" },
+  { label:"Mobile & Web Dev", items:["Android Studio","Kotlin","React Native","Expo","HTML","CSS","JavaScript","Streamlit","Figma"], col:"#FD7979", icon:"📱" },
+  { label:"Databases & Cloud", items:["SQL","Firebase","Supabase","MongoDB","FAISS / Vector DBs"], col:"#4cd7f6", icon:"☁️" },
+  { label:"Tools & Platforms", items:["Gradio","Plotly","Google Gemini API","Google OAuth2","Hugging Face","VS Code","GitHub","Postman"], col:"#34d399", icon:"🛠️" },
 ];
 
 const SKILL_BARS = [
-  { name: "Machine Learning & AI Systems", pct: 88, col: "var(--rose)" },
-  { name: "Python / Full-stack Dev", pct: 87, col: "var(--mauve)" },
-  { name: "Cybersecurity & Threat Detection", pct: 84, col: "var(--blush)" },
-  { name: "React Native / Mobile Dev", pct: 82, col: "var(--sky)" },
-  { name: "Database Design & Cloud", pct: 80, col: "var(--coral)" },
-  { name: "UI/UX & Frontend", pct: 75, col: "var(--mint)" },
+  { name:"Machine Learning & AI Systems", pct:88, col:"#FD7979" },
+  { name:"Python / Full-stack Dev",        pct:87, col:"#4cd7f6" },
+  { name:"Cybersecurity & Threat Detection",pct:84, col:"#a78bfa" },
+  { name:"React Native / Mobile Dev",       pct:82, col:"#FD7979" },
+  { name:"Database Design & Cloud",         pct:80, col:"#4cd7f6" },
+  { name:"UI/UX & Frontend",                pct:75, col:"#34d399" },
 ];
 
-function AnimatedBar({ name, pct, col }) {
+function SkillBar({ name, pct, col, delay }) {
   const [vis, setVis] = useState(false);
   const ref = useRef(null);
+
   useEffect(() => {
-    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) setVis(true); }, { threshold: 0.3 });
+    const obs = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) setVis(true); },
+      { threshold: 0 }
+    );
     if (ref.current) obs.observe(ref.current);
     return () => obs.disconnect();
   }, []);
+
   return (
-    <div ref={ref} style={{ marginBottom: "1.4rem" }}>
-      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "0.5rem" }}>
-        <span style={{ fontSize: "0.83rem", fontWeight: 500 }}>{name}</span>
-        <span className="mono" style={{ fontSize: "0.68rem", color: col }}>{pct}%</span>
+    <div ref={ref} style={{ marginBottom:"1.1rem" }}>
+      <div style={{ display:"flex", justifyContent:"space-between", marginBottom:"0.5rem" }}>
+        <span style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:"0.8rem", color:"var(--ink)" }}>{name}</span>
+        <span style={{ fontFamily:"'JetBrains Mono',monospace", fontSize:"0.78rem", color:col }}>{pct}%</span>
       </div>
-      <div style={{ height: 3, background: "rgba(255,255,255,0.04)", borderRadius: "99px", overflow: "hidden" }}>
+      <div style={{ height:3, background:"rgba(255,255,255,0.06)", borderRadius:10, overflow:"hidden" }}>
         <div style={{
-          height: "100%",
-          background: `linear-gradient(90deg, ${col}, ${col}88)`,
-          borderRadius: "99px",
-          boxShadow: `0 0 8px ${col}66`,
+          height:"100%",
+          background:`linear-gradient(90deg, ${col}, ${col}88)`,
+          borderRadius:10,
+          boxShadow:`0 0 8px ${col}55`,
           width: vis ? `${pct}%` : "0%",
-          transition: "width 1.4s cubic-bezier(0.16,1,0.3,1) 0.2s"
+          transition:`width 1.4s cubic-bezier(0.25,1,0.5,1) ${delay}s`,
         }} />
       </div>
     </div>
@@ -1222,32 +1024,45 @@ function AnimatedBar({ name, pct, col }) {
 
 function Skills() {
   const [tab, setTab] = useState("tags");
+  useReveal(tab);
   return (
-    <section id="skills" className="sec-pad" style={{ background: "var(--bg2)" }}>
-      <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-        <div className="rv section-label">Skills</div>
-        <div className="skills-tab-row" style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", flexWrap: "wrap", gap: "1rem", marginBottom: "2.5rem" }}>
-          <h2 className="rv d1 serif" style={{ fontSize: "clamp(1.8rem,4vw,2.8rem)", fontWeight: 900 }}>
-            Technical <span className="rose-grad">Toolkit</span>
+    <section id="skills" className="sec-pad" style={{ background:"var(--bg)" }}>
+      <div style={{ maxWidth:1200, margin:"0 auto" }}>
+        <div className="rv sec-label">Skills</div>
+        <div className="skills-tab-row" style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-end", flexWrap:"wrap", gap:"1rem", marginBottom:"2.5rem" }}>
+          <h2 className="rv d1" style={{ fontFamily:"'Inter',sans-serif", fontSize:"clamp(1.8rem,3.5vw,2.6rem)", fontWeight:800, letterSpacing:"-0.02em" }}>
+            Technical <span style={{ color:"var(--rose)" }}>Toolkit</span>
           </h2>
-          <div style={{ display: "flex", gap: "0.5rem" }}>
-            {[["tags", "By Domain"], ["bars", "Proficiency"]].map(([k, l]) => (
-              <button key={k} onClick={() => setTab(k)} className="mono" style={{ padding: "0.45rem 1rem", border: `1px solid ${tab === k ? "var(--rose)" : "var(--card-b)"}`, background: tab === k ? "rgba(244,63,94,0.08)" : "transparent", color: tab === k ? "var(--rose2)" : "var(--ink2)", cursor: "pointer", fontSize: "0.68rem", letterSpacing: "0.08em", borderRadius: "20px", transition: "all 0.2s" }}>{l}</button>
+          <div style={{ display:"flex", gap:"0.5rem" }}>
+            {[["tags","By Domain"],["bars","Proficiency"]].map(([k,l]) => (
+              <button key={k} onClick={() => setTab(k)} className="mono" style={{
+                padding:"0.4rem 0.9rem", borderRadius:"9999px",
+                border:`1px solid ${tab===k ? "var(--rose)" : "var(--outline)"}`,
+                background: tab===k ? "var(--rose-dim)" : "transparent",
+                color: tab===k ? "var(--rose)" : "var(--ink2)",
+                cursor:"pointer", fontSize:"0.68rem", letterSpacing:"0.06em", transition:"all 0.2s"
+              }}>{l}</button>
             ))}
           </div>
         </div>
 
         {tab === "tags" && (
-          <div className="skills-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(280px,1fr))", gap: "1.2rem" }}>
+          <div className="skills-grid" style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(280px,1fr))", gap:"1.1rem" }}>
             {SKILL_GROUPS.map(({ label, items, col, icon }, i) => (
-              <div key={label} className={`rv d${i + 1} card skill-domain-card`} style={{ borderRadius: "6px", padding: "1.5rem", position: "relative", overflow: "hidden" }}>
-                <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: `linear-gradient(90deg, ${col}, transparent)` }} />
-                <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", marginBottom: "1rem" }}>
-                  <span style={{ fontSize: "1.1rem" }}>{icon}</span>
-                  <span style={{ fontSize: "0.82rem", fontWeight: 600, color: col }}>{label}</span>
+              <div key={label} className={`rv d${i+1} glass`}
+                style={{ padding:"1.5rem", borderRadius:"1rem", position:"relative", overflow:"hidden" }}
+                onMouseEnter={e => { e.currentTarget.style.borderColor=`${col}40`; }}
+                onMouseLeave={e => { e.currentTarget.style.borderColor="var(--outline)"; }}
+              >
+                <div style={{ position:"absolute", top:0, left:0, right:0, height:2, background:`linear-gradient(90deg, ${col}, transparent)` }} />
+                <div style={{ display:"flex", alignItems:"center", gap:"0.5rem", marginBottom:"0.9rem" }}>
+                  <span>{icon}</span>
+                  <span style={{ fontSize:"0.82rem", fontWeight:700, color:col }}>{label}</span>
                 </div>
-                <div className="tag-row">
-                  {items.map(t => <span key={t} className="chip-m" style={{ borderColor: `${col}25`, color: col }}>{t}</span>)}
+                <div style={{ display:"flex", flexWrap:"wrap", gap:"0.35rem" }}>
+                  {items.map(t => (
+                    <span key={t} className="chip-neutral" style={{ borderColor:`${col}20`, color:col }}>{t}</span>
+                  ))}
                 </div>
               </div>
             ))}
@@ -1256,7 +1071,9 @@ function Skills() {
 
         {tab === "bars" && (
           <div className="bars-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0 4rem" }}>
-            {SKILL_BARS.map(s => <AnimatedBar key={s.name} {...s} />)}
+            {SKILL_BARS.map((s, i) => (
+              <SkillBar key={s.name} {...s} delay={i * 0.07} />
+            ))}
           </div>
         )}
       </div>
@@ -1264,47 +1081,44 @@ function Skills() {
   );
 }
 
-/* ─── ACHIEVEMENTS ─── */
-const ACHIEVEMENTS = [
-  { icon: "🏆", title: "Dean's Excellence Award", desc: "Maintained 9.88 CGPA across 5 consecutive semesters at Manipal University Jaipur.", col: "var(--rose)" },
-  { icon: "🎯", title: "Deloitte Capstone Ideathon Finalist", desc: "Ranked Top 10 out of 200+ teams for innovative problem-solving and solution design.", col: "var(--mauve)" },
-  { icon: "📡", title: "Promotional Head — Turing Sapiens", desc: "Led team executing promotion campaigns for technical events and community engagement.", col: "var(--sky)" },
-  { icon: "📝", title: "Research Paper (In Progress)", desc: "Authoring a review paper on power consumption and cooling optimization in data centers.", col: "var(--blush)" },
-];
-
 function Achievements() {
+  const items = [
+    { icon:"🏆", title:"Dean's Excellence Award", desc:"Maintained 9.88 CGPA across 5 consecutive semesters at MUJ.", col:"var(--rose)" },
+    { icon:"🎯", title:"Deloitte Capstone Ideathon Finalist", desc:"Ranked Top 10 out of 200+ teams for innovative solution design.", col:"var(--cyan)" },
+    { icon:"📡", title:"Promotional Head — Turing Sapiens", desc:"Led team executing campaigns for technical events and community engagement.", col:"#a78bfa" },
+    { icon:"📝", title:"Research Paper (In Progress)", desc:"Authoring a review on power consumption & cooling optimization in data centers.", col:"var(--rose)" },
+  ];
   return (
-    <section id="achievements" className="sec-pad" style={{ background: "var(--bg)" }}>
-      <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-        <div className="rv section-label">Recognition</div>
-        <h2 className="rv d1 serif" style={{ fontSize: "clamp(1.8rem,4vw,2.8rem)", fontWeight: 900, marginBottom: "3.5rem" }}>
-          Milestones & <span className="rose-grad">Awards</span>
+    <section id="achievements" className="sec-pad" style={{ background:"var(--surface)" }}>
+      <div style={{ maxWidth:1200, margin:"0 auto" }}>
+        <div className="rv sec-label">Recognition</div>
+        <h2 className="rv d1" style={{ fontFamily:"'Inter',sans-serif", fontSize:"clamp(1.8rem,3.5vw,2.6rem)", fontWeight:800, letterSpacing:"-0.02em", marginBottom:"3rem" }}>
+          Milestones & <span style={{ color:"var(--rose)" }}>Awards</span>
         </h2>
-        <div className="achievements-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(240px,1fr))", gap: "1.5rem" }}>
-          {ACHIEVEMENTS.map(({ icon, title, desc, col }, i) => (
-            <div key={title} className={`rv d${i + 1} card`} style={{ borderRadius: "6px", padding: "2rem", position: "relative", overflow: "hidden" }}>
-              <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: `linear-gradient(90deg, ${col}, transparent)` }} />
-              <div style={{ fontSize: "2.2rem", marginBottom: "1rem" }}>{icon}</div>
-              <h3 style={{ fontWeight: 700, fontSize: "0.9rem", marginBottom: "0.6rem", color: col }}>{title}</h3>
-              <p style={{ fontSize: "0.82rem", color: "var(--ink2)", lineHeight: 1.75 }}>{desc}</p>
+        <div className="achievements-grid" style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(240px,1fr))", gap:"1.2rem", marginBottom:"2.5rem" }}>
+          {items.map(({ icon, title, desc, col }, i) => (
+            <div key={title} className={`rv d${i+1} glass`} style={{ padding:"2rem", borderRadius:"1rem", position:"relative", overflow:"hidden" }}
+              onMouseEnter={e => { e.currentTarget.style.borderColor=`${col}45`; e.currentTarget.style.boxShadow=`0 0 24px ${col}12`; }}
+              onMouseLeave={e => { e.currentTarget.style.borderColor="var(--outline)"; e.currentTarget.style.boxShadow="none"; }}
+            >
+              <div style={{ position:"absolute", top:0, left:0, right:0, height:2, background:`linear-gradient(90deg, ${col}, transparent)` }} />
+              <div style={{ fontSize:"2rem", marginBottom:"0.9rem" }}>{icon}</div>
+              <h3 style={{ fontWeight:700, fontSize:"0.88rem", marginBottom:"0.5rem", color:col }}>{title}</h3>
+              <p style={{ fontSize:"0.8rem", color:"var(--ink2)", lineHeight:1.75 }}>{desc}</p>
             </div>
           ))}
         </div>
-
-        {/* CGPA Banner */}
-        <div className="rv d5 cgpa-banner" style={{ marginTop: "3rem", background: "rgba(244,63,94,0.03)", border: "1px solid rgba(244,63,94,0.1)", borderRadius: "6px", padding: "2.5rem 3rem", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "2rem" }}>
+        <div className="rv d5 cgpa-banner" style={{ background:"rgba(253,121,121,0.04)", border:"1px solid rgba(253,121,121,0.12)", borderRadius:"1rem", padding:"2.2rem 3rem", display:"flex", alignItems:"center", justifyContent:"space-between", flexWrap:"wrap", gap:"2rem" }}>
           <div>
-            <div className="mono" style={{ fontSize: "0.65rem", letterSpacing: "0.2em", color: "var(--ink2)", marginBottom: "0.5rem" }}>ACADEMIC STANDING</div>
-            <div className="serif" style={{ fontSize: "3.5rem", fontWeight: 900, lineHeight: 1 }}>
-              <span className="rose-grad">9.88</span>
-            </div>
-            <div className="mono" style={{ fontSize: "0.7rem", color: "var(--ink2)", marginTop: "0.3rem" }}>CGPA · Manipal University Jaipur</div>
+            <div className="label" style={{ color:"var(--ink3)", marginBottom:"0.4rem", fontSize:"0.62rem" }}>ACADEMIC STANDING</div>
+            <div className="stat-val" style={{ fontFamily:"'Inter',sans-serif", fontSize:"4rem", fontWeight:800, color:"var(--rose)", lineHeight:1, textShadow:"0 0 40px rgba(253,121,121,0.35)" }}>9.88</div>
+            <div className="mono" style={{ fontSize:"0.68rem", color:"var(--ink3)", marginTop:"0.3rem" }}>CGPA · Manipal University Jaipur</div>
           </div>
-          <div className="cgpa-stats" style={{ display: "flex", gap: "3rem", flexWrap: "wrap" }}>
-            {[["5×", "Dean's Award"], ["3+", "Internships"], ["Top 10", "Deloitte Ideathon"]].map(([n, l]) => (
-              <div key={l} style={{ textAlign: "center" }}>
-                <div className="serif" style={{ fontSize: "2rem", fontWeight: 900, color: "var(--rose2)" }}>{n}</div>
-                <div className="mono" style={{ fontSize: "0.62rem", color: "var(--ink2)", marginTop: "0.2rem", letterSpacing: "0.1em" }}>{l}</div>
+          <div className="cgpa-stats" style={{ display:"flex", gap:"3rem", flexWrap:"wrap" }}>
+            {[["5×","Dean's Award"],["3+","Internships"],["Top 10","Deloitte Ideathon"]].map(([n,l]) => (
+              <div key={l} style={{ textAlign:"center" }}>
+                <div style={{ fontFamily:"'Inter',sans-serif", fontSize:"1.8rem", fontWeight:800, color:"var(--rose)" }}>{n}</div>
+                <div className="mono" style={{ fontSize:"0.6rem", color:"var(--ink3)", marginTop:"0.2rem", letterSpacing:"0.1em" }}>{l}</div>
               </div>
             ))}
           </div>
@@ -1314,78 +1128,45 @@ function Achievements() {
   );
 }
 
-/* ─── CONTACT ─── */
 function Contact() {
   const [copied, setCopied] = useState(false);
   const email = "aayushichhabra1010@gmail.com";
-  const copy = () => {
-    navigator.clipboard.writeText(email).then(() => {
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    });
-  };
-
-  const socials = [
-    {
-      label: "LinkedIn",
-      url: "https://www.linkedin.com/in/aayushi-chhabra-54281a34a/",
-      icon: <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
-    },
-    {
-      label: "GitHub",
-      url: "https://github.com/aayushichhabra",
-      icon: <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
-    },
-    {
-      label: "LeetCode",
-      url: "https://leetcode.com/u/aayushichhabra/",
-      icon: <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M13.483 0a1.374 1.374 0 0 0-.961.438L7.116 6.226l-3.854 4.126a5.266 5.266 0 0 0-1.209 2.104 5.35 5.35 0 0 0-.125.513 5.527 5.527 0 0 0 .062 2.362 5.83 5.83 0 0 0 .349 1.017 5.938 5.938 0 0 0 1.271 1.818l4.277 4.193.039.038c2.248 2.165 5.852 2.133 8.063-.074l2.396-2.392c.54-.54.54-1.414.003-1.955a1.378 1.378 0 0 0-1.951-.003l-2.396 2.392a3.021 3.021 0 0 1-4.205.038l-.02-.019-4.276-4.193c-.652-.64-.972-1.469-.948-2.263a2.68 2.68 0 0 1 .066-.523 2.545 2.545 0 0 1 .619-1.164L9.13 8.114c1.058-1.134 3.204-1.27 4.43-.278l3.501 2.831c.593.48 1.461.387 1.94-.207a1.384 1.384 0 0 0-.207-1.943l-3.5-2.831c-.8-.647-1.766-1.045-2.774-1.202l2.015-2.158A1.384 1.384 0 0 0 13.483 0zm-2.866 12.815a1.38 1.38 0 0 0-1.38 1.382 1.38 1.38 0 0 0 1.38 1.382H20.79a1.38 1.38 0 0 0 1.38-1.382 1.38 1.38 0 0 0-1.38-1.382z"/></svg>
-    },
-    {
-      label: "SecOps Platform",
-      url: "https://intelligent-secops-rag-dashboard.streamlit.app",
-      icon: <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-    },
-  ];
-
   return (
-    <section id="contact" className="sec-pad" style={{ background: "var(--bg2)", position: "relative", overflow: "hidden" }}>
-      <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)", width: 600, height: 600, background: "radial-gradient(circle, rgba(244,63,94,0.05) 0%, transparent 70%)", borderRadius: "50%", pointerEvents: "none" }} />
-      <div style={{ maxWidth: 700, margin: "0 auto", textAlign: "center", position: "relative" }}>
-        <div className="rv section-label" style={{ justifyContent: "center" }}>Contact</div>
-        <h2 className="rv d1 serif" style={{ fontSize: "clamp(2rem,6vw,4rem)", fontWeight: 900, marginBottom: "1.5rem", lineHeight: 1.1 }}>
-          Let's <span className="rose-grad">Connect</span>
+    <section id="contact" className="sec-pad" style={{ background:"var(--bg)", position:"relative", overflow:"hidden" }}>
+      <div style={{ position:"absolute", top:"50%", left:"50%", transform:"translate(-50%,-50%)", width:700, height:700, background:"radial-gradient(circle, rgba(253,121,121,0.05) 0%, transparent 70%)", borderRadius:"50%", pointerEvents:"none" }} />
+      <div style={{ maxWidth:700, margin:"0 auto", textAlign:"center", position:"relative" }}>
+        <div className="rv sec-label" style={{ justifyContent:"center" }}>Contact</div>
+        <h2 className="rv d1" style={{ fontFamily:"'Inter',sans-serif", fontSize:"clamp(2.2rem,5vw,3.5rem)", fontWeight:800, letterSpacing:"-0.03em", marginBottom:"1.2rem", lineHeight:1.1 }}>
+          Let's <span style={{ color:"var(--rose)", textShadow:"0 0 30px rgba(253,121,121,0.3)" }}>Connect</span>
         </h2>
-        <p className="rv d2" style={{ fontSize: "0.9rem", color: "var(--ink2)", lineHeight: 1.85, marginBottom: "3rem" }}>
-          Open to internship opportunities, research collaborations, and interesting projects
-          in AI, cybersecurity, and full-stack development. Currently based in Gurugram, Haryana.
+        <p className="rv d2" style={{ fontSize:"0.9rem", color:"var(--ink2)", lineHeight:1.85, marginBottom:"2.5rem" }}>
+          Open to internship opportunities, research collaborations, and interesting projects in AI, cybersecurity, and full-stack development.
         </p>
 
-        {/* Email row */}
-        <div className="rv d3 contact-email-row" style={{ display: "flex", alignItems: "center", gap: "1rem", justifyContent: "center", marginBottom: "2.5rem", flexWrap: "wrap" }}>
-          <span className="mono contact-email-text" style={{ fontSize: "0.88rem", color: "var(--rose2)", letterSpacing: "0.04em" }}>{email}</span>
-          <button onClick={copy} style={{ background: copied ? "rgba(52,211,153,0.08)" : "rgba(244,63,94,0.08)", border: `1px solid ${copied ? "rgba(52,211,153,0.25)" : "rgba(244,63,94,0.25)"}`, borderRadius: "20px", padding: "0.4rem 1rem", cursor: "pointer", color: copied ? "var(--mint)" : "var(--rose2)", fontSize: "0.68rem", fontFamily: "DM Mono, monospace", transition: "all 0.2s", whiteSpace: "nowrap" }}>
+        <div className="rv d3 contact-email-row" style={{ display:"flex", alignItems:"center", gap:"0.8rem", justifyContent:"center", marginBottom:"2rem", flexWrap:"wrap" }}>
+          <span className="mono contact-email-text" style={{ fontSize:"0.85rem", color:"var(--rose)", letterSpacing:"0.03em" }}>{email}</span>
+          <button onClick={() => { navigator.clipboard.writeText(email); setCopied(true); setTimeout(()=>setCopied(false),2000); }}
+            style={{ background: copied ? "rgba(52,211,153,0.1)" : "var(--rose-dim)", border:`1px solid ${copied ? "rgba(52,211,153,0.3)" : "rgba(253,121,121,0.3)"}`, borderRadius:"9999px", padding:"0.35rem 0.9rem", cursor:"pointer", color: copied ? "#34d399" : "var(--rose)", fontSize:"0.66rem", fontFamily:"'JetBrains Mono',monospace", transition:"all 0.2s" }}>
             {copied ? "Copied ✓" : "Copy"}
           </button>
         </div>
-
-        {/* Social links grid */}
-        <div className="rv d4 contact-socials" style={{ display: "flex", justifyContent: "center", gap: "0.75rem", flexWrap: "wrap", marginBottom: "3rem" }}>
-          {socials.map(({ label, url, icon }) => (
-            <a key={label} href={url} target="_blank" rel="noreferrer" className="social-link">
-              {icon}{label}
-            </a>
+        <div className="rv d4 contact-socials" style={{ display:"flex", justifyContent:"center", gap:"0.6rem", flexWrap:"wrap", marginBottom:"2.5rem" }}>
+          {[
+            { label:"LinkedIn", url:"https://linkedin.com/in/aayushi-chhabra-54281a34a", icon:<svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg> },
+            { label:"GitHub", url:"https://github.com/aayushichhabra", icon:<svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg> },
+            { label:"LeetCode", url:"https://leetcode.com/u/aayushichhabra", icon:<svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d="M13.483 0a1.374 1.374 0 0 0-.961.438L7.116 6.226l-3.854 4.126a5.266 5.266 0 0 0-1.209 2.104 5.35 5.35 0 0 0-.125.513 5.527 5.527 0 0 0 .062 2.362 5.83 5.83 0 0 0 .349 1.017 5.938 5.938 0 0 0 1.271 1.818l4.277 4.193.039.038c2.248 2.165 5.852 2.133 8.063-.074l2.396-2.392c.54-.54.54-1.414.003-1.955a1.378 1.378 0 0 0-1.951-.003l-2.396 2.392a3.021 3.021 0 0 1-4.205.038l-.02-.019-4.276-4.193c-.652-.64-.972-1.469-.948-2.263a2.68 2.68 0 0 1 .066-.523 2.545 2.545 0 0 1 .619-1.164L9.13 8.114c1.058-1.134 3.204-1.27 4.43-.278l3.501 2.831c.593.48 1.461.387 1.94-.207a1.384 1.384 0 0 0-.207-1.943l-3.5-2.831c-.8-.647-1.766-1.045-2.774-1.202l2.015-2.158A1.384 1.384 0 0 0 13.483 0zm-2.866 12.815a1.38 1.38 0 0 0-1.38 1.382 1.38 1.38 0 0 0 1.38 1.382H20.79a1.38 1.38 0 0 0 1.38-1.382 1.38 1.38 0 0 0-1.38-1.382z"/></svg> },
+            { label:"SecOps Live", url:"https://intelligent-secops-rag-dashboard.streamlit.app", icon:<svg width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> },
+          ].map(({ label, url, icon }) => (
+            <a key={label} href={url} target="_blank" rel="noreferrer" className="icon-btn">{icon}{label}</a>
           ))}
         </div>
-
-        <div className="rv d5 contact-btns" style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
+        <div className="rv d5 contact-btns" style={{ display:"flex", gap:"0.8rem", justifyContent:"center", flexWrap:"wrap" }}>
           <a href="mailto:aayushichhabra1010@gmail.com" className="btn-primary">
             <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg>
             Send a Message
           </a>
-          <a href="https://www.linkedin.com/in/aayushi-chhabra-54281a34a/" target="_blank" rel="noreferrer" className="btn-ghost">
-            <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
-            LinkedIn Profile
+          <a href="https://linkedin.com/in/aayushi-chhabra-54281a34a" target="_blank" rel="noreferrer" className="btn-outline-cyan">
+            LinkedIn Profile →
           </a>
         </div>
       </div>
@@ -1393,46 +1174,41 @@ function Contact() {
   );
 }
 
-/* ─── FOOTER ─── */
 function Footer() {
   return (
-    <footer style={{ borderTop: "1px solid var(--line)", padding: "2rem 4rem", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "1rem" }}>
-      <div>
-        <span className="serif" style={{ fontStyle: "italic", color: "var(--rose)", fontSize: "0.9rem" }}>Aayushi Chhabra</span>
-        <span className="mono" style={{ fontSize: "0.65rem", color: "var(--ink2)", marginLeft: "0.8rem" }}>B.Tech CSE · MUJ · 2027</span>
+    <footer style={{ borderTop:"1px solid var(--outline)", padding:"1.8rem 2.5rem", display:"flex", justifyContent:"space-between", alignItems:"center", flexWrap:"wrap", gap:"1rem", background:"var(--surface)" }}>
+      <div style={{ display:"flex", alignItems:"center", gap:"0.8rem" }}>
+        <span style={{ fontFamily:"'Space Grotesk',sans-serif", fontWeight:700, fontSize:"0.85rem", letterSpacing:"0.1em", color:"var(--rose)" }}>AAYUSHI_CHHABRA</span>
+        <span className="mono" style={{ fontSize:"0.62rem", color:"var(--ink3)" }}>B.Tech CSE · MUJ · 2027</span>
       </div>
-      <div className="mono" style={{ fontSize: "0.65rem", color: "var(--ink2)", letterSpacing: "0.08em" }}>
-        Gurugram, Haryana · aayushichhabra1010@gmail.com
+      <div style={{ display:"flex", gap:"0.5rem", alignItems:"center" }}>
+        <span style={{ width:6, height:6, borderRadius:"50%", background:"#34d399", boxShadow:"0 0 8px #34d399", animation:"pulse 2s infinite", display:"inline-block" }} />
+        <span className="mono" style={{ fontSize:"0.62rem", color:"var(--ink3)" }}>All Systems Operational</span>
+      </div>
+      <div className="mono" style={{ fontSize:"0.62rem", color:"var(--ink3)", letterSpacing:"0.06em" }}>
+        aayushichhabra1010@gmail.com · Gurugram, IN
       </div>
     </footer>
   );
 }
 
-/* ─── APP ─── */
 export default function App() {
-  useReveal();
-
+  useReveal(null);
   return (
     <>
       <style>{G}</style>
-      <ScrollBar />
+      <ScrollProg />
       <SectionProgress />
       <Nav />
       <main>
         <Hero />
-        <Ticker />
+        <Marquee />
         <About />
-        <div className="divider" />
         <Timeline />
-        <div className="divider" />
         <Experience />
-        <div className="divider" />
         <Projects />
-        <div className="divider" />
         <Skills />
-        <div className="divider" />
         <Achievements />
-        <div className="divider" />
         <Contact />
       </main>
       <Footer />
