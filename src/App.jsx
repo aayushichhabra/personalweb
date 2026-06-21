@@ -174,12 +174,6 @@ const G = `
   .marquee-wrap { overflow: hidden; white-space: nowrap; }
   .marquee-inner { display: inline-flex; gap: 3rem; animation: marquee 32s linear infinite; }
 
-  @media(max-width: 768px) {
-    .hide-m { display: none !important; }
-    .full-m { grid-column: 1 / -1 !important; }
-    .pad { padding: 5rem 1.2rem !important; }
-  }
-
   .icon-btn {
     display: inline-flex; align-items: center; gap: 0.5rem;
     padding: 0.6rem 1.1rem; border-radius: 0.6rem;
@@ -195,6 +189,54 @@ const G = `
     background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
     opacity: 0.15;
   }
+
+  .section-label::before {
+    content: ''; display: block; width: 24px; height: 1px; background: var(--rose);
+  }
+
+  .sec-pad { padding: 7rem 4rem; }
+
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(244,63,94,0.15), transparent);
+    margin: 0;
+  }
+
+  .scroll-bar {
+    position: fixed; top: 0; left: 0; height: 2px;
+    background: linear-gradient(90deg, var(--rose), var(--cyan));
+    z-index: 9998; transition: width 0.05s linear; box-shadow: 0 0 10px var(--rose);
+  }
+
+  .tl-line {
+    position: absolute; left: 11px; top: 0; bottom: 0; width: 1px;
+    background: linear-gradient(180deg, var(--rose), transparent);
+  }
+
+  .stat-number {
+    font-family: 'Inter', sans-serif; font-size: 3rem; font-weight: 900;
+    color: var(--rose); line-height: 1; animation: glow-pulse 3s ease-in-out infinite;
+  }
+
+  @keyframes floatBg {
+    0%,100% { transform: translateY(0px) rotate(0deg); }
+    50%      { transform: translateY(-30px) rotate(3deg); }
+  }
+
+  .progress-sidebar {
+    position: fixed; right: 1.5rem; top: 50%; transform: translateY(-50%);
+    display: flex; flex-direction: column; gap: 0.6rem; z-index: 800;
+  }
+  .prog-dot {
+    width: 5px; height: 5px; border-radius: 50%; background: rgba(244,63,94,0.2);
+    cursor: pointer; transition: all 0.3s; position: relative;
+  }
+  .prog-dot::after {
+    content: ''; position: absolute; inset: -3px; border-radius: 50%;
+    border: 1px solid transparent; transition: all 0.3s;
+  }
+  .prog-dot.active { background: var(--rose); box-shadow: 0 0 10px var(--rose); width: 6px; height: 6px; }
+  .prog-dot.active::after { border-color: rgba(244,63,94,0.3); }
 
   .mob-menu {
     display: none; position: fixed; inset: 0;
@@ -314,6 +356,38 @@ function useReveal(dep) {
   }, [dep]);
 }
 
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(() => typeof window !== "undefined" && window.innerWidth <= 768);
+  useEffect(() => {
+    const fn = () => setIsMobile(window.innerWidth <= 768);
+    window.addEventListener("resize", fn, { passive: true });
+    return () => window.removeEventListener("resize", fn);
+  }, []);
+  return isMobile;
+}
+
+function SectionProgress() {
+  const SECS = ["hero","about","timeline","experience","projects","skills","achievements","contact"];
+  const [active, setActive] = useState("hero");
+  useEffect(() => {
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) setActive(e.target.id); });
+    }, { threshold: 0.2 });
+    SECS.forEach(id => { const el = document.getElementById(id); if (el) obs.observe(el); });
+    return () => obs.disconnect();
+  }, []);
+  return (
+    <div className="progress-sidebar">
+      {SECS.map(s => (
+        <div key={s} className={`prog-dot${active === s ? " active" : ""}`}
+          title={s.toUpperCase()}
+          onClick={() => document.getElementById(s)?.scrollIntoView({ behavior: "smooth" })}
+        />
+      ))}
+    </div>
+  );
+}
+
 function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [menu, setMenu] = useState(false);
@@ -338,7 +412,7 @@ function Nav() {
         <a href="#hero" style={{ textDecoration:"none", display:"flex", alignItems:"center", gap:"0.6rem" }}>
           <span style={{ fontFamily:"'Space Grotesk',sans-serif", fontWeight:700, fontSize:"0.85rem", letterSpacing:"0.12em", color:"var(--rose)" }}>AAYUSHI_CHHABRA</span>
         </a>
-        <nav className="hide-m" style={{ display:"flex", gap:"1.6rem", alignItems:"center" }}>
+        <nav className="hide-m nav-links" style={{ display:"flex", gap:"1.6rem", alignItems:"center" }}>
           {links.map(([id,label]) => <a key={id} href={`#${id}`} className="nav-link">{label}</a>)}
           <span style={{ width:1, height:14, background:"var(--outline)", display:"inline-block" }} />
           <a href="https://github.com/aayushichhabra" target="_blank" rel="noreferrer" className="nav-link" style={{ display:"inline-flex", alignItems:"center", gap:"0.35rem" }}>
@@ -356,7 +430,7 @@ function Nav() {
         </nav>
         <div style={{ display:"flex", gap:"0.6rem", alignItems:"center" }}>
           <a href="mailto:aayushichhabra1010@gmail.com" className="btn-primary" style={{ padding:"0.5rem 1.1rem", fontSize:"0.7rem" }}>Hire Me</a>
-          <button onClick={() => setMenu(o=>!o)} style={{ display:"none", background:"none", border:"none", cursor:"pointer", color:"var(--ink)", padding:"0.3rem" }} className="show-m">
+          <button onClick={() => setMenu(o=>!o)} style={{ display:"none", background:"none", border:"1px solid rgba(244,63,94,0.2)", cursor:"pointer", color:"var(--ink)", padding:"0.35rem 0.5rem", borderRadius: "4px" }} className="mob-hamburger show-m">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
           </button>
         </div>
@@ -393,8 +467,9 @@ function Hero() {
         <div style={{ position:"absolute", bottom:"5%", left:"-10%", width:550, height:550, background:"radial-gradient(circle, rgba(76,215,246,0.05) 0%, transparent 65%)", borderRadius:"50%" }} />
         <div style={{ position:"absolute", inset:0, backgroundImage:"linear-gradient(rgba(253,121,121,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(253,121,121,0.025) 1px,transparent 1px)", backgroundSize:"60px 60px", opacity:0.8 }} />
       </div>
+
       <div style={{ maxWidth:1200, margin:"0 auto", width:"100%", position:"relative", zIndex:1 }}>
-        <div style={{ display:"grid", gridTemplateColumns:"1fr auto", gap:"3rem", alignItems:"start" }}>
+        <div className="hero-layout" style={{ display:"grid", gridTemplateColumns:"1fr auto", gap:"3rem", alignItems:"start" }}>
           <div>
             <div className="rv" style={{ display:"flex", alignItems:"center", gap:"0.8rem", marginBottom:"1.8rem", flexWrap:"wrap" }}>
               <div style={{ display:"inline-flex", alignItems:"center", gap:"0.5rem", padding:"0.3rem 0.9rem", background:"var(--rose-dim)", border:"1px solid rgba(253,121,121,0.3)", borderRadius:"9999px" }}>
@@ -405,7 +480,7 @@ function Hero() {
               <a href="#vaultbot" className="vault-hero-badge">⚡ Co-Founder & Core Contributor (Frontend · Backend · AI)</a>
             </div>
             <div className="rv d1">
-              <h1 style={{ fontFamily:"'Inter',sans-serif", fontSize:"clamp(3rem,7vw,5.5rem)", fontWeight:800, lineHeight:1.05, letterSpacing:"-0.04em", marginBottom:"1rem" }}>
+              <h1 className="hero-name" style={{ fontFamily:"'Inter',sans-serif", fontSize:"clamp(3rem,7vw,5.5rem)", fontWeight:800, lineHeight:1.05, letterSpacing:"-0.04em", marginBottom:"1rem" }}>
                 Aayushi{" "}<span style={{ color:"var(--rose)", textShadow:"0 0 40px rgba(253,121,121,0.4)" }} className="glow-text">Chhabra</span>
               </h1>
             </div>
@@ -420,7 +495,8 @@ function Hero() {
               Finalist at <span style={{ color:"var(--rose)", fontWeight:700 }}>Deloitte Capstone Ideathon</span> (200+ teams).
               Dean's Excellence Award — 5 consecutive semesters.
             </p>
-            <div className="rv d4" style={{ display:"flex", gap:"0.8rem", flexWrap:"wrap", marginBottom:"1.8rem" }}>
+
+            <div className="rv d4 hero-btns" style={{ display:"flex", gap:"0.8rem", flexWrap:"wrap", marginBottom:"1.8rem" }}>
               <a href="mailto:aayushichhabra1010@gmail.com" className="btn-primary">
                 <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg>
                 Get In Touch
@@ -445,9 +521,18 @@ function Hero() {
                 LinkedIn ↗
               </a>
             </div>
+
+            <div className="rv d5 hero-stats" style={{ display: "flex", gap: "2.5rem", marginTop: "3.5rem", flexWrap: "wrap" }}>
+              {[["9.88", "CGPA", "var(--rose)"], ["5×", "Dean's Award", "var(--cyan)"], ["6+", "Projects Built", "var(--rose)"], ["Top 10", "Deloitte Ideathon", "var(--cyan)"]].map(([n, l, col]) => (
+                <div key={l} style={{ position: "relative" }}>
+                  <div className="stat-number" style={{ fontSize: "1.8rem", color: col }}>{n}</div>
+                  <div className="mono" style={{ fontSize: "0.62rem", letterSpacing: "0.15em", color: "var(--ink2)", marginTop: "0.2rem" }}>{l}</div>
+                </div>
+              ))}
+            </div>
           </div>
 
-          <div className="rv d3 hide-m" style={{ width:320, flexShrink:0 }}>
+          <div className="rv d3 hide-m hero-right-card" style={{ width:320, flexShrink:0 }}>
             <div className="glass glass-active" style={{ padding:"1.6rem", position:"relative", overflow:"hidden" }}>
               <div style={{ position:"absolute", top:0, left:0, right:0, height:2, background:"linear-gradient(90deg, var(--rose), var(--cyan))" }} />
               <div className="label" style={{ color:"var(--rose)", marginBottom:"1.2rem", display:"flex", alignItems:"center", gap:"0.5rem" }}>
@@ -476,21 +561,6 @@ function Hero() {
             </div>
           </div>
         </div>
-
-        <div className="rv d6" style={{ display:"grid", gridTemplateColumns:"repeat(4,1fr)", gap:"1rem", marginTop:"3.5rem" }}>
-          {[
-            { val:"9.88", sub:"CGPA", label:"Academic Excellence", col:"var(--rose)" },
-            { val:"5×", sub:"Dean's Award", label:"Consecutive Semesters", col:"var(--cyan)" },
-            { val:"6+", sub:"Projects Built", label:"End-to-End Systems", col:"var(--rose)" },
-            { val:"Top 10", sub:"Deloitte Ideathon", label:"Out of 200+ Teams", col:"var(--cyan)" },
-          ].map(({ val, sub, label, col }) => (
-            <div key={sub} className="glass" style={{ padding:"1.4rem", textAlign:"center", borderRadius:"0.9rem" }}>
-              <div className="label" style={{ color:col, marginBottom:"0.5rem", fontSize:"0.62rem" }}>{label}</div>
-              <div className="stat-val" style={{ color:col, textShadow:`0 0 20px ${col}50`, marginBottom:"0.2rem" }}>{val}</div>
-              <div className="mono" style={{ fontSize:"0.65rem", color:"var(--ink2)", letterSpacing:"0.08em" }}>{sub}</div>
-            </div>
-          ))}
-        </div>
       </div>
     </section>
   );
@@ -514,10 +584,10 @@ function Marquee() {
 
 function About() {
   return (
-    <section id="about" style={{ padding:"6rem 2.5rem", background:"var(--surface)", position:"relative", overflow:"hidden" }}>
+    <section id="about" className="sec-pad" style={{ background:"var(--surface)", position:"relative", overflow:"hidden" }}>
       <div style={{ maxWidth:1200, margin:"0 auto" }}>
         <div className="rv sec-label">About Me</div>
-        <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"1.5rem", alignItems:"start" }}>
+        <div className="about-grid" style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"1.5rem", alignItems:"start" }}>
           <div className="rv d1 glass" style={{ padding:"2rem", position:"relative", overflow:"hidden" }}>
             <div style={{ position:"absolute", top:0, left:0, right:0, height:2, background:"linear-gradient(90deg, var(--rose), transparent)" }} />
             <div className="label" style={{ color:"var(--rose)", marginBottom:"1rem", display:"flex", alignItems:"center", gap:"0.5rem" }}>
@@ -532,6 +602,7 @@ function About() {
             <p style={{ fontSize:"0.88rem", color:"var(--ink2)", lineHeight:1.9, marginBottom:"1.5rem" }}>
               At Ericsson, I worked on CVE triage, anomaly detection models, and automated incident response pipelines in a production SecOps environment. From agentic CVE triage tools built with LangGraph, to AI productivity assistants with Gmail integration and Whisper transcription.
             </p>
+
             <div style={{ display:"flex", gap:"0.6rem", flexWrap:"wrap" }}>
               <a href="mailto:aayushichhabra1010@gmail.com" className="icon-btn">
                 <svg width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg>
@@ -589,6 +660,112 @@ function About() {
   );
 }
 
+/* ─── TIMELINE ─── */
+const TIMELINE_DATA = [
+  { year: "2023", title: "Started B.Tech at MUJ", desc: "Began Computer Science & Engineering at Manipal University Jaipur. Set the academic foundation with a strong first semester.", icon: "🎓", col: "var(--rose)", side: "left" },
+  { year: "2023", title: "Dean's Excellence Award — Sem 1", desc: "Achieved 9.88 CGPA in the very first semester, earning the first Dean's Excellence Award.", icon: "🏆", col: "var(--cyan)", side: "right" },
+  { year: "2024", title: "Oracle & NPTEL Certifications", desc: "Completed certifications in Database Foundations, SQL Programming, DSA with Python, and Design & Analysis of Algorithms.", icon: "📜", col: "#a78bfa", side: "left" },
+  { year: "2024", title: "5× Dean's Award Streak", desc: "Maintained 9.88 CGPA for 5 consecutive semesters — a testament to unwavering academic dedication.", icon: "⭐", col: "var(--rose)", side: "right" },
+  { year: "2025", title: "Prodigy InfoTech — Android Intern", desc: "Built mobile app features using Android Studio and SQLite. First hands-on industry engineering experience.", icon: "📱", col: "var(--cyan)", side: "left" },
+  { year: "2025", title: "Cognifyz Technologies — UI/UX Intern", desc: "Contributed to dashboard design improvements in Figma, enhancing usability across product interfaces.", icon: "🎨", col: "#a78bfa", side: "right" },
+  { year: "2025", title: "Ericsson R&D — Cybersecurity & AI Intern", desc: "Worked on CVE triage, anomaly detection models, and automated incident response pipelines in a production SecOps environment.", icon: "🔐", col: "var(--rose)", side: "left" },
+  { year: "2025", title: "Deloitte Capstone Ideathon — Top 10", desc: "Competed against 200+ teams and secured a Top 10 finish for innovative solution design and problem-solving.", icon: "🎯", col: "var(--cyan)", side: "right" },
+  { year: "2025", title: "Building ResQNet & DeepFake Detection", desc: "Developing a cross-platform crisis management app and an AI-powered deepfake detection system with Grad-CAM explainability.", icon: "🚀", col: "#a78bfa", side: "left" },
+];
+
+function Timeline() {
+  const isMobile = useIsMobile();
+
+  return (
+    <section id="timeline" className="sec-pad" style={{ background: "var(--bg)", position: "relative", overflow: "hidden" }}>
+      <div style={{ position: "absolute", top: "20%", left: "50%", transform: "translateX(-50%)", width: 600, height: 600, background: "radial-gradient(circle, rgba(244,63,94,0.03) 0%, transparent 70%)", borderRadius: "50%", pointerEvents: "none" }} />
+
+      <div style={{ maxWidth: 900, margin: "0 auto", position: "relative" }}>
+        <div className="rv sec-label">Journey</div>
+        <h2 className="rv d1" style={{ fontFamily:"'Inter',sans-serif", fontSize: "clamp(1.8rem,4vw,2.8rem)", fontWeight: 900, marginBottom: "4rem" }}>
+          My <span style={{ color:"var(--rose)" }}>Timeline</span>
+        </h2>
+
+        <div style={{ position: "relative" }}>
+          {/* Desktop center line */}
+          {!isMobile && (
+            <div className="tl-desktop-line" style={{
+              position: "absolute", left: "50%", top: 0, bottom: 0, width: 2,
+              background: "linear-gradient(180deg, var(--rose), var(--cyan), transparent)",
+              transform: "translateX(-50%)",
+            }} />
+          )}
+          {/* Mobile left line */}
+          {isMobile && (
+            <div className="tl-mobile-line" style={{
+              position: "absolute", left: 16, top: 0, bottom: 0, width: 2,
+              background: "linear-gradient(180deg, var(--rose), var(--cyan), transparent)",
+            }} />
+          )}
+
+          {TIMELINE_DATA.map((item, i) => {
+            const isLeft = item.side === "left";
+            return (
+              <div
+                key={i}
+                className={`rv d${Math.min(i % 3 + 1, 5)}`}
+                style={{
+                  display: "flex",
+                  justifyContent: isMobile ? "flex-start" : (isLeft ? "flex-end" : "flex-start"),
+                  position: "relative",
+                  marginBottom: "2.5rem",
+                  paddingRight: isMobile ? 0 : (isLeft ? "calc(50% + 30px)" : "0"),
+                  paddingLeft: isMobile ? "44px" : (isLeft ? "0" : "calc(50% + 30px)"),
+                  textAlign: isMobile ? "left" : (isLeft ? "right" : "left"),
+                }}
+              >
+                {/* Connector dot */}
+                <div style={{
+                  position: "absolute",
+                  left: isMobile ? 10 : "50%",
+                  top: 20,
+                  width: 14, height: 14,
+                  borderRadius: "50%", background: item.col,
+                  boxShadow: `0 0 12px ${item.col}, 0 0 28px ${item.col}44`,
+                  border: "3px solid var(--bg)",
+                  transform: isMobile ? "none" : "translateX(-50%)",
+                  zIndex: 2,
+                }} />
+
+                <div className="glass" style={{
+                  padding: "1.4rem 1.6rem", width: "100%",
+                  position: "relative", overflow: "hidden",
+                }}
+                  onMouseEnter={e => {
+                    e.currentTarget.style.borderColor = `${item.col}50`;
+                    e.currentTarget.style.transform = "translateY(-3px)";
+                    e.currentTarget.style.boxShadow = `0 12px 40px rgba(0,0,0,0.4), 0 0 20px ${item.col}15`;
+                  }}
+                  onMouseLeave={e => {
+                    e.currentTarget.style.borderColor = "var(--outline)";
+                    e.currentTarget.style.transform = "translateY(0)";
+                    e.currentTarget.style.boxShadow = "none";
+                  }}
+                >
+                  <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: `linear-gradient(90deg, ${item.col}, transparent)` }} />
+                  <div style={{ display: "flex", alignItems: "center", gap: "0.8rem", marginBottom: "0.5rem", flexDirection: "row" }}>
+                    <span style={{ fontSize: "1.4rem" }}>{item.icon}</span>
+                    <div>
+                      <span className="mono" style={{ fontSize: "0.62rem", letterSpacing: "0.15em", color: item.col, textTransform: "uppercase", display: "block", marginBottom: "0.1rem" }}>{item.year}</span>
+                      <h3 style={{ fontWeight: 700, fontSize: "0.9rem", lineHeight: 1.3 }}>{item.title}</h3>
+                    </div>
+                  </div>
+                  <p style={{ fontSize: "0.8rem", color: "var(--ink2)", lineHeight: 1.75, marginLeft: "2.7rem", textAlign: "left" }}>{item.desc}</p>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function Experience() {
   const EXP = [
     {
@@ -612,7 +789,7 @@ function Experience() {
   ];
 
   return (
-    <section id="experience" style={{ padding:"6rem 2.5rem", background:"var(--bg)" }}>
+    <section id="experience" className="sec-pad" style={{ background:"var(--bg)" }}>
       <div style={{ maxWidth:1200, margin:"0 auto" }}>
         <div className="rv sec-label">Experience</div>
         <h2 className="rv d1" style={{ fontFamily:"'Inter',sans-serif", fontSize:"clamp(1.8rem,3.5vw,2.6rem)", fontWeight:800, letterSpacing:"-0.02em", marginBottom:"3rem" }}>
@@ -628,7 +805,7 @@ function Experience() {
                 onMouseLeave={e => { e.currentTarget.style.borderColor="var(--outline)"; e.currentTarget.style.boxShadow="none"; }}
               >
                 <div style={{ position:"absolute", top:0, left:0, right:0, height:2, borderRadius:"1rem 1rem 0 0", background:`linear-gradient(90deg, ${col}, transparent)` }} />
-                <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", flexWrap:"wrap", gap:"0.5rem", marginBottom:"1rem" }}>
+                <div className="exp-header" style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", flexWrap:"wrap", gap:"0.5rem", marginBottom:"1rem" }}>
                   <div>
                     <div style={{ fontWeight:700, fontSize:"1rem", marginBottom:"0.2rem" }}>{role}</div>
                     <div style={{ color:col, fontSize:"0.84rem", fontWeight:600 }}>{company} · {loc}</div>
@@ -643,7 +820,7 @@ function Experience() {
                   ))}
                 </ul>
                 <div style={{ display:"flex", flexWrap:"wrap", gap:"0.4rem" }}>
-                  {tags.map(t => <span key={t} className="chip-rose">{t}</span>)}
+                  {tags.map(t => <span key={t} className="chip-rose" style={{ borderColor:`${col}30`, color:col }}>{t}</span>)}
                 </div>
               </div>
             </div>
@@ -866,7 +1043,7 @@ function ProjectCard({ p, i }) {
   const [hov, setHov] = useState(false);
   if (p.featured) {
     return (
-      <div className="rv d1" style={{ gridColumn:"1/-1" }} onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}>
+      <div className="rv d1 project-featured" style={{ gridColumn:"1/-1" }} onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}>
         <div style={{
           background:"rgba(19,19,19,0.82)", backdropFilter:"blur(14px)",
           border:`1px solid ${hov ? p.col : "var(--outline)"}`,
@@ -874,7 +1051,7 @@ function ProjectCard({ p, i }) {
           borderRadius:"1.2rem", padding:"2.5rem",
           display:"grid", gridTemplateColumns:"1fr 1fr", gap:"2.5rem", alignItems:"start",
           transition:"all 0.3s", position:"relative", overflow:"hidden"
-        }}>
+        }} className="about-grid">
           <div style={{ position:"absolute", top:0, left:0, right:0, height:2, background:`linear-gradient(90deg, ${p.col}, var(--cyan), transparent)` }} />
           <div>
             <div style={{ display:"flex", alignItems:"center", gap:"0.8rem", marginBottom:"1rem", flexWrap:"wrap" }}>
@@ -883,10 +1060,10 @@ function ProjectCard({ p, i }) {
             </div>
             <h3 style={{ fontFamily:"'Inter',sans-serif", fontSize:"1.6rem", fontWeight:800, marginBottom:"0.6rem", letterSpacing:"-0.02em", lineHeight:1.2 }}>{p.name}</h3>
             <p style={{ fontSize:"0.88rem", color:"var(--ink2)", lineHeight:1.75, marginBottom:"1.5rem" }}>{p.tagline}</p>
-            <div style={{ display:"flex", flexWrap:"wrap", gap:"0.4rem", marginBottom:"1.5rem" }}>
-              {p.tech.map(t => <span key={t} className="chip-rose">{t}</span>)}
+            <div className="tag-row" style={{ marginBottom:"1.5rem" }}>
+              {p.tech.map(t => <span key={t} className="chip-rose" style={{ borderColor:`${p.col}30`, color:p.col }}>{t}</span>)}
             </div>
-            <a href={p.link} target="_blank" rel="noreferrer" className="btn-primary" style={{ fontSize:"0.72rem", padding:"0.6rem 1.4rem" }}>View Live →</a>
+            <a href={p.link} target="_blank" rel="noreferrer" className="btn-primary" style={{ fontSize:"0.72rem", padding:"0.6rem 1.4rem", background: p.col, boxShadow: `0 4px 18px ${p.col}55` }}>View Live →</a>
           </div>
           <div style={{ background:"var(--s-low)", border:"1px solid var(--outline)", borderRadius:"0.8rem", padding:"1.5rem" }}>
             <div className="label" style={{ color:"var(--ink3)", marginBottom:"1rem", fontSize:"0.62rem" }}>// KEY FEATURES</div>
@@ -931,7 +1108,7 @@ function ProjectCard({ p, i }) {
           </li>
         ))}
       </ul>
-      <div style={{ display:"flex", flexWrap:"wrap", gap:"0.35rem" }}>
+      <div className="tag-row">
         {p.tech.map(t => <span key={t} className={p.col === "var(--cyan)" ? "chip-cyan" : "chip-rose"} style={{ borderColor:`${p.col}25`, color:p.col }}>{t}</span>)}
       </div>
     </div>
@@ -940,7 +1117,7 @@ function ProjectCard({ p, i }) {
 
 function Projects() {
   return (
-    <section id="projects" style={{ padding:"6rem 2.5rem", background:"var(--bg)" }}>
+    <section id="projects" style={{ padding:"6rem 2.5rem", background:"var(--surface)" }}>
       <div style={{ maxWidth:1200, margin:"0 auto" }}>
         <div className="rv sec-label">Projects</div>
         <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-end", flexWrap:"wrap", gap:"1rem", marginBottom:"3rem" }}>
@@ -949,7 +1126,7 @@ function Projects() {
           </h2>
           <a href="https://github.com/aayushichhabra" target="_blank" rel="noreferrer" className="btn-outline-rose" style={{ fontSize:"0.7rem" }}>View All on GitHub ↗</a>
         </div>
-        <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(310px,1fr))", gap:"1.3rem" }}>
+        <div className="projects-grid" style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(310px,1fr))", gap:"1.3rem" }}>
           {PROJECTS.map((p,i) => <ProjectCard key={p.num} p={p} i={i} />)}
         </div>
       </div>
@@ -1013,10 +1190,10 @@ function Skills() {
   const [tab, setTab] = useState("tags");
   useReveal(tab);
   return (
-    <section id="skills" style={{ padding:"6rem 2.5rem", background:"var(--surface)" }}>
+    <section id="skills" style={{ padding:"6rem 2.5rem", background:"var(--bg)" }}>
       <div style={{ maxWidth:1200, margin:"0 auto" }}>
         <div className="rv sec-label">Skills</div>
-        <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-end", flexWrap:"wrap", gap:"1rem", marginBottom:"2.5rem" }}>
+        <div className="skills-tab-row" style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-end", flexWrap:"wrap", gap:"1rem", marginBottom:"2.5rem" }}>
           <h2 className="rv d1" style={{ fontFamily:"'Inter',sans-serif", fontSize:"clamp(1.8rem,3.5vw,2.6rem)", fontWeight:800, letterSpacing:"-0.02em" }}>
             Technical <span style={{ color:"var(--rose)" }}>Toolkit</span>
           </h2>
@@ -1034,7 +1211,7 @@ function Skills() {
         </div>
 
         {tab === "tags" && (
-          <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(280px,1fr))", gap:"1.1rem" }}>
+          <div className="skills-grid" style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(280px,1fr))", gap:"1.1rem" }}>
             {SKILL_GROUPS.map(({ label, items, col, icon }, i) => (
               <div key={label} className={`rv d${i+1} glass`}
                 style={{ padding:"1.5rem", borderRadius:"1rem", position:"relative", overflow:"hidden" }}
@@ -1057,7 +1234,7 @@ function Skills() {
         )}
 
         {tab === "bars" && (
-          <div style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"0 4rem" }}>
+          <div className="bars-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0 4rem" }}>
             {SKILL_BARS.map((s, i) => (
               <SkillBar key={s.name} {...s} delay={i * 0.07} />
             ))}
@@ -1076,13 +1253,13 @@ function Achievements() {
     { icon:"📝", title:"Research Paper (In Progress)", desc:"Authoring a review on power consumption & cooling optimization in data centers.", col:"var(--rose)" },
   ];
   return (
-    <section id="achievements" style={{ padding:"6rem 2.5rem", background:"var(--surface)" }}>
+    <section id="achievements" className="sec-pad" style={{ background:"var(--surface)" }}>
       <div style={{ maxWidth:1200, margin:"0 auto" }}>
         <div className="rv sec-label">Recognition</div>
         <h2 className="rv d1" style={{ fontFamily:"'Inter',sans-serif", fontSize:"clamp(1.8rem,3.5vw,2.6rem)", fontWeight:800, letterSpacing:"-0.02em", marginBottom:"3rem" }}>
           Milestones & <span style={{ color:"var(--rose)" }}>Awards</span>
         </h2>
-        <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(240px,1fr))", gap:"1.2rem", marginBottom:"2.5rem" }}>
+        <div className="achievements-grid" style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(240px,1fr))", gap:"1.2rem", marginBottom:"2.5rem" }}>
           {items.map(({ icon, title, desc, col }, i) => (
             <div key={title} className={`rv d${i+1} glass`} style={{ padding:"2rem", borderRadius:"1rem", position:"relative", overflow:"hidden" }}
               onMouseEnter={e => { e.currentTarget.style.borderColor=`${col}45`; e.currentTarget.style.boxShadow=`0 0 24px ${col}12`; }}
@@ -1095,13 +1272,13 @@ function Achievements() {
             </div>
           ))}
         </div>
-        <div className="rv d5" style={{ background:"rgba(253,121,121,0.04)", border:"1px solid rgba(253,121,121,0.12)", borderRadius:"1rem", padding:"2.2rem 3rem", display:"flex", alignItems:"center", justifyContent:"space-between", flexWrap:"wrap", gap:"2rem" }}>
+        <div className="rv d5 cgpa-banner" style={{ background:"rgba(253,121,121,0.04)", border:"1px solid rgba(253,121,121,0.12)", borderRadius:"1rem", padding:"2.2rem 3rem", display:"flex", alignItems:"center", justifyContent:"space-between", flexWrap:"wrap", gap:"2rem" }}>
           <div>
             <div className="label" style={{ color:"var(--ink3)", marginBottom:"0.4rem", fontSize:"0.62rem" }}>ACADEMIC STANDING</div>
-            <div style={{ fontFamily:"'Inter',sans-serif", fontSize:"4rem", fontWeight:800, color:"var(--rose)", lineHeight:1, textShadow:"0 0 40px rgba(253,121,121,0.35)" }}>9.88</div>
+            <div className="stat-val" style={{ fontFamily:"'Inter',sans-serif", fontSize:"4rem", fontWeight:800, color:"var(--rose)", lineHeight:1, textShadow:"0 0 40px rgba(253,121,121,0.35)" }}>9.88</div>
             <div className="mono" style={{ fontSize:"0.68rem", color:"var(--ink3)", marginTop:"0.3rem" }}>CGPA · Manipal University Jaipur</div>
           </div>
-          <div style={{ display:"flex", gap:"3rem", flexWrap:"wrap" }}>
+          <div className="cgpa-stats" style={{ display:"flex", gap:"3rem", flexWrap:"wrap" }}>
             {[["5×","Dean's Award"],["3+","Internships"],["Top 10","Deloitte Ideathon"]].map(([n,l]) => (
               <div key={l} style={{ textAlign:"center" }}>
                 <div style={{ fontFamily:"'Inter',sans-serif", fontSize:"1.8rem", fontWeight:800, color:"var(--rose)" }}>{n}</div>
@@ -1119,7 +1296,7 @@ function Contact() {
   const [copied, setCopied] = useState(false);
   const email = "aayushichhabra1010@gmail.com";
   return (
-    <section id="contact" style={{ padding:"6rem 2.5rem", background:"var(--bg)", position:"relative", overflow:"hidden" }}>
+    <section id="contact" className="sec-pad" style={{ background:"var(--bg)", position:"relative", overflow:"hidden" }}>
       <div style={{ position:"absolute", top:"50%", left:"50%", transform:"translate(-50%,-50%)", width:700, height:700, background:"radial-gradient(circle, rgba(253,121,121,0.05) 0%, transparent 70%)", borderRadius:"50%", pointerEvents:"none" }} />
       <div style={{ maxWidth:700, margin:"0 auto", textAlign:"center", position:"relative" }}>
         <div className="rv sec-label" style={{ justifyContent:"center" }}>Contact</div>
@@ -1129,14 +1306,15 @@ function Contact() {
         <p className="rv d2" style={{ fontSize:"0.9rem", color:"var(--ink2)", lineHeight:1.85, marginBottom:"2.5rem" }}>
           Open to internship opportunities, research collaborations, and interesting projects in AI, cybersecurity, and full-stack development.
         </p>
-        <div className="rv d3" style={{ display:"flex", alignItems:"center", gap:"0.8rem", justifyContent:"center", marginBottom:"2rem", flexWrap:"wrap" }}>
-          <span className="mono" style={{ fontSize:"0.85rem", color:"var(--rose)", letterSpacing:"0.03em" }}>{email}</span>
+
+        <div className="rv d3 contact-email-row" style={{ display:"flex", alignItems:"center", gap:"0.8rem", justifyContent:"center", marginBottom:"2rem", flexWrap:"wrap" }}>
+          <span className="mono contact-email-text" style={{ fontSize:"0.85rem", color:"var(--rose)", letterSpacing:"0.03em" }}>{email}</span>
           <button onClick={() => { navigator.clipboard.writeText(email); setCopied(true); setTimeout(()=>setCopied(false),2000); }}
             style={{ background: copied ? "rgba(52,211,153,0.1)" : "var(--rose-dim)", border:`1px solid ${copied ? "rgba(52,211,153,0.3)" : "rgba(253,121,121,0.3)"}`, borderRadius:"9999px", padding:"0.35rem 0.9rem", cursor:"pointer", color: copied ? "#34d399" : "var(--rose)", fontSize:"0.66rem", fontFamily:"'JetBrains Mono',monospace", transition:"all 0.2s" }}>
             {copied ? "Copied ✓" : "Copy"}
           </button>
         </div>
-        <div className="rv d4" style={{ display:"flex", justifyContent:"center", gap:"0.6rem", flexWrap:"wrap", marginBottom:"2.5rem" }}>
+        <div className="rv d4 contact-socials" style={{ display:"flex", justifyContent:"center", gap:"0.6rem", flexWrap:"wrap", marginBottom:"2.5rem" }}>
           {[
             { label:"LinkedIn", url:"https://linkedin.com/in/aayushi-chhabra-54281a34a", icon:<svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg> },
             { label:"GitHub", url:"https://github.com/aayushichhabra", icon:<svg width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg> },
@@ -1146,7 +1324,7 @@ function Contact() {
             <a key={label} href={url} target="_blank" rel="noreferrer" className="icon-btn">{icon}{label}</a>
           ))}
         </div>
-        <div className="rv d5" style={{ display:"flex", gap:"0.8rem", justifyContent:"center", flexWrap:"wrap" }}>
+        <div className="rv d5 contact-btns" style={{ display:"flex", gap:"0.8rem", justifyContent:"center", flexWrap:"wrap" }}>
           <a href="mailto:aayushichhabra1010@gmail.com" className="btn-primary">
             <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg>
             Send a Message
@@ -1184,11 +1362,13 @@ export default function App() {
     <>
       <style>{G}</style>
       <ScrollProg />
+      <SectionProgress />
       <Nav />
       <main>
         <Hero />
         <Marquee />
         <About />
+        <Timeline />
         <Experience />
         <VaultBotContribution />
         <Projects />
