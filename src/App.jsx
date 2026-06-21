@@ -205,6 +205,90 @@ const G = `
   .mob-menu.open { display: flex; }
   .mob-menu a { font-family: 'Inter', sans-serif; font-size: 1.8rem; font-weight: 700; color: var(--ink); text-decoration: none; }
   .mob-menu a:hover { color: var(--rose); }
+
+  /* ─── VaultBot collaboration card — rose/cyan themed to match site ─── */
+  .vaultbot-card {
+    position: relative;
+    border-radius: 1.2rem;
+    overflow: hidden;
+    background: linear-gradient(135deg, rgba(19,19,19,0.97) 0%, rgba(26,14,14,0.95) 45%, rgba(13,20,23,0.96) 100%);
+    border: 1px solid rgba(253,121,121,0.3);
+    animation: vault-border-pulse 4s ease-in-out infinite;
+    transition: transform 0.25s ease;
+  }
+  .vaultbot-card:hover { transform: translateY(-6px); }
+
+  @keyframes vault-border-pulse {
+    0%,100%{box-shadow:0 0 18px rgba(253,121,121,0.14),inset 0 0 28px rgba(253,121,121,0.03)}
+    50%{box-shadow:0 0 36px rgba(253,121,121,0.28),inset 0 0 46px rgba(76,215,246,0.06)}
+  }
+
+  .vaultbot-header {
+    background: linear-gradient(135deg, rgba(253,121,121,0.1) 0%, rgba(253,121,121,0.03) 50%, rgba(76,215,246,0.06) 100%);
+    border-bottom: 1px solid rgba(253,121,121,0.18);
+    padding: 2rem 2.5rem 1.8rem;
+  }
+
+  .vaultbot-shimmer-text {
+    background: linear-gradient(90deg, #FD7979 0%, #ffd9d9 30%, #4cd7f6 60%, #FD7979 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: vault-shimmer 3s linear infinite;
+  }
+  @keyframes vault-shimmer { 0%{background-position:200% center} 100%{background-position:-200% center} }
+
+  .founder-credit-badge {
+    display: inline-flex; align-items: center; gap: 0.45rem;
+    background: rgba(76,215,246,0.08); border: 1px solid rgba(76,215,246,0.35);
+    border-radius: 9999px; padding: 0.3rem 0.9rem;
+    font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--cyan);
+    letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600;
+  }
+
+  .contributor-badge {
+    display: inline-flex; align-items: center; gap: 0.45rem;
+    background: linear-gradient(135deg, rgba(253,121,121,0.16), rgba(253,121,121,0.06));
+    border: 1px solid rgba(253,121,121,0.4);
+    border-radius: 9999px; padding: 0.3rem 0.9rem;
+    font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--rose);
+    letter-spacing: 0.1em; text-transform: uppercase; font-weight: 600;
+  }
+
+  .domain-badge {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 0.4rem; padding: 0.35rem 0.8rem;
+    font-family: 'JetBrains Mono', monospace; font-size: 0.66rem; color: var(--ink2);
+    letter-spacing: 0.08em; text-transform: uppercase;
+  }
+
+  .vault-stat-box {
+    background: rgba(253,121,121,0.05); border: 1px solid rgba(253,121,121,0.16);
+    border-radius: 0.7rem; padding: 1.1rem 1rem; text-align: center;
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .vault-stat-box:hover { background: rgba(253,121,121,0.09); border-color: rgba(253,121,121,0.32); }
+
+  .vault-tech-pill {
+    display: inline-flex; align-items: center; gap: 0.35rem;
+    background: rgba(253,121,121,0.05); border: 1px solid rgba(253,121,121,0.18);
+    border-radius: 0.5rem; padding: 0.45rem 0.85rem;
+    font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: rgba(253,121,121,0.85);
+    letter-spacing: 0.04em; transition: all 0.2s;
+  }
+  .vault-tech-pill:hover { background: rgba(253,121,121,0.1); border-color: rgba(253,121,121,0.4); color: var(--rose); }
+
+  .vault-hero-badge {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: linear-gradient(135deg, rgba(253,121,121,0.1), rgba(76,215,246,0.04));
+    border: 1px solid rgba(253,121,121,0.3); border-radius: 9999px;
+    padding: 0.3rem 0.85rem; font-family: 'JetBrains Mono', monospace;
+    font-size: 0.66rem; color: var(--rose); letter-spacing: 0.08em;
+    text-transform: uppercase; text-decoration: none; cursor: pointer; transition: all 0.2s;
+  }
+  .vault-hero-badge:hover { background: linear-gradient(135deg, rgba(253,121,121,0.16), rgba(76,215,246,0.08)); border-color: rgba(253,121,121,0.5); box-shadow: 0 0 16px rgba(253,121,121,0.15); }
 `;
 
 function ScrollProg() {
@@ -238,7 +322,7 @@ function Nav() {
     window.addEventListener("scroll", fn, { passive: true });
     return () => window.removeEventListener("scroll", fn);
   }, []);
-  const links = [["about","About"],["experience","Exp"],["projects","Projects"],["skills","Skills"],["achievements","Awards"],["contact","Contact"]];
+  const links = [["about","About"],["experience","Exp"],["vaultbot","VaultBot"],["projects","Projects"],["skills","Skills"],["achievements","Awards"],["contact","Contact"]];
   return (
     <>
       <header style={{
@@ -318,6 +402,7 @@ function Hero() {
                 <span className="mono" style={{ fontSize:"0.68rem", color:"var(--rose)", letterSpacing:"0.1em" }}>OPEN TO WORK</span>
               </div>
               <span className="mono" style={{ fontSize:"0.68rem", color:"var(--ink3)", letterSpacing:"0.12em" }}>3RD YEAR CSE · MUJ · 2023–2027</span>
+              <a href="#vaultbot" className="vault-hero-badge">⚡ Co-Founder & Core Contributor (Frontend · Backend · AI)</a>
             </div>
             <div className="rv d1">
               <h1 style={{ fontFamily:"'Inter',sans-serif", fontSize:"clamp(3rem,7vw,5.5rem)", fontWeight:800, lineHeight:1.05, letterSpacing:"-0.04em", marginBottom:"1rem" }}>
@@ -569,6 +654,163 @@ function Experience() {
   );
 }
 
+/* ─── VAULTBOT — COLLABORATIVE CONTRIBUTION ─── */
+const VAULT_TECH = [
+  { label: "Python", icon: "🐍" },
+  { label: "FastAPI", icon: "⚡" },
+  { label: "Discord.py", icon: "💬" },
+  { label: "LangChain", icon: "🔗" },
+  { label: "FAISS", icon: "🗂" },
+  { label: "Groq / Llama 3.3", icon: "🧠" },
+  { label: "Tavily Search", icon: "🔍" },
+  { label: "Exa AI", icon: "🌐" },
+  { label: "HuggingFace", icon: "🤗" },
+  { label: "Redis", icon: "🔴" },
+  { label: "BullMQ Worker", icon: "⚙️" },
+  { label: "Supabase Postgres", icon: "🐘" },
+  { label: "SQLAlchemy", icon: "🗃" },
+  { label: "React + Vite", icon: "⚛️" },
+  { label: "Recharts", icon: "📈" },
+  { label: "Docker Compose", icon: "🐳" },
+  { label: "Oracle Cloud", icon: "☁️" },
+  { label: "nginx", icon: "🌀" },
+  { label: "PyJWT", icon: "🔑" },
+  { label: "Playwright", icon: "🎭" },
+  { label: "openai-whisper", icon: "🎙" },
+  { label: "Rank-BM25", icon: "🔢" },
+];
+
+const VAULT_HIGHLIGHTS = [
+  { icon: "🖥", domain: "Frontend", col: "var(--cyan)", title: "React Admin Dashboard", desc: "Built out the full-featured dashboard — analytics via Recharts, channel management, source upload, crawler control, and a live chat widget, all auth-gated through Discord OAuth." },
+  { icon: "🎨", domain: "Frontend", col: "var(--cyan)", title: "Dashboard UX & Theming", desc: "Implemented responsive layouts, state-driven UI interactions, and visual polish across the dashboard's analytics and settings views." },
+  { icon: "🔌", domain: "Backend", col: "var(--rose)", title: "FastAPI Service Endpoints", desc: "Built and maintained REST endpoints powering guild configuration, source management, and dashboard data sync inside the FastAPI backend." },
+  { icon: "🔐", domain: "Backend", col: "var(--rose)", title: "Auth & Session Middleware", desc: "Implemented Discord OAuth + JWT auth flow and role-based access middleware securing guild-scoped operations." },
+  { icon: "🧠", domain: "AI", col: "#a78bfa", title: "RAG Pipeline Tuning", desc: "Worked on the retrieval layer — combining FAISS semantic search with BM25 lexical ranking, feeding grounded context into LangChain LCEL chains." },
+  { icon: "📥", domain: "AI", col: "#a78bfa", title: "Multi-Modal Ingestion", desc: "Contributed to the ingestion pipeline supporting PDFs, DOCX, web scrapes, and Whisper audio transcription feeding into the knowledge base." },
+];
+
+function VaultBotContribution() {
+  return (
+    <section id="vaultbot" style={{ padding:"6rem 2.5rem", background:"var(--surface)" }}>
+      <div style={{ maxWidth:1200, margin:"0 auto" }}>
+        <div className="rv sec-label">Collaborative Build</div>
+        <div className="rv d1" style={{ marginBottom:"2.5rem" }}>
+          <h2 style={{ fontFamily:"'Inter',sans-serif", fontSize:"clamp(1.8rem,3.5vw,2.6rem)", fontWeight:800, letterSpacing:"-0.02em", marginBottom:"0.6rem" }}>
+            A Platform I Helped <span style={{ color:"var(--rose)" }}>Build</span>
+          </h2>
+          <p className="mono" style={{ fontSize:"0.78rem", color:"var(--ink3)" }}>
+            Co-founded and helped build a production-grade AI platform, leading the implementation of several core product features across frontend, backend, and AI infrastructure.
+          </p>
+        </div>
+
+        <div className="rv d2 vaultbot-card">
+          <div className="vaultbot-header">
+            <div style={{ display:"flex", alignItems:"flex-start", justifyContent:"space-between", flexWrap:"wrap", gap:"1.2rem", marginBottom:"1.6rem" }}>
+              <div>
+                <div style={{ display:"flex", alignItems:"center", gap:"0.6rem", marginBottom:"1rem", flexWrap:"wrap" }}>
+                  <span className="contributor-badge">Co-Founder & Core Contributor</span>
+                </div>
+                <h3 className="vaultbot-shimmer-text" style={{ fontFamily:"'Inter',sans-serif", fontWeight:800, fontSize:"clamp(1.8rem,3.5vw,2.8rem)", letterSpacing:"-0.03em", lineHeight:1.1, marginBottom:"0.6rem" }}>
+                  VaultBot
+                </h3>
+                <p style={{ fontFamily:"'JetBrains Mono', monospace", fontSize:"0.86rem", color:"rgba(253,121,121,0.7)", letterSpacing:"0.05em", marginBottom:"0.6rem" }}>
+                  Production-Grade Multi-Tenant RAG AI Platform
+                </p>
+                <p style={{ fontSize:"0.92rem", color:"var(--ink2)", lineHeight:1.8, maxWidth:600 }}>
+                  A full-stack, multi-service AI platform bringing server-specific, context-aware intelligence to Discord communities. As <strong style={{ color:"var(--ink)" }}>Co-Founder & Core Engineer</strong>, I played a key role in building and scaling the platform, contributing across the <strong style={{ color:"var(--cyan)" }}>React dashboard</strong>, the <strong style={{ color:"var(--rose)" }}>FastAPI backend</strong>, and the platform's <strong style={{ color:"#a78bfa" }}>RAG / AI retrieval pipeline</strong>.
+                </p>
+                <div style={{ display:"flex", gap:"0.5rem", flexWrap:"wrap", marginTop:"1.1rem" }}>
+                  <span className="domain-badge">🎨 Frontend</span>
+                  <span className="domain-badge">🔧 Backend</span>
+                  <span className="domain-badge">🧠 AI</span>
+                </div>
+              </div>
+
+              <div style={{ display:"flex", flexDirection:"column", gap:"0.6rem", minWidth:160 }}>
+                <div className="vault-stat-box">
+                  <div style={{ fontFamily:"'Inter', sans-serif", fontWeight:800, fontSize:"2.1rem", color:"var(--rose)", letterSpacing:"-0.04em", lineHeight:1 }}>12,806</div>
+                  <div style={{ fontFamily:"'JetBrains Mono', monospace", fontSize:"0.6rem", color:"rgba(253,121,121,0.6)", textTransform:"uppercase", letterSpacing:"0.1em", marginTop:"0.3rem" }}>Lines of Code</div>
+                </div>
+                <div className="vault-stat-box">
+                  <div style={{ fontFamily:"'Inter', sans-serif", fontWeight:800, fontSize:"1.4rem", color:"var(--rose)", letterSpacing:"-0.02em", lineHeight:1 }}>4</div>
+                  <div style={{ fontFamily:"'JetBrains Mono', monospace", fontSize:"0.6rem", color:"rgba(253,121,121,0.6)", textTransform:"uppercase", letterSpacing:"0.1em", marginTop:"0.3rem" }}>Services</div>
+                </div>
+                <div className="vault-stat-box">
+                  <div style={{ fontFamily:"'Inter', sans-serif", fontWeight:800, fontSize:"1.4rem", color:"var(--rose)", letterSpacing:"-0.02em", lineHeight:1 }}>3</div>
+                  <div style={{ fontFamily:"'JetBrains Mono', monospace", fontSize:"0.6rem", color:"rgba(253,121,121,0.6)", textTransform:"uppercase", letterSpacing:"0.1em", marginTop:"0.3rem" }}>Domains Touched</div>
+                </div>
+              </div>
+            </div>
+
+            <div style={{ display:"flex", gap:"0.5rem", flexWrap:"wrap" }}>
+              {[["FastAPI Backend","🔌"],["Discord Bot","💬"],["React Dashboard","🖥"],["BullMQ Worker","⚙️"],["Redis Cache","🔴"],["Supabase Postgres","🐘"],["Docker Compose","🐳"],["Oracle Cloud","☁️"]].map(([label, icon]) => (
+                <div key={label} style={{ display:"inline-flex", alignItems:"center", gap:"0.3rem", background:"rgba(253,121,121,0.05)", border:"1px solid rgba(253,121,121,0.12)", borderRadius:"0.4rem", padding:"0.3rem 0.7rem", fontFamily:"'JetBrains Mono', monospace", fontSize:"0.68rem", color:"rgba(253,121,121,0.65)", letterSpacing:"0.04em" }}>
+                  <span style={{ fontSize:"0.85rem" }}>{icon}</span> {label}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div style={{ padding:"2.5rem" }}>
+            <div style={{ marginBottom:"2.5rem" }}>
+              <div style={{ fontFamily:"'JetBrains Mono', monospace", fontSize:"0.7rem", color:"rgba(253,121,121,0.5)", letterSpacing:"0.14em", textTransform:"uppercase", marginBottom:"1.4rem" }}>// WHAT_I_CONTRIBUTED</div>
+              <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fill, minmax(280px, 1fr))", gap:"1rem" }}>
+                {VAULT_HIGHLIGHTS.map((h) => (
+                  <div key={h.title} style={{ background:"rgba(255,255,255,0.02)", border:`1px solid ${h.col}25`, borderRadius:"0.7rem", padding:"1.3rem", transition:"all 0.2s" }}
+                    onMouseEnter={e => { e.currentTarget.style.background = `${h.col}10`; e.currentTarget.style.borderColor = `${h.col}45`; }}
+                    onMouseLeave={e => { e.currentTarget.style.background = "rgba(255,255,255,0.02)"; e.currentTarget.style.borderColor = `${h.col}25`; }}
+                  >
+                    <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between", marginBottom:"0.7rem" }}>
+                      <span style={{ fontSize:"1.3rem" }}>{h.icon}</span>
+                      <span style={{ fontFamily:"'JetBrains Mono', monospace", fontSize:"0.6rem", color:h.col, border:`1px solid ${h.col}40`, borderRadius:"9999px", padding:"0.15rem 0.6rem", letterSpacing:"0.08em", textTransform:"uppercase" }}>{h.domain}</span>
+                    </div>
+                    <div style={{ fontFamily:"'Inter', sans-serif", fontWeight:700, fontSize:"0.88rem", color:h.col, marginBottom:"0.4rem", letterSpacing:"-0.01em" }}>{h.title}</div>
+                    <div style={{ fontSize:"0.81rem", color:"var(--ink2)", lineHeight:1.7 }}>{h.desc}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div style={{ marginBottom:"2.5rem" }}>
+              <div style={{ fontFamily:"'JetBrains Mono', monospace", fontSize:"0.7rem", color:"rgba(253,121,121,0.5)", letterSpacing:"0.14em", textTransform:"uppercase", marginBottom:"1.2rem" }}>// FULL_TECH_STACK</div>
+              <div style={{ display:"flex", flexWrap:"wrap", gap:"0.5rem" }}>
+                {VAULT_TECH.map((t) => (
+                  <span key={t.label} className="vault-tech-pill">
+                    <span style={{ fontSize:"0.85rem" }}>{t.icon}</span>
+                    {t.label}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            <div className="terminal" style={{ marginBottom:"2rem" }}>
+              <div><span className="term-prompt">$ </span>cat CONTRIBUTORS.md</div>
+              <div style={{ paddingLeft:"1rem" }}>
+                <div><span style={{ color:"var(--cyan)" }}>Arman Phaugat</span>{"   "}→ Founder &amp; Lead Architect</div>
+                <div><span className="term-result">Aayushi Chhabra</span> → Co-Founder & Core Contributor (Frontend · Backend · AI)</div>
+              </div>
+              <div style={{ marginTop:"0.3rem" }}>
+                <span className="term-prompt">$ </span>git log --author=&quot;Aayushi&quot; --stat
+                <span style={{ width:2, height:14, background:"var(--cyan)", display:"inline-block", verticalAlign:"middle", marginLeft:2, animation:"blink 1s step-end infinite" }} />
+              </div>
+              <div style={{ paddingLeft:"1rem", color:"var(--ink2)" }}>dashboard · auth middleware · retrieval pipeline …</div>
+            </div>
+
+            <div style={{ display:"flex", gap:"0.75rem", flexWrap:"wrap" }}>
+              <a href="https://discord.com/oauth2/authorize?client_id=1463510548808208415" target="_blank" rel="noreferrer" className="btn-primary" style={{ fontSize:"0.78rem" }}>
+                Add VaultBot to Discord ↗
+              </a>
+              <a href="https://github.com/aayushichhabra" target="_blank" rel="noreferrer" className="btn-outline-cyan" style={{ fontSize:"0.78rem" }}>
+                View My Contributions ↗
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 const PROJECTS = [
   {
     num:"01", name:"Unified Cybersecurity Platform",
@@ -698,7 +940,7 @@ function ProjectCard({ p, i }) {
 
 function Projects() {
   return (
-    <section id="projects" style={{ padding:"6rem 2.5rem", background:"var(--surface)" }}>
+    <section id="projects" style={{ padding:"6rem 2.5rem", background:"var(--bg)" }}>
       <div style={{ maxWidth:1200, margin:"0 auto" }}>
         <div className="rv sec-label">Projects</div>
         <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-end", flexWrap:"wrap", gap:"1rem", marginBottom:"3rem" }}>
@@ -716,8 +958,6 @@ function Projects() {
 }
 
 /* ─── SKILLS ─── */
-// ✅ FIX: Use real hex values — CSS variables like "var(--rose)" break
-//         when interpolated as "${col}88" or "${col}55" (produces invalid CSS)
 const SKILL_GROUPS = [
   { label:"Programming & Dev", items:["Python","C","Java","JavaScript","OOP","DSA","Git"], col:"#FD7979", icon:"⌨️" },
   { label:"AI & Machine Learning", items:["Supervised & Unsupervised ML","Transfer Learning","RAG","Computer Vision","LangChain","LangGraph","Whisper STT","PyTorch","TF Lite","OpenCV","Scikit-learn","Pandas"], col:"#4cd7f6", icon:"🧠" },
@@ -736,8 +976,6 @@ const SKILL_BARS = [
   { name:"UI/UX & Frontend",                pct:75, col:"#34d399" },
 ];
 
-// ✅ FIX: IntersectionObserver fires on mount (same pattern as working code)
-//         threshold:0 so it triggers as soon as even 1px is visible
 function SkillBar({ name, pct, col, delay }) {
   const [vis, setVis] = useState(false);
   const ref = useRef(null);
@@ -760,7 +998,6 @@ function SkillBar({ name, pct, col, delay }) {
       <div style={{ height:3, background:"rgba(255,255,255,0.06)", borderRadius:10, overflow:"hidden" }}>
         <div style={{
           height:"100%",
-          // ✅ FIX: col is now a real hex so col+"88" = "#FD797988" — valid CSS
           background:`linear-gradient(90deg, ${col}, ${col}88)`,
           borderRadius:10,
           boxShadow:`0 0 8px ${col}55`,
@@ -776,7 +1013,7 @@ function Skills() {
   const [tab, setTab] = useState("tags");
   useReveal(tab);
   return (
-    <section id="skills" style={{ padding:"6rem 2.5rem", background:"var(--bg)" }}>
+    <section id="skills" style={{ padding:"6rem 2.5rem", background:"var(--surface)" }}>
       <div style={{ maxWidth:1200, margin:"0 auto" }}>
         <div className="rv sec-label">Skills</div>
         <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-end", flexWrap:"wrap", gap:"1rem", marginBottom:"2.5rem" }}>
@@ -796,7 +1033,6 @@ function Skills() {
           </div>
         </div>
 
-        {/* ✅ FIX: Conditional rendering — components remount fresh each time tab switches */}
         {tab === "tags" && (
           <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(280px,1fr))", gap:"1.1rem" }}>
             {SKILL_GROUPS.map(({ label, items, col, icon }, i) => (
@@ -954,6 +1190,7 @@ export default function App() {
         <Marquee />
         <About />
         <Experience />
+        <VaultBotContribution />
         <Projects />
         <Skills />
         <Achievements />
