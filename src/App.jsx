@@ -331,6 +331,108 @@ const G = `
     text-transform: uppercase; text-decoration: none; cursor: pointer; transition: all 0.2s;
   }
   .vault-hero-badge:hover { background: linear-gradient(135deg, rgba(253,121,121,0.16), rgba(76,215,246,0.08)); border-color: rgba(253,121,121,0.5); box-shadow: 0 0 16px rgba(253,121,121,0.15); }
+
+  /* ─── Responsive Adjustments ─── */
+  @media (max-width: 768px) {
+    .hide-m { display: none !important; }
+    .show-m { display: inline-flex !important; }
+    
+    .sec-pad { padding: 4rem 1.25rem !important; }
+    
+    .hero-layout {
+      grid-template-columns: 1fr !important;
+      gap: 2rem !important;
+    }
+    
+    .about-grid {
+      grid-template-columns: 1fr !important;
+      gap: 1.2rem !important;
+    }
+    
+    .projects-grid {
+      grid-template-columns: 1fr !important;
+      gap: 1.2rem !important;
+    }
+    
+    .skills-grid {
+      grid-template-columns: 1fr !important;
+      gap: 1rem !important;
+    }
+    
+    .bars-grid {
+      grid-template-columns: 1fr !important;
+      gap: 0 !important;
+    }
+    
+    .achievements-grid {
+      grid-template-columns: 1fr !important;
+      gap: 1rem !important;
+    }
+    
+    .progress-sidebar {
+      display: none !important;
+    }
+    
+    header {
+      padding: 0.9rem 1.25rem !important;
+    }
+    
+    /* VaultBot specific mobile tweaks */
+    .vault-stats-container {
+      flex-direction: row !important;
+      width: 100% !important;
+      justify-content: space-between !important;
+      gap: 0.5rem !important;
+    }
+    
+    .vault-stat-box {
+      flex: 1 !important;
+      padding: 0.8rem 0.4rem !important;
+    }
+    
+    .vaultbot-header {
+      padding: 1.5rem 1.25rem 1.5rem !important;
+    }
+    
+    .vaultbot-card > div:nth-child(2) {
+      padding: 1.5rem 1.25rem !important;
+    }
+    
+    /* CGPA banner mobile tweaks */
+    .cgpa-banner {
+      padding: 1.5rem 1.25rem !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      text-align: center !important;
+      gap: 1.5rem !important;
+    }
+    
+    .cgpa-stats {
+      justify-content: center !important;
+      gap: 1.5rem !important;
+      width: 100% !important;
+    }
+    
+    /* Contact page mobile tweaks */
+    #contact {
+      padding: 4rem 1.25rem !important;
+    }
+    
+    .contact-email-text {
+      font-size: 0.75rem !important;
+      word-break: break-all !important;
+      text-align: center !important;
+    }
+    
+    /* Footer layout on mobile */
+    footer {
+      flex-direction: column !important;
+      align-items: center !important;
+      text-align: center !important;
+      gap: 1rem !important;
+      padding: 2rem 1.25rem !important;
+    }
+  }
 `;
 
 function ScrollProg() {
@@ -367,7 +469,7 @@ function useIsMobile() {
 }
 
 function SectionProgress() {
-  const SECS = ["hero","about","timeline","experience","projects","skills","achievements","contact"];
+  const SECS = ["hero","about","timeline","experience","vaultbot","skills","achievements","contact"];
   const [active, setActive] = useState("hero");
   useEffect(() => {
     const obs = new IntersectionObserver(entries => {
@@ -396,7 +498,7 @@ function Nav() {
     window.addEventListener("scroll", fn, { passive: true });
     return () => window.removeEventListener("scroll", fn);
   }, []);
-  const links = [["about","About"],["experience","Exp"],["vaultbot","VaultBot"],["projects","Projects"],["skills","Skills"],["achievements","Awards"],["contact","Contact"]];
+  const links = [["about","About"],["experience","Exp"],["vaultbot","Projects"],["skills","Skills"],["achievements","Awards"],["contact","Contact"]];
   return (
     <>
       <header style={{
@@ -501,7 +603,7 @@ function Hero() {
                 <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg>
                 Get In Touch
               </a>
-              <a href="#projects" className="btn-outline-rose">View Projects →</a>
+              <a href="#vaultbot" className="btn-outline-rose">View Projects →</a>
             </div>
             <div className="rv d5" style={{ display:"flex", gap:"0.6rem", flexWrap:"wrap" }}>
               <a href="/Aayushi_Chhabra_Resume.pdf" download="Aayushi_Chhabra_Resume.pdf" className="icon-btn">
@@ -540,7 +642,7 @@ function Hero() {
               </div>
               {[
                 { name:"ResQNet", desc:"Cross-platform crisis mgmt. w/ BLE & offline-first tech", tech:"React Native · Supabase", col:"var(--cyan)" },
-                { name:"StyleVault", desc:"AI men's fashion — wardrobe mgmt & outfit suggestions", tech:"Kotlin · Firebase · Gemini", col:"var(--rose)" },
+                { name:"VaultBot", desc:"Multi-tenant collaborative AI platform with custom RAG networks", tech:"FastAPI · Discord.py · Supabase · LangChain", col:"var(--rose)" },
                 { name:"CVE Agent", desc:"Agentic CVE triage + dependency scanner w/ LangGraph", tech:"LangGraph · NIST NVD · Gemini", col:"#a78bfa" },
               ].map(({ name, desc, tech, col }) => (
                 <div key={name} style={{ marginBottom:"1.1rem", paddingBottom:"1.1rem", borderBottom:"1px solid var(--outline)" }}>
@@ -586,7 +688,6 @@ function About() {
   return (
     <section id="about" className="sec-pad" style={{ background:"var(--surface)", position:"relative", overflow:"hidden" }}>
       <div style={{ maxWidth:1200, margin:"0 auto" }}>
-        <div className="rv sec-label">About Me</div>
         <div className="about-grid" style={{ display:"grid", gridTemplateColumns:"1fr 1fr", gap:"1.5rem", alignItems:"start" }}>
           <div className="rv d1 glass" style={{ padding:"2rem", position:"relative", overflow:"hidden" }}>
             <div style={{ position:"absolute", top:0, left:0, right:0, height:2, background:"linear-gradient(90deg, var(--rose), transparent)" }} />
@@ -681,7 +782,6 @@ function Timeline() {
       <div style={{ position: "absolute", top: "20%", left: "50%", transform: "translateX(-50%)", width: 600, height: 600, background: "radial-gradient(circle, rgba(244,63,94,0.03) 0%, transparent 70%)", borderRadius: "50%", pointerEvents: "none" }} />
 
       <div style={{ maxWidth: 900, margin: "0 auto", position: "relative" }}>
-        <div className="rv sec-label">Journey</div>
         <h2 className="rv d1" style={{ fontFamily:"'Inter',sans-serif", fontSize: "clamp(1.8rem,4vw,2.8rem)", fontWeight: 900, marginBottom: "4rem" }}>
           My <span style={{ color:"var(--rose)" }}>Timeline</span>
         </h2>
@@ -791,7 +891,6 @@ function Experience() {
   return (
     <section id="experience" className="sec-pad" style={{ background:"var(--bg)" }}>
       <div style={{ maxWidth:1200, margin:"0 auto" }}>
-        <div className="rv sec-label">Experience</div>
         <h2 className="rv d1" style={{ fontFamily:"'Inter',sans-serif", fontSize:"clamp(1.8rem,3.5vw,2.6rem)", fontWeight:800, letterSpacing:"-0.02em", marginBottom:"3rem" }}>
           Work <span style={{ color:"var(--rose)" }}>History</span>
         </h2>
@@ -870,7 +969,6 @@ function VaultBotContribution() {
   return (
     <section id="vaultbot" style={{ padding:"6rem 2.5rem", background:"var(--surface)" }}>
       <div style={{ maxWidth:1200, margin:"0 auto" }}>
-        <div className="rv sec-label">Collaborative Build</div>
         <div className="rv d1" style={{ marginBottom:"2.5rem" }}>
           <h2 style={{ fontFamily:"'Inter',sans-serif", fontSize:"clamp(1.8rem,3.5vw,2.6rem)", fontWeight:800, letterSpacing:"-0.02em", marginBottom:"0.6rem" }}>
             A Platform I Helped <span style={{ color:"var(--rose)" }}>Build</span>
@@ -903,7 +1001,7 @@ function VaultBotContribution() {
                 </div>
               </div>
 
-              <div style={{ display:"flex", flexDirection:"column", gap:"0.6rem", minWidth:160 }}>
+              <div className="vault-stats-container" style={{ display:"flex", flexDirection:"column", gap:"0.6rem", minWidth:160 }}>
                 <div className="vault-stat-box">
                   <div style={{ fontFamily:"'Inter', sans-serif", fontWeight:800, fontSize:"2.1rem", color:"var(--rose)", letterSpacing:"-0.04em", lineHeight:1 }}>12,806</div>
                   <div style={{ fontFamily:"'JetBrains Mono', monospace", fontSize:"0.6rem", color:"rgba(253,121,121,0.6)", textTransform:"uppercase", letterSpacing:"0.1em", marginTop:"0.3rem" }}>Lines of Code</div>
@@ -1030,12 +1128,12 @@ const PROJECTS = [
     link:"https://github.com/aayushichhabra",
   },
   {
-    num:"06", name:"StyleVault",
-    tagline:"AI-powered men's fashion app for wardrobe management & body-fit analysis",
-    category:"Android · AI", col:"#a78bfa",
-    tech:["Kotlin","Android Studio","Firebase","Gemini API","Camera API","Figma"],
-    highlights:["AI outfit recommendations by wardrobe, weather & occasion","Digital closet: upload, categorize & plan outfits","Body measurement for fit-based AI styling suggestions"],
-    link:"https://github.com/aayushichhabra",
+    num:"06", name:"VaultBot AI",
+    tagline:"Production-grade multi-tenant RAG platform & Discord collaboration agent",
+    category:"AI · Backend · Full Stack", col:"#a78bfa",
+    tech:["FastAPI","Discord.py","LangChain","Supabase","Redis","Groq / Llama 3"],
+    highlights:["RAG-based context-aware server intelligence","Custom retrieval pipeline with FAISS vector database","Scale-ready multi-tenant infrastructure on Oracle Cloud"],
+    link:"#vaultbot",
   },
 ];
 
@@ -1119,7 +1217,6 @@ function Projects() {
   return (
     <section id="projects" style={{ padding:"6rem 2.5rem", background:"var(--surface)" }}>
       <div style={{ maxWidth:1200, margin:"0 auto" }}>
-        <div className="rv sec-label">Projects</div>
         <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-end", flexWrap:"wrap", gap:"1rem", marginBottom:"3rem" }}>
           <h2 className="rv d1" style={{ fontFamily:"'Inter',sans-serif", fontSize:"clamp(1.8rem,3.5vw,2.6rem)", fontWeight:800, letterSpacing:"-0.02em" }}>
             Featured <span style={{ color:"var(--rose)" }}>Work</span>
@@ -1192,7 +1289,6 @@ function Skills() {
   return (
     <section id="skills" style={{ padding:"6rem 2.5rem", background:"var(--bg)" }}>
       <div style={{ maxWidth:1200, margin:"0 auto" }}>
-        <div className="rv sec-label">Skills</div>
         <div className="skills-tab-row" style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-end", flexWrap:"wrap", gap:"1rem", marginBottom:"2.5rem" }}>
           <h2 className="rv d1" style={{ fontFamily:"'Inter',sans-serif", fontSize:"clamp(1.8rem,3.5vw,2.6rem)", fontWeight:800, letterSpacing:"-0.02em" }}>
             Technical <span style={{ color:"var(--rose)" }}>Toolkit</span>
@@ -1255,7 +1351,6 @@ function Achievements() {
   return (
     <section id="achievements" className="sec-pad" style={{ background:"var(--surface)" }}>
       <div style={{ maxWidth:1200, margin:"0 auto" }}>
-        <div className="rv sec-label">Recognition</div>
         <h2 className="rv d1" style={{ fontFamily:"'Inter',sans-serif", fontSize:"clamp(1.8rem,3.5vw,2.6rem)", fontWeight:800, letterSpacing:"-0.02em", marginBottom:"3rem" }}>
           Milestones & <span style={{ color:"var(--rose)" }}>Awards</span>
         </h2>
@@ -1299,7 +1394,6 @@ function Contact() {
     <section id="contact" className="sec-pad" style={{ background:"var(--bg)", position:"relative", overflow:"hidden" }}>
       <div style={{ position:"absolute", top:"50%", left:"50%", transform:"translate(-50%,-50%)", width:700, height:700, background:"radial-gradient(circle, rgba(253,121,121,0.05) 0%, transparent 70%)", borderRadius:"50%", pointerEvents:"none" }} />
       <div style={{ maxWidth:700, margin:"0 auto", textAlign:"center", position:"relative" }}>
-        <div className="rv sec-label" style={{ justifyContent:"center" }}>Contact</div>
         <h2 className="rv d1" style={{ fontFamily:"'Inter',sans-serif", fontSize:"clamp(2.2rem,5vw,3.5rem)", fontWeight:800, letterSpacing:"-0.03em", marginBottom:"1.2rem", lineHeight:1.1 }}>
           Let's <span style={{ color:"var(--rose)", textShadow:"0 0 30px rgba(253,121,121,0.3)" }}>Connect</span>
         </h2>
