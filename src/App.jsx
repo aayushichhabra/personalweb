@@ -490,7 +490,7 @@ function SectionProgress() {
   );
 }
 
-function Nav() {
+function Nav({ onOpenCli }) {
   const [scrolled, setScrolled] = useState(false);
   const [menu, setMenu] = useState(false);
   useEffect(() => {
@@ -525,13 +525,12 @@ function Nav() {
             <svg width="13" height="13" fill="currentColor" viewBox="0 0 24 24"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
             LinkedIn
           </a>
-          <a href="/Aayushi_Chhabra_Resume.pdf" download="Aayushi_Chhabra_Resume.pdf" className="nav-link" style={{ display:"inline-flex", alignItems:"center", gap:"0.35rem", color:"var(--cyan)" }}>
-            <svg width="13" height="13" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="12" y1="18" x2="12" y2="12"/><polyline points="9,15 12,18 15,15"/></svg>
-            Resume ↓
-          </a>
         </nav>
         <div style={{ display:"flex", gap:"0.6rem", alignItems:"center" }}>
-          <a href="mailto:aayushichhabra1010@gmail.com" className="btn-primary" style={{ padding:"0.5rem 1.1rem", fontSize:"0.7rem" }}>Hire Me</a>
+          <button onClick={onOpenCli} className="btn-outline-cyan" style={{ padding:"0.45rem 0.9rem", fontSize:"0.7rem", cursor:"pointer" }}>
+            💻 CLI
+          </button>
+          <a href="/Aayushi_Chhabra_Resume.pdf" download="Aayushi_Chhabra_Resume.pdf" className="btn-primary" style={{ padding:"0.5rem 1.1rem", fontSize:"0.7rem" }}>Resume ↓</a>
           <button onClick={() => setMenu(o=>!o)} style={{ display:"none", background:"none", border:"1px solid rgba(244,63,94,0.2)", cursor:"pointer", color:"var(--ink)", padding:"0.35rem 0.5rem", borderRadius: "4px" }} className="mob-hamburger show-m">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
           </button>
@@ -548,9 +547,9 @@ function Nav() {
   );
 }
 
-function Hero() {
+function Hero({ onOpenCli }) {
   const [typed, setTyped] = useState("");
-  const words = ["Cybersecurity & AI Intern","ML Engineer","Android Developer","Deepfake Detection Researcher","Full Stack Developer","Productivity AI Builder"];
+  const words = ["B.Tech CS Student @ MUJ (9.85 CGPA)", "Co-Founder @ Nori", "Ericsson R&D Intern", "Published Patent Holder", "AI & Cybersecurity Engineer"];
   useEffect(() => {
     let wi=0, idx=0, dir=1;
     const iv = setInterval(() => {
@@ -592,10 +591,10 @@ function Hero() {
             </div>
             <p className="rv d3" style={{ fontSize:"0.95rem", color:"var(--ink2)", lineHeight:1.85, maxWidth:560, marginBottom:"2.2rem" }}>
               Third-year B.Tech CSE at Manipal University Jaipur with a{" "}
-              <span style={{ color:"var(--rose)", fontWeight:700 }}>9.88 CGPA</span>.
+              <span style={{ color:"var(--rose)", fontWeight:700 }}>9.85 CGPA</span>.
               Industry experience at <span style={{ color:"var(--rose)", fontWeight:700 }}>Ericsson</span> in Cybersecurity & AI.
               Finalist at <span style={{ color:"var(--rose)", fontWeight:700 }}>Deloitte Capstone Ideathon</span> (200+ teams).
-              Dean's Excellence Award — 5 consecutive semesters.
+              Dean's Excellence Award — 6 consecutive semesters.
             </p>
 
             <div className="rv d4 hero-btns" style={{ display:"flex", gap:"0.8rem", flexWrap:"wrap", marginBottom:"1.8rem" }}>
@@ -603,7 +602,8 @@ function Hero() {
                 <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/></svg>
                 Get In Touch
               </a>
-              <a href="#vaultbot" className="btn-outline-rose">View Projects →</a>
+              <button onClick={onOpenCli} className="btn-outline-cyan" style={{ fontSize:"0.72rem", padding:"0.6rem 1.4rem", cursor:"pointer" }}>💻 CLI Terminal</button>
+              <a href="#projects" className="btn-outline-rose">View Projects →</a>
             </div>
             <div className="rv d5" style={{ display:"flex", gap:"0.6rem", flexWrap:"wrap" }}>
               <a href="/Aayushi_Chhabra_Resume.pdf" download="Aayushi_Chhabra_Resume.pdf" className="icon-btn">
@@ -1233,12 +1233,12 @@ function Projects() {
 
 /* ─── SKILLS ─── */
 const SKILL_GROUPS = [
-  { label:"Programming & Dev", items:["Python","C","Java","JavaScript","OOP","DSA","Git"], col:"#FD7979", icon:"⌨️" },
-  { label:"AI & Machine Learning", items:["Supervised & Unsupervised ML","Transfer Learning","RAG","Computer Vision","LangChain","LangGraph","Whisper STT","PyTorch","TF Lite","OpenCV","Scikit-learn","Pandas"], col:"#4cd7f6", icon:"🧠" },
-  { label:"Cybersecurity", items:["CVE Analysis","Vulnerability Assessment","Incident Response","Threat Detection","Anomaly Detection","FAISS Vector DBs"], col:"#a78bfa", icon:"🔐" },
-  { label:"Mobile & Web Dev", items:["Android Studio","Kotlin","React Native","Expo","HTML","CSS","JavaScript","Streamlit","Figma"], col:"#FD7979", icon:"📱" },
-  { label:"Databases & Cloud", items:["SQL","Firebase","Supabase","MongoDB","FAISS / Vector DBs"], col:"#4cd7f6", icon:"☁️" },
-  { label:"Tools & Platforms", items:["Gradio","Plotly","Google Gemini API","Google OAuth2","Hugging Face","VS Code","GitHub","Postman"], col:"#34d399", icon:"🛠️" },
+  { label:"Deep Learning & Computer Vision", items:["PyTorch","TensorFlow Lite","OpenCV","EfficientNetB0","Grad-CAM","Transfer Learning","CNNs","Autoencoders"], col:"#4cd7f6", icon:"👁️" },
+  { label:"Generative AI & RAG", items:["LangChain","Google Gemini API","FAISS","Hugging Face","Vector Databases","Prompt Engineering","Semantic Search"], col:"#a78bfa", icon:"🤖" },
+  { label:"Machine Learning", items:["Supervised & Unsupervised Learning","Anomaly Detection","Model Evaluation","Scikit-learn","Pandas","NumPy"], col:"#34d399", icon:"📊" },
+  { label:"Backend & Deployment", items:["FastAPI","Redis","Docker Compose","nginx","BullMQ","REST APIs","Streamlit","Gradio"], col:"#FD7979", icon:"⚙️" },
+  { label:"Programming & CS Fundamentals", items:["Python","Java","JavaScript","Git","Data Structures & Algorithms"], col:"#4cd7f6", icon:"💻" },
+  { label:"Databases", items:["SQL","Supabase Postgres","Firebase","Redis","FAISS (Vector DB)","SQLAlchemy"], col:"#a78bfa", icon:"🛢️" },
 ];
 
 const SKILL_BARS = [
@@ -1450,16 +1450,161 @@ function Footer() {
   );
 }
 
+function TerminalModal({ open, setOpen }) {
+  const [minimized, setMinimized] = useState(false);
+  const [maximized, setMaximized] = useState(false);
+  const [inputVal, setInputVal] = useState("");
+  const [output, setOutput] = useState([
+    { type: "success", text: "System Initialization Complete. Type help to list commands." }
+  ]);
+  const outputRef = useRef(null);
+
+  useEffect(() => {
+    if (outputRef.current) {
+      outputRef.current.scrollTop = outputRef.current.scrollHeight;
+    }
+  }, [output]);
+
+  if (!open) return null;
+
+  const handleCommand = (cmdStr) => {
+    const cmd = cmdStr.trim().toLowerCase();
+    if (!cmd) return;
+    const newOutput = [...output, { type: "line", text: `aayushi@cyber-ai:~$ ${cmd}` }];
+
+    switch (cmd) {
+      case "help":
+        newOutput.push({
+          type: "warning",
+          html: `Available Commands:<br/>• <b>about</b> - Background & education (9.85 CGPA)<br/>• <b>nori</b> - Architecture & metrics for Nori RAG<br/>• <b>ericsson</b> - R&D internship details<br/>• <b>patent</b> - View published Indian Patent Journal info<br/>• <b>skills</b> - Technical stack overview<br/>• <b>resume</b> - Download updated resume PDF<br/>• <b>clear</b> - Clear terminal screen`
+        });
+        break;
+      case "about":
+        newOutput.push({
+          type: "success",
+          text: "Aayushi Chhabra | 3rd Year B.Tech CSE @ Manipal University Jaipur (CGPA: 9.85). Specialized in AI, SecOps, Machine Learning, DeepFake Detection, and RAG systems. Dean's Excellence Award recipient for 6 consecutive semesters."
+        });
+        break;
+      case "nori":
+        newOutput.push({
+          type: "success",
+          text: "Nori RAG AI Platform for Discord: Co-founded & built 15,600+ LOC across 4 microservices. Sub-10ms ONNX Intent Classifier cutting API costs by ~75%. Graphlit RAG pipeline with Supabase & Oracle Cloud deployment."
+        });
+        break;
+      case "ericsson":
+        newOutput.push({
+          type: "success",
+          text: "Ericsson R&D Intern (Jun-Jul 2025): Automated CVE triage reducing manual review by ~40%. Isolation Forest / Autoencoders with 91% precision. Reduced mean time-to-triage by 35%."
+        });
+        break;
+      case "patent":
+        newOutput.push({
+          type: "success",
+          text: "Published Patent (2026): 'An AI-based Unified Email and Meeting Workflow Management System' - Published in Indian Patent Journal."
+        });
+        break;
+      case "skills":
+        newOutput.push({
+          type: "success",
+          html: `Technical Skills (Matching Resume):<br/>• <b>Deep Learning & CV:</b> PyTorch, TensorFlow Lite, OpenCV, EfficientNetB0, Grad-CAM, Transfer Learning, CNNs, Autoencoders<br/>• <b>Generative AI & RAG:</b> LangChain, Google Gemini API, FAISS, Hugging Face, Vector Databases, Prompt Engineering, Semantic Search<br/>• <b>Machine Learning:</b> Supervised & Unsupervised Learning, Anomaly Detection, Model Evaluation, Scikit-learn, Pandas, NumPy<br/>• <b>Backend & Deployment:</b> FastAPI, Redis, Docker Compose, nginx, BullMQ, REST APIs, Streamlit, Gradio<br/>• <b>Programming & CS:</b> Python, Java, JavaScript, Git, Data Structures & Algorithms<br/>• <b>Databases:</b> SQL, Supabase Postgres, Firebase, Redis, FAISS (Vector DB), SQLAlchemy`
+        });
+        break;
+      case "resume":
+        newOutput.push({ type: "success", text: "Downloading updated resume PDF..." });
+        window.open("/Aayushi_Chhabra_Resume.pdf", "_blank");
+        break;
+      case "clear":
+        setOutput([]);
+        return;
+      default:
+        newOutput.push({ type: "error", text: `Command not recognized: '${cmd}'. Type help for command list.` });
+        break;
+    }
+    setOutput(newOutput);
+  };
+
+  return (
+    <div style={{
+      position: "fixed",
+      bottom: maximized ? "20px" : "30px",
+      right: maximized ? "20px" : "30px",
+      width: maximized ? "calc(100vw - 40px)" : "500px",
+      maxWidth: "calc(100vw - 40px)",
+      height: minimized ? "44px" : (maximized ? "calc(100vh - 100px)" : "380px"),
+      background: "#090e17",
+      border: "1px solid rgba(0, 242, 254, 0.3)",
+      borderRadius: "16px",
+      boxShadow: "0 20px 50px rgba(0,0,0,0.8), 0 0 30px rgba(0, 242, 254, 0.15)",
+      zIndex: 9999,
+      display: "flex",
+      flexDirection: "column",
+      overflow: "hidden",
+      transition: "all 0.3s ease"
+    }}>
+      <div style={{
+        background: "#0f172a",
+        padding: "10px 16px",
+        display: "flex",
+        justify-content: "space-between",
+        alignItems: "center",
+        borderBottom: "1px solid rgba(255, 255, 255, 0.08)",
+        cursor: "pointer"
+      }}>
+        <div style={{ fontSize: "13px", fontWeight: 600, color: "var(--ink)", display: "flex", alignItems: "center", gap: "8px" }}>
+          💻 Aayushi OS Shell v2.6 [aayushi@cyber-ai]
+        </div>
+        <div style={{ display: "flex", gap: "8px" }}>
+          <button onClick={() => setMinimized(m => !m)} style={{ width: 12, height: 12, borderRadius: "50%", background: "#f59e0b", border: "none", cursor: "pointer" }} title="Minimize" />
+          <button onClick={() => { setMaximized(m => !m); setMinimized(false); }} style={{ width: 12, height: 12, borderRadius: "50%", background: "#10b981", border: "none", cursor: "pointer" }} title="Maximize" />
+          <button onClick={() => setOpen(false)} style={{ width: 12, height: 12, borderRadius: "50%", background: "#ef4444", border: "none", cursor: "pointer" }} title="Close" />
+        </div>
+      </div>
+      {!minimized && (
+        <div style={{ padding: "16px", flex: 1, display: "flex", flexDirection: "column", background: "#050811", fontFamily: "'JetBrains Mono', monospace", fontSize: "13px" }}>
+          <div ref={outputRef} style={{ flex: 1, overflowY: "auto", display: "flex", flexDirection: "column", gap: "8px", paddingBottom: "12px" }}>
+            {output.map((item, idx) => (
+              <div key={idx} style={{
+                color: item.type === "error" ? "#ef4444" : (item.type === "warning" ? "#f59e0b" : (item.type === "line" ? "var(--ink)" : "#00f2fe")),
+                lineHeight: 1.5
+              }}>
+                {item.html ? <span dangerouslySetInnerHTML={{ __html: item.html }} /> : item.text}
+              </div>
+            ))}
+          </div>
+          <div style={{ display: "flex", alignItems: "center", gap: "8px", background: "rgba(255,255,255,0.05)", padding: "8px 12px", borderRadius: "8px" }}>
+            <span style={{ color: "#00f2fe", fontWeight: 700 }}>aayushi@cyber-ai:~$</span>
+            <input
+              type="text"
+              value={inputVal}
+              onChange={e => setInputVal(e.target.value)}
+              onKeyDown={e => {
+                if (e.key === "Enter") {
+                  handleCommand(inputVal);
+                  setInputVal("");
+                }
+              }}
+              placeholder="type 'help'..."
+              autoFocus
+              style={{ background: "transparent", border: "none", outline: "none", color: "#ffffff", width: "100%", fontFamily: "'JetBrains Mono', monospace", fontSize: "13px" }}
+            />
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function App() {
   useReveal(null);
+  const [cliOpen, setCliOpen] = useState(false);
   return (
     <>
       <style>{G}</style>
       <ScrollProg />
       <SectionProgress />
-      <Nav />
+      <Nav onOpenCli={() => setCliOpen(true)} />
       <main>
-        <Hero />
+        <Hero onOpenCli={() => setCliOpen(true)} />
         <Marquee />
         <About />
         <Timeline />
@@ -1471,6 +1616,7 @@ export default function App() {
         <Contact />
       </main>
       <Footer />
+      <TerminalModal open={cliOpen} setOpen={setCliOpen} />
     </>
   );
 }

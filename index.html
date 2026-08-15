@@ -41,9 +41,6 @@
             </ul>
 
             <div class="nav-cta">
-                <button id="open-cli-btn" class="btn btn-outline-cyan" title="Launch Interactive Terminal">
-                    <i class="fa-solid fa-terminal"></i> CLI
-                </button>
                 <a href="assets/Aayushi_Chhabra_Resume.pdf" download="Aayushi_Chhabra_Resume.pdf" class="btn btn-primary">
                     <i class="fa-solid fa-download"></i> Resume
                 </a>
@@ -690,28 +687,6 @@
         </div>
     </section>
 
-    <!-- Floating Interactive Terminal CLI Drawer Modal -->
-    <div class="terminal-modal">
-        <div class="terminal-header">
-            <div class="terminal-title">
-                <i class="fa-solid fa-terminal"></i> Aayushi OS Shell v2.6 [aayushi@cyber-ai]
-            </div>
-            <div class="terminal-controls">
-                <button class="term-btn min" title="Minimize"></button>
-                <button class="term-btn max" title="Maximize"></button>
-                <button class="term-btn close" title="Close"></button>
-            </div>
-        </div>
-        <div class="terminal-body">
-            <div id="term-output" class="terminal-output">
-                <p class="cmd-success">System Initialization Complete. Type <b style="color:var(--primary-cyan);">help</b> to list commands.</p>
-            </div>
-            <div class="terminal-input-wrapper">
-                <span class="terminal-prompt">aayushi@cyber-ai:~$</span>
-                <input type="text" id="term-input" class="terminal-input" placeholder="type 'help'..." autofocus>
-            </div>
-        </div>
-    </div>
 
     <!-- Footer -->
     <footer>
@@ -731,7 +706,6 @@ function initAll() {
     initNavbarScroll();
     initNoriExplorer();
     initGradCamWidget();
-    initTerminalCLI();
     initCopyEmail();
 }
 
@@ -947,131 +921,6 @@ function initGradCamWidget() {
                 modeLabel.textContent = 'Mode: Raw Image View';
             }
         });
-    }
-}
-
-function initTerminalCLI() {
-    const termHeader = document.querySelector('.terminal-header');
-    const termModal = document.querySelector('.terminal-modal');
-    const termInput = document.getElementById('term-input');
-    const termOutput = document.getElementById('term-output');
-    const closeBtn = document.querySelector('.term-btn.close');
-    const minBtn = document.querySelector('.term-btn.min');
-    const maxBtn = document.querySelector('.term-btn.max');
-
-    if (termHeader && termModal) {
-        if (minBtn) {
-            minBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                termModal.classList.toggle('minimized');
-                termModal.classList.remove('maximized');
-            });
-        }
-
-        if (maxBtn) {
-            maxBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                termModal.classList.toggle('maximized');
-                termModal.classList.remove('minimized');
-            });
-        }
-
-        if (closeBtn) {
-            closeBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                termModal.style.display = 'none';
-            });
-        }
-    }
-
-    const openCliBtns = document.querySelectorAll('#open-cli-btn, .open-cli-btn');
-    openCliBtns.forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            e.preventDefault();
-            if (termModal) {
-                termModal.style.display = 'flex';
-                termModal.classList.remove('minimized');
-                if (termInput) termInput.focus();
-            }
-        });
-    });
-
-    if (termInput) {
-        termInput.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') {
-                const cmd = termInput.value.trim().toLowerCase();
-                termInput.value = '';
-                processCommand(cmd);
-            }
-        });
-    }
-
-    function processCommand(cmd) {
-        appendOutput(`<p class="cmd-line"><span class="terminal-prompt">aayushi@cyber-ai:~$</span> ${cmd}</p>`);
-
-        switch (cmd) {
-            case 'help':
-                appendOutput(`
-                    <p class="cmd-warning">Available Commands:</p>
-                    <p>• <b>about</b> - Summary of background & education (9.85 CGPA)</p>
-                    <p>• <b>nori</b> - Architecture & metrics for Nori RAG platform</p>
-                    <p>• <b>ericsson</b> - R&D internship details & SecOps achievements</p>
-                    <p>• <b>patent</b> - View published Indian Patent Journal info</p>
-                    <p>• <b>skills</b> - Technical stack overview</p>
-                    <p>• <b>resume</b> - Download updated resume PDF</p>
-                    <p>• <b>clear</b> - Clear terminal screen</p>
-                `);
-                break;
-
-            case 'about':
-                appendOutput(`<p class="cmd-success">Aayushi Chhabra | 3rd Year B.Tech CSE @ Manipal University Jaipur (CGPA: 9.85)</p><p>Specialized in AI, SecOps, Machine Learning, DeepFake Detection, and RAG systems. Dean's Excellence Award recipient for 6 consecutive semesters.</p>`);
-                break;
-
-            case 'nori':
-                appendOutput(`<p class="cmd-success">Nori RAG AI Platform for Discord:</p><p>• Co-founded & built 15,600+ LOC across 4 microservices.</p><p>• Sub-10ms ONNX Intent Classifier cutting API costs by ~75%.</p><p>• Graphlit RAG pipeline with Supabase & Oracle Cloud deployment.</p>`);
-                break;
-
-            case 'ericsson':
-                appendOutput(`<p class="cmd-success">Ericsson R&D Intern (Jun-Jul 2025):</p><p>• Automated CVE triage reducing manual review by ~40%.</p><p>• Isolation Forest / Autoencoders with 91% precision.</p><p>• Reduced mean time-to-triage by 35%.</p>`);
-                break;
-
-            case 'patent':
-                appendOutput(`<p class="cmd-success">Published Patent (2026):</p><p>“An AI-based Unified Email and Meeting Workflow Management System” - Published in Indian Patent Journal.</p>`);
-                break;
-
-            case 'skills':
-                appendOutput(`
-                    <p class="cmd-success">Technical Skills (Strictly matching resume):</p>
-                    <p>• <b>Deep Learning & CV:</b> PyTorch, TensorFlow Lite, OpenCV, EfficientNetB0, Grad-CAM, Transfer Learning, CNNs, Autoencoders</p>
-                    <p>• <b>Generative AI & RAG:</b> LangChain, Google Gemini API, FAISS, Hugging Face, Vector Databases, Prompt Engineering, Semantic Search</p>
-                    <p>• <b>Machine Learning:</b> Supervised & Unsupervised Learning, Anomaly Detection, Model Evaluation, Scikit-learn, Pandas, NumPy</p>
-                    <p>• <b>Backend & Deployment:</b> FastAPI, Redis, Docker Compose, nginx, BullMQ, REST APIs, Streamlit, Gradio</p>
-                    <p>• <b>Programming & CS:</b> Python, Java, JavaScript, Git, Data Structures & Algorithms</p>
-                    <p>• <b>Databases:</b> SQL, Supabase Postgres, Firebase, Redis, FAISS (Vector DB), SQLAlchemy</p>
-                `);
-                break;
-
-            case 'resume':
-                appendOutput(`<p class="cmd-success">Downloading updated resume PDF...</p>`);
-                window.open('assets/Aayushi_Chhabra_Resume.pdf', '_blank');
-                break;
-
-            case 'clear':
-                termOutput.innerHTML = '';
-                return;
-
-            default:
-                if (cmd !== '') {
-                    appendOutput(`<p style="color:#ef4444;">Command not recognized: '${cmd}'. Type <b>help</b> for command list.</p>`);
-                }
-                break;
-        }
-
-        termOutput.scrollTop = termOutput.scrollHeight;
-    }
-
-    function appendOutput(html) {
-        termOutput.innerHTML += html;
     }
 }
 
