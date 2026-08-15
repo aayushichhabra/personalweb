@@ -590,8 +590,7 @@ function Hero({ onOpenCli }) {
               <span style={{ width:2, height:18, background:"var(--cyan)", animation:"blink 1s step-end infinite", display:"inline-block" }} />
             </div>
             <p className="rv d3" style={{ fontSize:"0.95rem", color:"var(--ink2)", lineHeight:1.85, maxWidth:560, marginBottom:"2.2rem" }}>
-              Third-year B.Tech CSE at Manipal University Jaipur with a{" "}
-              <span style={{ color:"var(--rose)", fontWeight:700 }}>9.85 CGPA</span>.
+              Final-year B.Tech CSE at Manipal University Jaipur with a <span style={{ color:"var(--rose)", fontWeight:700 }}>9.85 CGPA</span>.
               Industry experience at <span style={{ color:"var(--rose)", fontWeight:700 }}>Ericsson</span> in Cybersecurity & AI.
               Finalist at <span style={{ color:"var(--rose)", fontWeight:700 }}>Deloitte Capstone Ideathon</span> (200+ teams).
               Dean's Excellence Award — 6 consecutive semesters.
