@@ -249,6 +249,8 @@ function initTerminalCLI() {
     const termModal = document.querySelector('.terminal-modal');
     const termInput = document.getElementById('term-input');
     const termOutput = document.getElementById('term-output');
+    const closeBtn = document.querySelector('.term-btn.close');
+    const minBtn = document.querySelector('.term-btn.min');
     const maxBtn = document.querySelector('.term-btn.max');
 
     if (termHeader && termModal) {
