@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aayushi Chhabra - Resume</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --primary: #0f172a;
+            --accent: #2563eb;
+            --text: #1e293b;
+            --muted: #64748b;
+            --border: #e2e8f0;
+            --bg: #f8fafc;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.5;
+            padding: 40px 20px;
+        }
+
+        .resume-container {
+            max-width: 850px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 45px 50px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .header-actions {
+            max-width: 850px;
+            margin: 0 auto 20px auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 18px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: #ffffff;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background: #1d4ed8;
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--primary);
+            border: 1px solid var(--border);
+        }
+
+        .btn-outline:hover {
+            background: #f1f5f9;
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: 6px;
+            letter-spacing: -0.5px;
+        }
+
+        .contact-bar {
+            text-align: center;
+            font-size: 13px;
+            color: var(--muted);
+            margin-bottom: 24px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .contact-bar a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .contact-bar a:hover {
+            text-decoration: underline;
+        }
+
+        .section-title {
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: var(--primary);
+            border-bottom: 1.5px solid #cbd5e1;
+            padding-bottom: 4px;
+            margin-top: 22px;
+            margin-bottom: 12px;
+        }
+
+        p, li {
+            font-size: 13.5px;
+            color: #334155;
+        }
+
+        ul {
+            list-style-type: disc;
+            padding-left: 18px;
+            margin-top: 6px;
+        }
+
+        li {
+            margin-bottom: 6px;
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-top: 10px;
+        }
+
+        .item-title {
+            font-weight: 700;
+            font-size: 14.5px;
+            color: var(--primary);
+        }
+
+        .item-subtitle {
+            font-weight: 500;
+            font-style: italic;
+            color: #475569;
+        }
+
+        .item-date {
+            font-size: 12.5px;
+            color: var(--muted);
+            font-weight: 500;
+        }
+
+        .tech-stack {
+            font-size: 12px;
+            color: var(--muted);
+            font-weight: 500;
+        }
+
+        .skills-list p {
+            margin-bottom: 6px;
+            font-size: 13px;
+        }
+
+        .skills-list strong {
+            color: var(--primary);
+        }
+
+        @media print {
+            body {
+                background: none;
+                padding: 0;
+            }
+            .header-actions {
+                display: none;
+            }
+            .resume-container {
+                box-shadow: none;
+                border: none;
+                padding: 0;
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header-actions">
+        <a href="index.html" class="btn btn-outline"><i class="fa-solid fa-arrow-left"></i> Back to Portfolio</a>
+        <div style="display: flex; gap: 10px;">
+            <button onclick="window.print()" class="btn btn-outline"><i class="fa-solid fa-print"></i> Print</button>
+            <a href="assets/Aayushi_Chhabra_Resume.pdf" download="Aayushi_Chhabra_Resume.pdf" class="btn btn-primary"><i class="fa-solid fa-download"></i> Download PDF</a>
+        </div>
+    </div>
+
+    <div class="resume-container">
+        <h1>Aayushi Chhabra</h1>
+        <div class="contact-bar">
+            <span>+91-9873740076</span> &bull;
+            <a href="https://aayushichhabra.me" target="_blank">aayushichhabra.me</a> &bull;
+            <span>aayushichhabra1010@gmail.com</span> &bull;
+            <a href="https://linkedin.com" target="_blank">LinkedIn</a> &bull;
+            <a href="https://github.com" target="_blank">GitHub</a> &bull;
+            <a href="https://leetcode.com" target="_blank">LeetCode</a>
+        </div>
+
+        <div class="section-title">Summary</div>
+        <p>Third-year B.Tech Computer Science student at Manipal University Jaipur (9.85 CGPA) with industry experience at Ericsson in AI and Cybersecurity. Co-founder of Nori, a production-grade multi-tenant RAG AI platform. Specialized in machine learning, deep learning, computer vision, and RAG-based AI systems. Published patent holder. Proven ability to architect, train, and deploy end-to-end intelligent solutions, from model development to production. Dean’s Excellence Award recipient for 6 consecutive semesters.</p>
+
+        <div class="section-title">Education</div>
+        <div class="item-header">
+            <div>
+                <span class="item-title">Manipal University Jaipur</span> &bull; <span class="item-subtitle">B.Tech in Computer Science and Engineering</span> <strong>(CGPA: 9.85)</strong>
+            </div>
+            <div class="item-date">Aug 2023 – Jul 2027</div>
+        </div>
+        <p style="font-size: 12.5px; color: var(--muted); margin-bottom: 8px;">Jaipur, Rajasthan</p>
+
+        <div class="item-header">
+            <div>
+                <span class="item-title">Manav Rachna International School</span> &bull; <span class="item-subtitle">Class X: 95% | Class XII: 96%</span>
+            </div>
+            <div class="item-date">2021 – 2023</div>
+        </div>
+        <p style="font-size: 12.5px; color: var(--muted);">Gurugram, Haryana</p>
+
+        <div class="section-title">Work Experience</div>
+        <div class="item-header">
+            <div>
+                <span class="item-title">Research & Development Intern</span> &bull; <span class="item-subtitle">Ericsson</span>
+            </div>
+            <div class="item-date">Jun 2025 – Jul 2025</div>
+        </div>
+        <p style="font-size: 12.5px; color: var(--muted);">Gurugram, Haryana</p>
+        <ul>
+            <li>Conducted CVE triage and vulnerability analysis for AI-assisted threat detection, reducing manual review time by ~40% through automated severity scoring pipelines.</li>
+            <li>Developed unsupervised anomaly detection models (Isolation Forest, Autoencoders) achieving 91% precision on network intrusion datasets in a production-grade SecOps environment.</li>
+            <li>Contributed to automated incident response pipelines integrating ML-based alert classification, cutting mean time-to-triage by 35% in simulation benchmarks.</li>
+        </ul>
+
+        <div class="section-title">Projects</div>
+        <div class="item-header">
+            <div>
+                <span class="item-title">Nori</span> &bull; <span class="item-subtitle">Co-Founder & Core Contributor</span>
+            </div>
+            <div class="item-date">2026</div>
+        </div>
+        <div class="tech-stack">FastAPI, Discord.py, React, Graphlit, Supabase, Redis, Docker</div>
+        <ul>
+            <li>Co-founded and engineered a multi-tenant RAG AI platform for Discord, architecting 15,600+ lines of code across 4 microservices (React admin dashboard, FastAPI backend, Discord bot, AI engine).</li>
+            <li>Engineered a sub-10ms CPU intent classifier via a local ONNX Runtime model with Groq (Llama 3.1) fallback, filtering chatter and cutting unnecessary LLM/RAG API costs by ~75%.</li>
+            <li>Built a partition-isolated RAG pipeline via Graphlit API with multi-modal ingestion, Tavily/Exa web search fallback, Discord OAuth2 + JWT auth, and Oracle Cloud deployment via Docker Compose and BullMQ.</li>
+        </ul>
+
+        <div class="item-header" style="margin-top: 14px;">
+            <div>
+                <span class="item-title">Unified Cybersecurity Platform</span>
+            </div>
+            <div class="item-date">2025</div>
+        </div>
+        <div class="tech-stack">Python, Streamlit, LangChain, Gemini, FAISS, Plotly</div>
+        <ul>
+            <li>Built an AI-driven SecOps ecosystem integrating RAG-powered incident guidance, real-time network attack analytics, and ML-based anomaly detection, achieving 93% accuracy on benchmark threat datasets.</li>
+            <li>Leveraged FAISS vector databases with Google Gemini embeddings for semantic search over threat intelligence corpora, reducing mean containment recommendation latency by 60% vs. keyword-based retrieval.</li>
+            <li>Deployed on Streamlit Cloud with interactive Plotly dashboards serving live threat telemetry across 5+ attack categories.</li>
+        </ul>
+
+        <div class="item-header" style="margin-top: 14px;">
+            <div>
+                <span class="item-title">DeepFake Detection System</span>
+            </div>
+            <div class="item-date">2026</div>
+        </div>
+        <div class="tech-stack">Python, PyTorch, EfficientNetB0, Grad-CAM, OpenCV, Scikit-learn</div>
+        <ul>
+            <li>Built an end-to-end deepfake detection pipeline using EfficientNetB0 with transfer learning, achieving 96.4% binary classification accuracy (real vs. AI-generated images) on a 10K-image test set.</li>
+            <li>Integrated Grad-CAM explainability heatmaps to visually highlight manipulated facial regions, enabling transparent model auditing and reducing false-positive review time by ~50%.</li>
+            <li>Applied data augmentation and fine-tuning strategies that improved generalization across 4 deepfake generation methods (FaceSwap, StyleGAN2, DALL-E, MidJourney).</li>
+        </ul>
+
+        <div class="section-title">Technical Skills</div>
+        <div class="skills-list">
+            <p><strong>Deep Learning & Computer Vision:</strong> PyTorch, TensorFlow Lite, OpenCV, EfficientNetB0, Grad-CAM, Transfer Learning, CNNs, Autoencoders</p>
+            <p><strong>Generative AI & RAG:</strong> LangChain, Google Gemini API, FAISS, Hugging Face, Vector Databases, Prompt Engineering, Semantic Search</p>
+            <p><strong>Machine Learning:</strong> Supervised & Unsupervised Learning, Anomaly Detection, Model Evaluation, Scikit-learn, Pandas, NumPy</p>
+            <p><strong>Backend & Deployment:</strong> FastAPI, Redis, Docker Compose, nginx, BullMQ, REST APIs, Streamlit, Gradio</p>
+            <p><strong>Programming & CS Fundamentals:</strong> Python, Java, JavaScript, Git, Data Structures & Algorithms</p>
+            <p><strong>Databases:</strong> SQL, Supabase Postgres, Firebase, Redis, FAISS (Vector DB), SQLAlchemy</p>
+        </div>
+
+        <div class="section-title">Achievements</div>
+        <ul>
+            <li><strong>Patent Published – AI Workflow Management System (2026):</strong> Patent published in the Indian Patent Journal: “An AI-based Unified Email and Meeting Workflow Management System.”</li>
+            <li><strong>Dean’s Excellence Award | Manipal University Jaipur (2023 – Present):</strong> Maintained 9.85 CGPA across 6 consecutive semesters, ranking in the top 1% of the department.</li>
+            <li><strong>Finalist – Deloitte Capstone Ideathon (2025):</strong> Ranked top 10 out of 200+ teams nationally for innovative AI-driven problem-solving and solution design.</li>
+            <li><strong>Promotional Head – Turing Sapiens (Technical Society) (2024):</strong> Led cross-functional team of 8 to execute promotion campaigns for technical events, growing community engagement by 60%.</li>
+        </ul>
+    </div>
+</body>
+</html>

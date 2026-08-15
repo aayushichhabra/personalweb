@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aayushi Chhabra | AI & Cybersecurity Engineer | Co-Founder @ Nori</title>
+    <meta name="description" content="Portfolio of Aayushi Chhabra - AI & Cybersecurity Engineer, Co-Founder of Nori, Ericsson R&D Intern, and Published Patent Holder. B.Tech CSE Student at Manipal University Jaipur (9.85 CGPA).">
+    <meta name="keywords" content="Aayushi Chhabra, AI Engineer, Cybersecurity, DeepFake Detection, Nori RAG, Ericsson, Manipal University Jaipur, Machine Learning, PyTorch, FastAPI">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- Neural Network Canvas Background -->
+    <canvas id="bg-canvas"></canvas>
+
+    <!-- Navigation Header -->
+    <header class="navbar">
+        <div class="container nav-container">
+            <a href="#hero" class="brand-logo">
+                <div class="logo-badge">AC</div>
+                <span>Aayushi<span class="gradient-text">.ai</span></span>
+            </a>
+            
+            <ul class="nav-links">
+                <li><a href="#about" class="nav-link">About</a></li>
+                <li><a href="#experience" class="nav-link">Experience</a></li>
+                <li><a href="#projects" class="nav-link">Projects</a></li>
+                <li><a href="#skills" class="nav-link">Skills</a></li>
+                <li><a href="#achievements" class="nav-link">Achievements</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+            </ul>
+
+            <div class="nav-cta">
+                <button id="open-cli-btn" class="btn btn-outline-cyan" title="Launch Interactive Terminal">
+                    <i class="fa-solid fa-terminal"></i> CLI
+                </button>
+                <a href="assets/Aayushi_Chhabra_Resume.pdf" download="Aayushi_Chhabra_Resume.pdf" class="btn btn-primary">
+                    <i class="fa-solid fa-download"></i> Resume
+                </a>
+            </div>
+
+            <button class="mobile-toggle" aria-label="Toggle navigation">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="hero" class="hero">
+        <div class="container">
+            <div class="hero-grid">
+                <div class="hero-content">
+                    <div class="hero-badge">
+                        <span class="pulse-dot"></span>
+                        <span>Ericsson R&D Alum &bull; 9.85 CGPA Top Scholar</span>
+                    </div>
+                    
+                    <h1 class="hero-title">
+                        Architecting Next-Gen <br>
+                        <span class="gradient-text">AI & Cybersecurity</span> Systems
+                    </h1>
+
+                    <div class="typing-container">
+                        <span>I am a </span>
+                        <span class="typed-text"></span>
+                    </div>
+
+                    <p class="hero-description">
+                        Third-year B.Tech CS Student at Manipal University Jaipur (9.85 CGPA). Co-Founder of <b>Nori</b> (production multi-tenant RAG platform), Ericsson R&D Intern, and published patent holder specializing in Deep Learning, Computer Vision, and RAG systems.
+                    </p>
+
+                    <div class="hero-actions">
+                        <a href="#projects" class="btn btn-primary">
+                            <i class="fa-solid fa-rocket"></i> Explore Work
+                        </a>
+                        <a href="assets/Aayushi_Chhabra_Resume.pdf" download="Aayushi_Chhabra_Resume.pdf" class="btn btn-secondary">
+                            <i class="fa-solid fa-file-pdf"></i> Download Resume
+                        </a>
+                        <a href="resume.html" target="_blank" class="btn btn-secondary" style="border-style: dashed;" title="View web version of resume">
+                            <i class="fa-solid fa-eye"></i> Web Resume
+                        </a>
+                    </div>
+
+                    <div class="social-links">
+                        <a href="https://github.com" target="_blank" class="social-btn" title="GitHub Profile"><i class="fa-brands fa-github"></i></a>
+                        <a href="https://linkedin.com" target="_blank" class="social-btn" title="LinkedIn Profile"><i class="fa-brands fa-linkedin"></i></a>
+                        <a href="https://leetcode.com" target="_blank" class="social-btn" title="LeetCode Profile"><i class="fa-solid fa-code"></i></a>
+                        <a href="mailto:aayushichhabra1010@gmail.com" class="social-btn" title="Email Me"><i class="fa-solid fa-envelope"></i></a>
+                    </div>
+                </div>
+
+                <!-- Hero Visual Card -->
+                <div class="hero-visual">
+                    <div class="hero-card-frame">
+                        <div class="hero-card-inner">
+                            <div class="avatar-container">
+                                <div class="avatar-img">
+                                    <i class="fa-solid fa-user-ninja"></i>
+                                </div>
+                            </div>
+                            <h3 class="hero-card-name">Aayushi Chhabra</h3>
+                            <p class="hero-card-role">B.Tech Computer Science Student</p>
+                            
+                            <div class="tech-pills">
+                                <span class="tech-pill">PyTorch</span>
+                                <span class="tech-pill">FastAPI</span>
+                                <span class="tech-pill">LangChain</span>
+                                <span class="tech-pill">EfficientNetB0</span>
+                                <span class="tech-pill">Docker Compose</span>
+                                <span class="tech-pill">Supabase</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats Strip -->
+            <div class="stats-strip">
+                <div class="stat-item">
+                    <div class="stat-number">9.85</div>
+                    <div class="stat-label">CGPA (Top 1% Department)</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">15.6k+</div>
+                    <div class="stat-label">Lines of Code (Nori RAG)</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">96.4%</div>
+                    <div class="stat-label">DeepFake Detection Accuracy</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">1</div>
+                    <div class="stat-label">Published Patent (2026)</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">-40%</div>
+                    <div class="stat-label">CVE Triage Time (Ericsson R&D)</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About & Education Section -->
+    <section id="about" class="section">
+        <div class="container">
+            <div class="section-tag">
+                <i class="fa-solid fa-graduation-cap"></i> Academic Excellence & Background
+            </div>
+            <h2 class="section-title">About <span class="gradient-text">Me</span></h2>
+            <p class="section-subtitle">
+                Passionate about engineering production-grade AI solutions, threat intelligence analytics, and multi-tenant RAG systems backed by high academic rigor.
+            </p>
+
+            <div class="glass-card" style="margin-bottom: 40px;">
+                <h3 style="font-size: 1.3rem; margin-bottom: 12px; color: var(--primary-cyan);">Executive Summary</h3>
+                <p style="color: var(--text-muted); font-size: 1.05rem; line-height: 1.7;">
+                    Third-year B.Tech Computer Science student at Manipal University Jaipur (9.85 CGPA) with industry experience at <b>Ericsson</b> in AI and Cybersecurity. Co-founder of <b>Nori</b>, a production-grade multi-tenant RAG AI platform. Specialized in machine learning, deep learning, computer vision, and RAG-based AI systems. Published patent holder. Proven ability to architect, train, and deploy end-to-end intelligent solutions, from model development to production. Recipient of the Dean’s Excellence Award for 6 consecutive semesters.
+                </p>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px;">
+                <div class="glass-card">
+                    <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 16px;">
+                        <div style="width: 44px; height: 44px; border-radius: 12px; background: rgba(99, 102, 241, 0.15); color: var(--accent-indigo); display: flex; align-items: center; justify-content: center; font-size: 1.3rem;">
+                            <i class="fa-solid fa-university"></i>
+                        </div>
+                        <div>
+                            <h4 style="font-size: 1.15rem;">Manipal University Jaipur</h4>
+                            <p style="font-size: 0.85rem; color: var(--primary-cyan);">B.Tech in Computer Science & Engineering</p>
+                        </div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; font-size: 0.9rem; color: var(--text-muted); margin-bottom: 10px;">
+                        <span><i class="fa-solid fa-award" style="color: var(--accent-amber);"></i> <b>CGPA: 9.85</b> (Top 1%)</span>
+                        <span>Aug 2023 – Jul 2027</span>
+                    </div>
+                    <p style="font-size: 0.85rem; color: var(--text-dim);">Jaipur, Rajasthan &bull; Dean's Excellence Award for 6 consecutive semesters</p>
+                </div>
+
+                <div class="glass-card">
+                    <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 16px;">
+                        <div style="width: 44px; height: 44px; border-radius: 12px; background: rgba(0, 242, 254, 0.15); color: var(--primary-cyan); display: flex; align-items: center; justify-content: center; font-size: 1.3rem;">
+                            <i class="fa-solid fa-school"></i>
+                        </div>
+                        <div>
+                            <h4 style="font-size: 1.15rem;">Manav Rachna International School</h4>
+                            <p style="font-size: 0.85rem; color: var(--text-muted);">High School Scholar</p>
+                        </div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; font-size: 0.9rem; color: var(--text-muted); margin-bottom: 10px;">
+                        <span>Class X: <b>95%</b> | Class XII: <b>96%</b></span>
+                        <span>2021 – 2023</span>
+                    </div>
+                    <p style="font-size: 0.85rem; color: var(--text-dim);">Gurugram, Haryana</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Work Experience Section -->
+    <section id="experience" class="section">
+        <div class="container">
+            <div class="section-tag">
+                <i class="fa-solid fa-briefcase"></i> Industry Experience
+            </div>
+            <h2 class="section-title">Work <span class="gradient-text">Experience</span></h2>
+            <p class="section-subtitle">
+                Applied AI research and SecOps engineering in telecom and security environments.
+            </p>
+
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="glass-card">
+                        <div class="timeline-header">
+                            <div class="company-badge">
+                                <i class="fa-solid fa-building-shield" style="color: var(--primary-cyan);"></i>
+                                <span>Ericsson</span>
+                            </div>
+                            <span class="exp-date">Jun 2025 – Jul 2025</span>
+                        </div>
+                        <div class="exp-role">Research & Development Intern &bull; Gurugram, Haryana</div>
+                        
+                        <ul class="exp-bullets">
+                            <li>Conducted CVE triage and vulnerability analysis for AI-assisted threat detection, reducing manual review time by <b>~40%</b> through automated severity scoring pipelines.</li>
+                            <li>Developed unsupervised anomaly detection models (<b>Isolation Forest</b>, <b>Autoencoders</b>) achieving <b>91% precision</b> on network intrusion datasets in a production-grade SecOps environment.</li>
+                            <li>Contributed to automated incident response pipelines integrating ML-based alert classification, cutting mean time-to-triage by <b>35%</b> in simulation benchmarks.</li>
+                        </ul>
+
+                        <div style="margin-top: 16px; display: flex; gap: 8px; flex-wrap: wrap;">
+                            <span class="project-tag">SecOps</span>
+                            <span class="project-tag">CVE Triage</span>
+                            <span class="project-tag">Isolation Forest</span>
+                            <span class="project-tag">Autoencoders</span>
+                            <span class="project-tag">Incident Response</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Showcase Section -->
+    <section id="projects" class="section">
+        <div class="container">
+            <div class="section-tag">
+                <i class="fa-solid fa-code-branch"></i> Engineering & Research Projects
+            </div>
+            <h2 class="section-title">Featured <span class="gradient-text">Projects</span></h2>
+            <p class="section-subtitle">
+                Production-grade multi-tenant RAG systems, AI cybersecurity ecosystems, and computer vision models.
+            </p>
+
+            <!-- Project 1: Nori -->
+            <div class="glass-card featured-project">
+                <div class="project-info">
+                    <div class="project-meta-tags">
+                        <span class="project-tag">FastAPI</span>
+                        <span class="project-tag">Discord.py</span>
+                        <span class="project-tag">React</span>
+                        <span class="project-tag">Graphlit</span>
+                        <span class="project-tag">Supabase</span>
+                        <span class="project-tag">Redis</span>
+                        <span class="project-tag">Docker</span>
+                    </div>
+
+                    <h3 class="project-title">Nori</h3>
+                    <p class="project-description">
+                        Production-grade multi-tenant RAG AI platform for Discord built with 15,600+ lines of code across 4 microservices.
+                    </p>
+
+                    <ul class="project-highlights">
+                        <li><b>15,600+ Lines of Code:</b> Architected across React admin dashboard, FastAPI backend, Discord bot, and AI engine microservices.</li>
+                        <li><b>Sub-10ms CPU Intent Classifier:</b> Local ONNX Runtime model with Groq (Llama 3.1) fallback filtering chatter and cutting LLM/RAG API costs by <b>~75%</b>.</li>
+                        <li><b>Partition-Isolated RAG Pipeline:</b> Graphlit API multi-modal ingestion, Tavily/Exa web search fallback, Discord OAuth2 + JWT auth, and Oracle Cloud deployment via Docker Compose and BullMQ.</li>
+                    </ul>
+
+                    <div style="display: flex; gap: 12px; margin-top: 20px;">
+                        <a href="https://github.com" target="_blank" class="btn btn-primary"><i class="fa-brands fa-github"></i> Repository</a>
+                        <a href="#contact" class="btn btn-secondary"><i class="fa-solid fa-paper-plane"></i> Request Demo</a>
+                    </div>
+                </div>
+
+                <!-- Interactive Explorer for Nori -->
+                <div class="nori-explorer">
+                    <div class="explorer-header">
+                        <span class="explorer-title"><i class="fa-solid fa-sitemap"></i> Nori Microservice Explorer</span>
+                        <span style="font-size: 11px; color: var(--text-dim);">Click tab to inspect</span>
+                    </div>
+
+                    <div class="arch-tabs">
+                        <button class="arch-tab active" data-target="intent">Intent Classifier</button>
+                        <button class="arch-tab" data-target="rag">RAG Pipeline</button>
+                        <button class="arch-tab" data-target="bot">Discord Bot</button>
+                        <button class="arch-tab" data-target="admin">Admin & Cloud</button>
+                    </div>
+
+                    <div class="arch-detail-box">
+                        <div id="arch-name" class="arch-detail-name">Sub-10ms ONNX Intent Classifier</div>
+                        <div id="arch-desc" class="arch-detail-desc">
+                            Local CPU model running ONNX Runtime that filters normal chatter before reaching LLMs. Evaluates query intent in &lt;10ms and routes to Groq (Llama 3.1) only when complex reasoning is required.
+                        </div>
+                        <div id="arch-metrics-box" class="arch-metrics">
+                            <span class="metric-tag"><i class="fa-solid fa-check-circle"></i> Sub-10ms CPU Latency</span>
+                            <span class="metric-tag"><i class="fa-solid fa-check-circle"></i> ~75% API Cost Savings</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 2: Unified Cybersecurity Platform -->
+            <div class="glass-card featured-project">
+                <div class="project-info">
+                    <div class="project-meta-tags">
+                        <span class="project-tag">Python</span>
+                        <span class="project-tag">Streamlit</span>
+                        <span class="project-tag">LangChain</span>
+                        <span class="project-tag">Gemini</span>
+                        <span class="project-tag">FAISS</span>
+                        <span class="project-tag">Plotly</span>
+                    </div>
+
+                    <h3 class="project-title">Unified Cybersecurity Platform</h3>
+                    <p class="project-description">
+                        AI-driven SecOps ecosystem integrating RAG-powered incident guidance, real-time attack telemetry, and anomaly detection.
+                    </p>
+
+                    <ul class="project-highlights">
+                        <li><b>93% Anomaly Accuracy:</b> Built ML threat detection engine achieving 93% accuracy on benchmark threat datasets.</li>
+                        <li><b>60% Faster Latency:</b> Leveraged FAISS vector DB with Google Gemini embeddings for semantic search, cutting containment recommendation latency by 60% vs. keyword search.</li>
+                        <li><b>Live Telemetry Dashboard:</b> Deployed on Streamlit Cloud with interactive Plotly dashboards serving telemetry across 5+ attack categories.</li>
+                    </ul>
+
+                    <div style="display: flex; gap: 12px; margin-top: 20px;">
+                        <a href="https://github.com" target="_blank" class="btn btn-secondary"><i class="fa-brands fa-github"></i> Code</a>
+                        <a href="https://streamlit.io" target="_blank" class="btn btn-outline-cyan"><i class="fa-solid fa-arrow-up-right-from-square"></i> Live App</a>
+                    </div>
+                </div>
+
+                <!-- Threat Telemetry Widget -->
+                <div class="nori-explorer">
+                    <div class="explorer-header">
+                        <span class="explorer-title"><i class="fa-solid fa-chart-line"></i> Semantic Search Latency Benchmark</span>
+                    </div>
+
+                    <div style="padding: 10px 0;">
+                        <div style="margin-bottom: 16px;">
+                            <div style="display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 4px;">
+                                <span>FAISS + Gemini Semantic Search</span>
+                                <span style="color: var(--accent-emerald);"><b>60% Faster (120ms)</b></span>
+                            </div>
+                            <div style="height: 10px; background: rgba(255,255,255,0.1); border-radius: 5px; overflow: hidden;">
+                                <div style="width: 40%; height: 100%; background: linear-gradient(90deg, var(--accent-emerald), var(--primary-cyan)); border-radius: 5px;"></div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div style="display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 4px;">
+                                <span>Traditional Keyword Search</span>
+                                <span style="color: var(--text-muted);">300ms</span>
+                            </div>
+                            <div style="height: 10px; background: rgba(255,255,255,0.1); border-radius: 5px; overflow: hidden;">
+                                <div style="width: 100%; height: 100%; background: rgba(255,255,255,0.2); border-radius: 5px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project 3: DeepFake Detection System -->
+            <div class="glass-card featured-project">
+                <div class="project-info">
+                    <div class="project-meta-tags">
+                        <span class="project-tag">Python</span>
+                        <span class="project-tag">PyTorch</span>
+                        <span class="project-tag">EfficientNetB0</span>
+                        <span class="project-tag">Grad-CAM</span>
+                        <span class="project-tag">OpenCV</span>
+                        <span class="project-tag">Scikit-learn</span>
+                    </div>
+
+                    <h3 class="project-title">DeepFake Detection System</h3>
+                    <p class="project-description">
+                        End-to-end deepfake detection pipeline utilizing transfer learning with Grad-CAM explainability heatmaps.
+                    </p>
+
+                    <ul class="project-highlights">
+                        <li><b>96.4% Accuracy:</b> Achieved on a 10K-image test set using EfficientNetB0 transfer learning.</li>
+                        <li><b>Grad-CAM Heatmap Auditing:</b> Visualized manipulated facial regions, reducing false-positive review time by <b>~50%</b>.</li>
+                        <li><b>Multi-Generator Robustness:</b> Fine-tuned to generalize across FaceSwap, StyleGAN2, DALL-E, and MidJourney datasets.</li>
+                    </ul>
+
+                    <div style="display: flex; gap: 12px; margin-top: 20px;">
+                        <a href="https://github.com" target="_blank" class="btn btn-secondary"><i class="fa-brands fa-github"></i> Code</a>
+                    </div>
+                </div>
+
+                <!-- Interactive Grad-CAM Heatmap Widget -->
+                <div class="gradcam-widget">
+                    <div class="cam-view-box">
+                        <svg class="cam-preview-svg" viewBox="0 0 300 200">
+                            <!-- Simulated face outline -->
+                            <ellipse cx="150" cy="100" rx="45" ry="60" fill="#1e293b" stroke="#00f2fe" stroke-width="2"/>
+                            <circle cx="135" cy="90" r="6" fill="#00f2fe"/>
+                            <circle cx="165" cy="90" r="6" fill="#00f2fe"/>
+                            <path d="M 135 125 Q 150 140 165 125" fill="none" stroke="#00f2fe" stroke-width="2"/>
+                            <!-- Heatmap overlay -->
+                            <g id="cam-svg-heatmap" style="opacity: 0; transition: opacity 0.4s ease;">
+                                <circle cx="135" cy="90" r="22" fill="url(#grad-heat)" opacity="0.8"/>
+                                <circle cx="150" cy="128" r="25" fill="url(#grad-heat)" opacity="0.8"/>
+                            </g>
+                            <defs>
+                                <radialGradient id="grad-heat" cx="50%" cy="50%" r="50%">
+                                    <stop offset="0%" stop-color="#ef4444" stop-opacity="0.9"/>
+                                    <stop offset="60%" stop-color="#f59e0b" stop-opacity="0.6"/>
+                                    <stop offset="100%" stop-color="#10b981" stop-opacity="0"/>
+                                </radialGradient>
+                            </defs>
+                        </svg>
+                    </div>
+
+                    <div class="cam-controls">
+                        <button id="cam-toggle-btn" class="cam-btn">
+                            <i class="fa-solid fa-layer-group"></i> Toggle Grad-CAM Heatmap
+                        </button>
+                        
+                        <div class="confidence-bar-container">
+                            <div class="confidence-label">
+                                <span id="cam-mode-label">Mode: Raw Image View</span>
+                                <span id="cam-conf-text" style="color: var(--primary-cyan); font-weight: 700;">96.4% Fake</span>
+                            </div>
+                            <div class="confidence-progress">
+                                <div id="cam-conf-fill" class="confidence-fill"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technical Skills Matrix Section -->
+    <section id="skills" class="section">
+        <div class="container">
+            <div class="section-tag">
+                <i class="fa-solid fa-layer-group"></i> Technical Competencies
+            </div>
+            <h2 class="section-title">Skills & <span class="gradient-text">Domains</span></h2>
+            <p class="section-subtitle">
+                Core technologies, machine learning frameworks, and database architectures.
+            </p>
+
+            <div class="skills-grid">
+                <!-- Deep Learning & Computer Vision -->
+                <div class="glass-card">
+                    <h3 class="skill-category-title"><i class="fa-solid fa-eye" style="color: var(--primary-cyan);"></i> Deep Learning & Computer Vision</h3>
+                    <div class="skill-tags">
+                        <span class="skill-chip"><i class="fa-solid fa-bolt"></i> PyTorch</span>
+                        <span class="skill-chip"><i class="fa-solid fa-microchip"></i> TensorFlow Lite</span>
+                        <span class="skill-chip"><i class="fa-solid fa-camera"></i> OpenCV</span>
+                        <span class="skill-chip"><i class="fa-solid fa-brain"></i> EfficientNetB0</span>
+                        <span class="skill-chip"><i class="fa-solid fa-fire"></i> Grad-CAM</span>
+                        <span class="skill-chip"><i class="fa-solid fa-sync"></i> Transfer Learning</span>
+                        <span class="skill-chip"><i class="fa-solid fa-network-wired"></i> CNNs</span>
+                        <span class="skill-chip"><i class="fa-solid fa-network-wired"></i> Autoencoders</span>
+                    </div>
+                </div>
+
+                <!-- Generative AI & RAG -->
+                <div class="glass-card">
+                    <h3 class="skill-category-title"><i class="fa-solid fa-robot" style="color: var(--accent-indigo);"></i> Generative AI & RAG</h3>
+                    <div class="skill-tags">
+                        <span class="skill-chip"><i class="fa-solid fa-diagram-project"></i> LangChain</span>
+                        <span class="skill-chip"><i class="fa-solid fa-wand-magic-sparkles"></i> Google Gemini API</span>
+                        <span class="skill-chip"><i class="fa-solid fa-database"></i> FAISS</span>
+                        <span class="skill-chip"><i class="fa-solid fa-face-smile"></i> Hugging Face</span>
+                        <span class="skill-chip"><i class="fa-solid fa-database"></i> Vector Databases</span>
+                        <span class="skill-chip"><i class="fa-solid fa-terminal"></i> Prompt Engineering</span>
+                        <span class="skill-chip"><i class="fa-solid fa-magnifying-glass"></i> Semantic Search</span>
+                    </div>
+                </div>
+
+                <!-- Machine Learning -->
+                <div class="glass-card">
+                    <h3 class="skill-category-title"><i class="fa-solid fa-chart-pie" style="color: var(--accent-emerald);"></i> Machine Learning</h3>
+                    <div class="skill-tags">
+                        <span class="skill-chip"><i class="fa-solid fa-sliders"></i> Supervised & Unsupervised Learning</span>
+                        <span class="skill-chip"><i class="fa-solid fa-shield-virus"></i> Anomaly Detection</span>
+                        <span class="skill-chip"><i class="fa-solid fa-chart-line"></i> Model Evaluation</span>
+                        <span class="skill-chip"><i class="fa-solid fa-gear"></i> Scikit-learn</span>
+                        <span class="skill-chip"><i class="fa-solid fa-table"></i> Pandas</span>
+                        <span class="skill-chip"><i class="fa-solid fa-calculator"></i> NumPy</span>
+                    </div>
+                </div>
+
+                <!-- Backend & Deployment -->
+                <div class="glass-card">
+                    <h3 class="skill-category-title"><i class="fa-solid fa-server" style="color: var(--accent-amber);"></i> Backend & Deployment</h3>
+                    <div class="skill-tags">
+                        <span class="skill-chip"><i class="fa-solid fa-rocket"></i> FastAPI</span>
+                        <span class="skill-chip"><i class="fa-solid fa-memory"></i> Redis</span>
+                        <span class="skill-chip"><i class="fa-brands fa-docker"></i> Docker Compose</span>
+                        <span class="skill-chip"><i class="fa-solid fa-network-wired"></i> nginx</span>
+                        <span class="skill-chip"><i class="fa-solid fa-list-check"></i> BullMQ</span>
+                        <span class="skill-chip"><i class="fa-solid fa-code"></i> REST APIs</span>
+                        <span class="skill-chip"><i class="fa-solid fa-chart-bar"></i> Streamlit</span>
+                        <span class="skill-chip"><i class="fa-solid fa-sliders"></i> Gradio</span>
+                    </div>
+                </div>
+
+                <!-- Programming & CS Fundamentals -->
+                <div class="glass-card">
+                    <h3 class="skill-category-title"><i class="fa-solid fa-code" style="color: var(--accent-rose);"></i> Programming & CS Fundamentals</h3>
+                    <div class="skill-tags">
+                        <span class="skill-chip"><i class="fa-brands fa-python"></i> Python</span>
+                        <span class="skill-chip"><i class="fa-brands fa-java"></i> Java</span>
+                        <span class="skill-chip"><i class="fa-brands fa-js"></i> JavaScript</span>
+                        <span class="skill-chip"><i class="fa-brands fa-git-alt"></i> Git</span>
+                        <span class="skill-chip"><i class="fa-solid fa-sitemap"></i> Data Structures & Algorithms</span>
+                    </div>
+                </div>
+
+                <!-- Databases -->
+                <div class="glass-card">
+                    <h3 class="skill-category-title"><i class="fa-solid fa-database" style="color: var(--primary-cyan);"></i> Databases</h3>
+                    <div class="skill-tags">
+                        <span class="skill-chip"><i class="fa-solid fa-database"></i> SQL</span>
+                        <span class="skill-chip"><i class="fa-solid fa-bolt"></i> Supabase Postgres</span>
+                        <span class="skill-chip"><i class="fa-solid fa-fire"></i> Firebase</span>
+                        <span class="skill-chip"><i class="fa-solid fa-memory"></i> Redis</span>
+                        <span class="skill-chip"><i class="fa-solid fa-cubes"></i> FAISS (Vector DB)</span>
+                        <span class="skill-chip"><i class="fa-solid fa-link"></i> SQLAlchemy</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Achievements & Patent Spotlight Section -->
+    <section id="achievements" class="section">
+        <div class="container">
+            <div class="section-tag">
+                <i class="fa-solid fa-trophy"></i> Honors & Patent Publication
+            </div>
+            <h2 class="section-title">Achievements & <span class="gradient-text">Patent</span></h2>
+            <p class="section-subtitle">
+                Recognitions, patents, and hackathon milestones.
+            </p>
+
+            <div class="achievements-grid">
+                <!-- Patent Card -->
+                <div class="glass-card achievement-card">
+                    <div class="achievement-icon">
+                        <i class="fa-solid fa-certificate"></i>
+                    </div>
+                    <div class="achievement-year">Indian Patent Journal &bull; 2026</div>
+                    <h3 class="achievement-title">Patent Published: AI Workflow Management System</h3>
+                    <p class="achievement-desc">
+                        Official patent published: <i>“An AI-based Unified Email and Meeting Workflow Management System.”</i> Features automated multi-modal NLP summarization and workflow action extraction.
+                    </p>
+                </div>
+
+                <!-- Dean's Award -->
+                <div class="glass-card achievement-card">
+                    <div class="achievement-icon" style="color: var(--primary-cyan); border-color: rgba(0,242,254,0.4); background: rgba(0,242,254,0.15);">
+                        <i class="fa-solid fa-award"></i>
+                    </div>
+                    <div class="achievement-year" style="color: var(--primary-cyan);">2023 – Present</div>
+                    <h3 class="achievement-title">Dean’s Excellence Award</h3>
+                    <p class="achievement-desc">
+                        Maintained a <b>9.85 CGPA</b> across 6 consecutive semesters at Manipal University Jaipur, ranking in the <b>top 1%</b> of the department.
+                    </p>
+                </div>
+
+                <!-- Deloitte Capstone -->
+                <div class="glass-card achievement-card">
+                    <div class="achievement-icon" style="color: var(--accent-emerald); border-color: rgba(16,185,129,0.4); background: rgba(16,185,129,0.15);">
+                        <i class="fa-solid fa-medal"></i>
+                    </div>
+                    <div class="achievement-year" style="color: var(--accent-emerald);">National Finalist &bull; 2025</div>
+                    <h3 class="achievement-title">Deloitte Capstone Ideathon Finalist</h3>
+                    <p class="achievement-desc">
+                        Ranked top 10 out of 200+ teams nationally for innovative AI-driven problem-solving and scalable software architecture design.
+                    </p>
+                </div>
+
+                <!-- Leadership -->
+                <div class="glass-card achievement-card">
+                    <div class="achievement-icon" style="color: var(--accent-rose); border-color: rgba(244,63,94,0.4); background: rgba(244,63,94,0.15);">
+                        <i class="fa-solid fa-users-gear"></i>
+                    </div>
+                    <div class="achievement-year" style="color: var(--accent-rose);">Turing Sapiens &bull; 2024</div>
+                    <h3 class="achievement-title">Promotional Head</h3>
+                    <p class="achievement-desc">
+                        Led a cross-functional team of 8 to execute promotional campaigns for university-wide technical hackathons, growing community engagement by 60%.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section">
+        <div class="container">
+            <div class="section-tag">
+                <i class="fa-solid fa-envelope-open-text"></i> Get In Touch
+            </div>
+            <h2 class="section-title">Let's Connect & <span class="gradient-text">Collaborate</span></h2>
+            <p class="section-subtitle">
+                Open for AI Research, SecOps, and Full-Stack Engineering roles & collaborations.
+            </p>
+
+            <div class="contact-grid">
+                <div class="glass-card">
+                    <h3 style="font-size: 1.4rem; margin-bottom: 16px;">Contact Information</h3>
+                    <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 24px;">
+                        Feel free to reach out directly via email or phone. I usually respond within 24 hours.
+                    </p>
+
+                    <div class="contact-info-list">
+                        <div class="contact-info-item">
+                            <div class="contact-icon"><i class="fa-solid fa-envelope"></i></div>
+                            <div>
+                                <div style="font-size: 12px; color: var(--text-dim);">EMAIL</div>
+                                <div style="font-weight: 600; font-size: 15px;">
+                                    aayushichhabra1010@gmail.com
+                                    <button id="copy-email-btn" style="background:none; border:none; color:var(--primary-cyan); cursor:pointer; margin-left:8px; font-size:13px;" title="Copy to clipboard">
+                                        <i class="fa-solid fa-copy"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="contact-info-item">
+                            <div class="contact-icon"><i class="fa-solid fa-phone"></i></div>
+                            <div>
+                                <div style="font-size: 12px; color: var(--text-dim);">PHONE</div>
+                                <div style="font-weight: 600; font-size: 15px;">+91-9873740076</div>
+                            </div>
+                        </div>
+
+                        <div class="contact-info-item">
+                            <div class="contact-icon"><i class="fa-solid fa-globe"></i></div>
+                            <div>
+                                <div style="font-size: 12px; color: var(--text-dim);">WEBSITE</div>
+                                <div style="font-weight: 600; font-size: 15px;"><a href="https://aayushichhabra.me" target="_blank" style="color: var(--primary-cyan); text-decoration:none;">aayushichhabra.me</a></div>
+                            </div>
+                        </div>
+
+                        <div class="contact-info-item">
+                            <div class="contact-icon"><i class="fa-solid fa-location-dot"></i></div>
+                            <div>
+                                <div style="font-size: 12px; color: var(--text-dim);">LOCATION</div>
+                                <div style="font-weight: 600; font-size: 15px;">Jaipur / Gurugram, India</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Form -->
+                <div class="glass-card">
+                    <form onsubmit="event.preventDefault(); alert('Thank you for reaching out! Message received.');">
+                        <div class="form-group">
+                            <label class="form-label" for="form-name">Your Name</label>
+                            <input type="text" id="form-name" class="form-control" placeholder="John Doe" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="form-email">Your Email</label>
+                            <input type="email" id="form-email" class="form-control" placeholder="john@example.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="form-message">Message</label>
+                            <textarea id="form-message" class="form-control" placeholder="Hi Aayushi, I'd like to discuss a project..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">
+                            <i class="fa-solid fa-paper-plane"></i> Send Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Floating Interactive Terminal CLI Drawer Modal -->
+    <div class="terminal-modal">
+        <div class="terminal-header">
+            <div class="terminal-title">
+                <i class="fa-solid fa-terminal"></i> Aayushi OS Shell v2.6 [aayushi@cyber-ai]
+            </div>
+            <div class="terminal-controls">
+                <button class="term-btn min" title="Minimize"></button>
+                <button class="term-btn max" title="Maximize"></button>
+                <button class="term-btn close" title="Close"></button>
+            </div>
+        </div>
+        <div class="terminal-body">
+            <div id="term-output" class="terminal-output">
+                <p class="cmd-success">System Initialization Complete. Type <b style="color:var(--primary-cyan);">help</b> to list commands.</p>
+            </div>
+            <div class="terminal-input-wrapper">
+                <span class="terminal-prompt">aayushi@cyber-ai:~$</span>
+                <input type="text" id="term-input" class="terminal-input" placeholder="type 'help'..." autofocus>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Aayushi Chhabra. Built with HTML5, CSS3, & Vanilla JS. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Custom JS -->
+    <script src="script.js"></script>
+</body>
+</html>
