@@ -41,6 +41,9 @@
             </ul>
 
             <div class="nav-cta">
+                <button id="open-cli-btn" class="btn btn-terminal" title="Open Interactive Terminal">
+                    <i class="fa-solid fa-terminal"></i> CLI
+                </button>
                 <a href="assets/Aayushi_Chhabra_Resume.pdf" download="Aayushi_Chhabra_Resume.pdf" class="btn btn-primary">
                     <i class="fa-solid fa-download"></i> Resume
                 </a>
@@ -694,6 +697,26 @@
             <p>&copy; 2026 Aayushi Chhabra. Built with HTML5, CSS3, & Vanilla JS. All rights reserved.</p>
         </div>
     </footer>
+
+    <!-- Terminal CLI Modal -->
+    <div class="terminal-modal" style="display:none;">
+        <div class="terminal-header">
+            <div class="term-controls">
+                <button class="term-btn close" title="Close"></button>
+                <button class="term-btn min" title="Minimize"></button>
+                <button class="term-btn max" title="Maximize"></button>
+            </div>
+            <span class="term-title"><i class="fa-solid fa-terminal"></i> aayushi@cyber-ai:~</span>
+            <span class="term-hint">Type <b>help</b> to start</span>
+        </div>
+        <div id="term-output" class="term-output">
+            <p class="cmd-success">Welcome to Aayushi's interactive terminal. <span style="color:var(--text-muted);">Type <b style="color:var(--primary-cyan);">help</b> to see available commands.</span></p>
+        </div>
+        <div class="term-input-row">
+            <span class="terminal-prompt">aayushi@cyber-ai:~$</span>
+            <input id="term-input" class="term-input" type="text" placeholder="enter command..." autocomplete="off" spellcheck="false">
+        </div>
+    </div>
 
     <!-- Custom JS -->
     <script src="script.js"></script>
